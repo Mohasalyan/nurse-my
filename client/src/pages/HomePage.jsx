@@ -26,7 +26,7 @@ const HomePage = () => {
   <div className="left-cards">
     <Card image={medicationImg} title="תרופות" />
     <Card image={trackingImg} title="רשימת מעקב" />
-    <Card image={brainImg} title="מייניגנטל" />
+    <Card image={brainImg} title="מינימנטל" />
     <Card image={patientsImg} title="תיקי חולים" />
   </div>
 
