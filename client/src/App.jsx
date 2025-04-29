@@ -4,6 +4,7 @@ import './App.css';
 // صحيح الآن
 import Login from './pages/Login/Login.jsx';
 import HomePage from './pages/HomePage/HomePage'; // أيضاً لو حابب تستخدمها
+import PatientRec from './pages/PatientRec/PatientRec.jsx';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/patientrec" element={<PatientRec />} />
       </Routes>
     </Router>
   );
