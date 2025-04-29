@@ -18,45 +18,44 @@ const HomePage = () => {
 
       {/* زر الهوم */}
       <div className="home-icon">
-      <img src={homeIcon} alt="Home" />
+        <img src={homeIcon} alt="Home" />
       </div>
 
       {/* الشبكة */}
       <div className="card-grid">
-  {/* <div className="left-cards">
-    <Card image={medicationImg} title="תרופות" />
-    <Card image={trackingImg} title="רשימת מעקב" />
-    <Card image={brainImg} title="מינימנטל" />
-    <Card image={patientsImg} title="תיקי חולים" />
-  </div> */}
-<div className="left-cards">
-  <Card
-    image={medicationImg}
-    title="תרופות"
-    to="/medication" // Replace with the correct path
-  />
-  <Card
-    image={trackingImg}
-    title="רשימת מעקב"
-    to="/tracking" // Replace with the correct path
-  />
-  <Card
-    image={brainImg}
-    title="מינימנטל"
-    to="/minimental" // Replace with the correct path
-  />
-  <Card
-    image={patientsImg}
-    title="תיקי חולים"
-    to="/patientrec" // Replace with the correct path
-  />
-</div>
+  
+        <div className="left-cards">
+          <Card
+            image={medicationImg}
+            title="תרופות"
+            to="/medication" // Replace with the correct path
+          />
+          <Card
+            image={trackingImg}
+            title="רשימת מעקב"
+            to="/tracking" // Replace with the correct path
+          />
+          <Card
+            image={brainImg}
+            title="מינימנטל"
+            to="/minimental" // Replace with the correct path
+          />
+          <Card
+            image={patientsImg}
+            title="תיקי חולים"
+            to="/patientrec" // Replace with the correct path
+          />
+        </div>
 
-  <div className="big-card">
-    <img src={heartMonitorImg} alt="בדיקה חדשה" className="card-image" />
-    <h3 className="card-title">בדיקה חדשה</h3>
-  </div>
-</div>
+        <div className="big-card">
+          <Card
+            image={heartMonitorImg}
+            title="בדיקה חדשה"
+            to="/patientrec" // Replace with the correct path
+          />
+        </div>
+        
+      </div>
 
     </div>
   );
