@@ -29,7 +29,7 @@ body, html, #root {
     background-color: #2d7a32;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 20px 60px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
@@ -70,6 +70,7 @@ body, html, #root {
     display: grid;
     grid-template-columns: repeat(2, auto);
     gap: 20px;
+    margin-top: 16px;
   }
   
   /* الكروت العامة والكرت الكبير */
@@ -78,8 +79,8 @@ body, html, #root {
     border-radius: 20px;
     padding: 30px;
     text-align: center;
-    width: 220px;
-    height: 220px;
+    width: 200px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -96,8 +97,8 @@ body, html, #root {
   /* الكرت الكبير (جهاز القلب) */
   .big-card {
     grid-row: span 2;
-    width: 260px;
-    height: 460px;
+    width: 480px;
+    height:480px;
   }
   
   
