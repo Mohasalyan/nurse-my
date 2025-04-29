@@ -1,6 +1,6 @@
 // src/pages/HomePage.jsx
 import React from "react";
-import Card from "../Components/Card";
+import Card from "../../Components/Card/Card";
 import medicationImg from "../assets/medicine.png";  // ضع اسم الصورة الصحيح
 import trackingImg from "../assets/medicalReport.png";       
 import brainImg from "../assets/brainPic.png";             
