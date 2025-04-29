@@ -5,11 +5,13 @@ import patientsImg from "../../assets/PatientFolder.png";
 import homeIcon from "../../assets/Home.png";
 import Exit from "../../Components/Exit/Exit";
 
+// import "./PastPatientPage.css"; // Import the CSS file for styling
 
 
-const PatientRec = () => {
+
+const PastPatientsPage = () => {
   return (
-    <div className="PatientRec">
+    <div className="PastPatientsPage">
 
       <div className="exit-icon">
         <Exit
@@ -22,22 +24,24 @@ const PatientRec = () => {
       <HomeB
           image={homeIcon}
           style={{ width: "50px", height: "50px", marginBottom: "40px",  backgroundColor: "#f5f5f5" }}
-          to="/home" 
-        />
-      </div>
-
-      <div className="card-grid">
-        <Card
-          image={patientsImg}
-          title=" מטופלים בעבר"
-          color="#808080"
-          to="/pastrec" 
-        />
-        <Card
-          image={patientsImg}
-          title=" מטופלים נוכחיים"
           to="/home" // Replace with the correct path
         />
+          </div>
+
+          <div className="card-grid">
+
+        <Card
+          image={patientsImg}
+          title=" מטופלים שנפטרו"
+          color="#000000"
+          to="/home" // Replace with the correct path
+        />
+        <Card
+          image={patientsImg}
+          title=" מטופלים שעזבו"
+          to="/home" // Replace with the correct path
+        />
+       
       </div>
 
 
@@ -47,4 +51,4 @@ const PatientRec = () => {
   );
 };
 
-export default PatientRec;
+export default PastPatientsPage;

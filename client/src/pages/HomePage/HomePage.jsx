@@ -28,7 +28,7 @@ const HomePage = () => {
       <HomeB
           image={homeIcon}
           style={{ width: "50px", height: "50px", marginBottom: "40px",  backgroundColor: "#f5f5f5" }}
-          to="/home" // Replace with the correct path
+          to="/home" 
         />
       </div>
 

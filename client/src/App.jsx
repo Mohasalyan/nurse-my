@@ -5,6 +5,7 @@ import './App.css';
 import Login from './pages/Login/Login.jsx';
 import HomePage from './pages/HomePage/HomePage'; // أيضاً لو حابب تستخدمها
 import PatientRec from './pages/PatientRec/PatientRec.jsx';
+import PastPatientsPage from './pages/PastPatientsPage/PastPatientsPage.jsx';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/patientrec" element={<PatientRec />} />
+        <Route path="/pastrec" element={<PastPatientsPage />} />
       </Routes>
     </Router>
   );
