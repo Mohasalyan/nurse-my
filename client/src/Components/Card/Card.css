@@ -15,15 +15,15 @@
   }
   
   .card-image {
-    width: 80px;
-    height: 80px;
+    width: 80%;
+    height: 80%;
     margin-bottom: 10px;
     object-fit: contain;
   }
   
   .card-title {
     font-size: 18px;
-    color: #1d1d1d;
+  
     margin-top: 10px;
   }
   
