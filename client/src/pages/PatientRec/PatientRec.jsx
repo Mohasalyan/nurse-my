@@ -19,8 +19,9 @@ const PatientRec = () => {
       {/* الشبكة */}
       <div className="card-grid">
   <div className="left-cards">
-    <Card image={patientsImg} title=" מטופלים נוכחיים" color="#7bb08e" />
+ 
     <Card image={patientsImg} title=" מטופלים בעבר"  color="#808080" />
+       <Card image={patientsImg} title=" מטופלים נוכחיים" color="#7bb08e" />
   </div>
 
 </div>
