@@ -23,7 +23,7 @@ const HomePage = () => {
 
       {/* الشبكة */}
       <div className="card-grid">
-  
+
         <div className="left-cards">
           <Card
             image={medicationImg}
@@ -52,9 +52,11 @@ const HomePage = () => {
             image={heartMonitorImg}
             title="בדיקה חדשה"
             to="/patientrec" // Replace with the correct path
+            style={{ width: "440px", height: "430px" }}
           />
+
         </div>
-        
+
       </div>
 
     </div>
