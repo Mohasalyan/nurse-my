@@ -20,8 +20,19 @@ const PatientRec = () => {
 
       {/* الشبكة */}
     <div className="card-grid">
-        <Card image={patientsImg} title=" מטופלים בעבר"  color="#808080" />
-        <Card image={patientsImg} title=" מטופלים נוכחיים" color="#7bb08e" />
+        {/* <Card image={patientsImg}  /> */}
+        <Card
+    image={patientsImg}
+    title=" מטופלים בעבר" 
+     color="#808080"
+    to="/home" // Replace with the correct path
+  />
+  <Card
+    image={patientsImg}
+    title=" מטופלים נוכחיים" 
+    to="/home" // Replace with the correct path
+  />
+        {/* <Card image={patientsImg} title=" מטופלים נוכחיים" color="#7bb08e" /> */}
     </div>
 
 
