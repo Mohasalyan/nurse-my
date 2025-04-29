@@ -7,8 +7,6 @@ import brainImg from "../../assets/brainPic.png";
 import patientsImg from "../../assets/PatientFolder.png";
 import heartMonitorImg from "../../assets/HeartRate.png";
 import homeIcon from "../../assets/Home.png";
-           // ✅ حرف H كبير
-
 
 import "./HomePage.css";  // سنعمل له ملف CSS خارجي كمان
 
@@ -25,12 +23,34 @@ const HomePage = () => {
 
       {/* الشبكة */}
       <div className="card-grid">
-  <div className="left-cards">
+  {/* <div className="left-cards">
     <Card image={medicationImg} title="תרופות" />
     <Card image={trackingImg} title="רשימת מעקב" />
     <Card image={brainImg} title="מינימנטל" />
     <Card image={patientsImg} title="תיקי חולים" />
-  </div>
+  </div> */}
+<div className="left-cards">
+  <Card
+    image={medicationImg}
+    title="תרופות"
+    to="/medication" // Replace with the correct path
+  />
+  <Card
+    image={trackingImg}
+    title="רשימת מעקב"
+    to="/tracking" // Replace with the correct path
+  />
+  <Card
+    image={brainImg}
+    title="מינימנטל"
+    to="/minimental" // Replace with the correct path
+  />
+  <Card
+    image={patientsImg}
+    title="תיקי חולים"
+    to="/patientrec" // Replace with the correct path
+  />
+</div>
 
   <div className="big-card">
     <img src={heartMonitorImg} alt="בדיקה חדשה" className="card-image" />
