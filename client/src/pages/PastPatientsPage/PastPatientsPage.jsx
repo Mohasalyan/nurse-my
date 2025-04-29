@@ -5,14 +5,13 @@ import patientsImg from "../../assets/PatientFolder.png";
 import homeIcon from "../../assets/Home.png";
 import Exit from "../../Components/Exit/Exit";
 
-// import "./PastPatientPage.css"; // Import the CSS file for styling
+import "./PastPatientsPage.css"; // Import the CSS file for styling
 
 
 
 const PastPatientsPage = () => {
   return (
     <div className="PastPatientsPage">
-
       <div className="exit-icon">
         <Exit
           title="יציאה"
@@ -23,10 +22,10 @@ const PastPatientsPage = () => {
       <div className="home-icon">
       <HomeB
           image={homeIcon}
-          style={{ width: "50px", height: "50px", marginBottom: "40px",  backgroundColor: "#f5f5f5" }}
-          to="/home" // Replace with the correct path
+          style={{ width: "50px", height: "50px",  backgroundColor: "#f5f5f5" }}
+          to="/home" 
         />
-          </div>
+      </div>
 
           <div className="card-grid">
 
@@ -39,6 +38,7 @@ const PastPatientsPage = () => {
         <Card
           image={patientsImg}
           title=" מטופלים שעזבו"
+          color="#808080"
           to="/home" // Replace with the correct path
         />
        

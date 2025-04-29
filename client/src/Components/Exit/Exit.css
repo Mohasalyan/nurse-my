@@ -8,8 +8,8 @@
   width: 100px; /* Set width to make it rectangular */
   height: 40px; /* Set height to make it rectangular */
   position: fixed;
-  top: 20px;
-  left: 20px;
+  top: 45px;
+  left: 45px;
   z-index: 1000;
   display: flex;
   justify-content: center;
