@@ -47,15 +47,6 @@ html,
   margin-top: 10px;
 }
 
-.home-icon img {
-  width: 60px;
-  height: 60px;
-  background-color: white;
-  border-radius: 50%;
-  padding: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  object-fit: contain;
-}
 
 /* شبكة الكروت */
 .card-grid {

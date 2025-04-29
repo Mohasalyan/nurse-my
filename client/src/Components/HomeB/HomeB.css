@@ -2,34 +2,34 @@
 
 /* Default exit button styling */
 .homeb {
-  background-color: #7bb08e;
-  color: #ffffff;
-  border-radius: 50%; /* Make it a circle */
-  width: 70px;
-  height: 70px;
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  box-sizing: border-box;
+    margin-top: 10px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
 }
 
-  
-  .homeb:hover {
+
+.homeb:hover {
     transform: scale(1.1);
-  }
-  
-  .home-image {
-    width: 80%;
-    height: 80%;
+}
+
+.home-image {
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    margin-bottom: 10px;
-  }
-  
+    border-radius: 50%;
+    padding: 10px;
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); */
+
+
+}
