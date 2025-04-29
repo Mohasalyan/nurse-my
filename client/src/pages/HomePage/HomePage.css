@@ -92,13 +92,7 @@ body, html, #root {
     transform: translateY(-5px);
   }
   
-  /* صور الكروت */
-  .card img, .big-card img {
-    max-width: 100px;
-    height: 100px;
-    object-fit: contain;
-  }
-  
+
   /* الكرت الكبير (جهاز القلب) */
   .big-card {
     grid-row: span 2;
@@ -106,18 +100,6 @@ body, html, #root {
     height: 460px;
   }
   
-  .big-card img {
-    height: 200px;
-    max-width: 80%;
-    object-fit: contain;
-  }
-  
-  /* نص الكروت */
-  .card-title {
-    margin-top: 10px;
-    font-size: 20px;
-    font-weight: bold;
-  }
   
   /* Responsive adjustments */
   @media (max-width: 768px) {
@@ -136,8 +118,5 @@ body, html, #root {
       height: 300px;
     }
   
-    .big-card img {
-      height: 150px;
-    }
   }
   
