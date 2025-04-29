@@ -17,7 +17,7 @@ const Card = ({
       style={{
         backgroundColor: color,
         color: textcolor,
-        ...style, // NEW: apply any custom styles (like width/height)
+        ...style, // apply any custom styles (like width/height)
       }}
     >
       <img src={image} alt={title} className="card-image" />
