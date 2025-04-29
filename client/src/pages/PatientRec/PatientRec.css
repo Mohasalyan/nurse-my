@@ -15,7 +15,6 @@ html,
   min-height: 100vh;
   width: 100%;
   background-color: #ffffff;
-  /* خلفية بيضاء */
   padding: 20px;
   position: relative;
   box-sizing: border-box;
@@ -24,28 +23,6 @@ html,
   align-items: center;
 }
 
-/* زر الخروج */
-.logout-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background-color: #2d7a32;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* ايقونة الهوم */
-.home-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-}
 
 
 /* شبكة الكروت */
@@ -53,8 +30,8 @@ html,
   display: grid;
   justify-content: center;
   /* This centers the grid content horizontally */
-  align-items: center;
-  margin-top: 40px;
+  /* align-items: center; */
+  /* margin-top: 80px; */
 }
 
 

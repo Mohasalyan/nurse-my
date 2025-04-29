@@ -18,7 +18,6 @@ const PatientRec = () => {
         />
       </div>
 
-      {/* زر الهوم */}
       <div className="home-icon">
       <HomeB
           image={homeIcon}
@@ -27,7 +26,6 @@ const PatientRec = () => {
         />
       </div>
 
-      {/* الشبكة */}
       <div className="card-grid">
         {/* <Card image={patientsImg}  /> */}
         <Card
