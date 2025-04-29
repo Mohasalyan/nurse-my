@@ -11,15 +11,21 @@ const PatientRec = () => {
   return (
     <div className="PatientRec">
 
-<div className="home-icon">
+      <div className="exit-icon">
+        <Exit
+          title="יציאה"
+          to="/login" // Replace with the correct path
+        />
+      </div>
+
+      {/* زر الهوم */}
+      <div className="home-icon">
       <HomeB
           image={homeIcon}
           style={{ width: "50px", height: "50px", marginBottom: "40px",  backgroundColor: "#f5f5f5" }}
           to="/home" // Replace with the correct path
         />
       </div>
-
-     
 
       {/* الشبكة */}
       <div className="card-grid">
