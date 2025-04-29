@@ -1,6 +1,7 @@
 // src/pages/HomePage.jsx
 import React from "react";
 import Card from "../../Components/Card/Card";
+import Exit from "../../Components/Exit/Exit";
 import medicationImg from "../../assets/medicine.png";
 import trackingImg from "../../assets/medicalReport.png";
 import brainImg from "../../assets/brainPic.png";
@@ -12,9 +13,14 @@ import "./HomePage.css";  // سنعمل له ملف CSS خارجي كمان
 
 const HomePage = () => {
   return (
-    <div className="homepage">
-      {/* زر الخروج */}
-      <button className="logout-button">יציאה</button>
+    <div className="PatientRec">
+
+      <div className="exit-icon">
+        <Exit
+          title="יציאה"
+          to="/login" // Replace with the correct path
+        />
+      </div>
 
       {/* زر الهوم */}
       <div className="home-icon">

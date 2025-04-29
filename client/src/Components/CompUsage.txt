@@ -1,0 +1,18 @@
+exit button
+
+    <div className="exit-icon">
+    <Exit
+        title="יציאה"
+        to="/login" // Replace with the correct path
+    />
+    </div>
+
+home button
+
+card button
+<Card
+    image={heartMonitorImg}
+    title="בדיקה חדשה"
+    to="/patientrec" // Replace with the correct path
+    style={{ width: "440px", height: "430px" }}
+ />

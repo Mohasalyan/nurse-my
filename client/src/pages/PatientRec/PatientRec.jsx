@@ -2,6 +2,7 @@ import React from "react";
 import Card from "../../Components/Card/Card";
 import patientsImg from "../../assets/PatientFolder.png";
 import homeIcon from "../../assets/Home.png";
+import Exit from "../../Components/Exit/Exit";
 
 
 
@@ -9,9 +10,12 @@ const PatientRec = () => {
   return (
     <div className="PatientRec">
 
-
-      {/* زر الخروج */}
-      <button className="logout-button">יציאה</button>
+      <div className="exit-icon">
+        <Exit
+          title="יציאה"
+          to="/login" // Replace with the correct path
+        />
+      </div>
 
       {/* زر الهوم */}
       <div className="home-icon">
