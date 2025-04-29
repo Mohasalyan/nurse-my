@@ -1,12 +1,14 @@
 // src/pages/HomePage.jsx
 import React from "react";
 import Card from "../../Components/Card/Card";
-import medicationImg from "../assets/medicine.png";  // ضع اسم الصورة الصحيح
-import trackingImg from "../assets/medicalReport.png";       
-import brainImg from "../assets/brainPic.png";             
-import patientsImg from "../assets/PatientFolder.png";       
-import heartMonitorImg from "../assets/HeartRate.png"; 
-import homeIcon from "../assets/Home.png";
+import medicationImg from "../../assets/medicine.png";
+import trackingImg from "../../assets/medicalReport.png";
+import brainImg from "../../assets/brainPic.png";
+import patientsImg from "../../assets/PatientFolder.png";
+import heartMonitorImg from "../../assets/HeartRate.png";
+import homeIcon from "../../assets/Home.png";
+           // ✅ حرف H كبير
+
 
 import "./HomePage.css";  // سنعمل له ملف CSS خارجي كمان
 
