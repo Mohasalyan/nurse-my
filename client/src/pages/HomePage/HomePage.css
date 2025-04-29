@@ -59,8 +59,8 @@ body, html, #root {
     display: grid;
     grid-template-columns: repeat(3, auto);
     grid-auto-rows: auto;
-    gap: 40px; /* المسافة بين الكروت */
-    margin-top: 40px;
+    gap: 20px; /* المسافة بين الكروت */
+    margin-top: 20px;
     justify-content: center;
     align-items: center;
   }
@@ -69,7 +69,7 @@ body, html, #root {
   .left-cards {
     display: grid;
     grid-template-columns: repeat(2, auto);
-    gap: 40px;
+    gap: 20px;
   }
   
   /* الكروت العامة والكرت الكبير */
