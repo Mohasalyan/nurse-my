@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "../../Components/Card/Card";
+import HomeB from "../../Components/HomeB/HomeB";
 import patientsImg from "../../assets/PatientFolder.png";
 import homeIcon from "../../assets/Home.png";
 import Exit from "../../Components/Exit/Exit";
@@ -19,7 +20,10 @@ const PatientRec = () => {
 
       {/* زر الهوم */}
       <div className="home-icon">
-        <img src={homeIcon} alt="Home" />
+      <HomeB
+          image={homeIcon}
+          to="/home" // Replace with the correct path
+        />
       </div>
 
       {/* الشبكة */}
