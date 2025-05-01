@@ -1,32 +1,65 @@
-/* Reset and global settings */
-body,
-html,
-#root {
-  height: 100%;
+.formPart {
   width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
 }
 
-.dailytest {
-  min-height: 100vh;
+.daily-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  gap: 20px;
+  direction: rtl; /* Right-to-left for Hebrew */
+  max-width: 1200px;
   width: 100%;
-  background-color: #f5f5f5;
   padding: 20px;
-  position: relative;
-  box-sizing: border-box;
+  color:rgb(0, 0, 3);
+  background-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.home-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.form-field {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-/* ايقونة الهوم */
-.home-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
-  }
+  align-items: flex-end;
   
+}
+
+.form-field label {
+  margin-bottom: 8px;
+  font-weight: bold;
+
+}
+
+.form-field input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #7bb08e;
+}
+
+.submit-button {
+  grid-column: span 4; /* Make the button full width across all columns */
+  padding: 12px;
+  font-size: 16px;
+  background-color: #7bb08e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #5f9774;
+}
