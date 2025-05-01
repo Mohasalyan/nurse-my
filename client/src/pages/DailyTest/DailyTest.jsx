@@ -4,8 +4,18 @@ import homeIcon from "../../assets/Home.png";
 import Exit from "../../Components/Exit/Exit";
 import "./DailyTest.css";
 
+// Utility function to get current datetime in input format
+const getCurrentDateTimeLocal = () => {
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  const localTime = new Date(now.getTime() - offset * 60000);
+  return localTime.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:MM"
+};
+
 const DailyTest = () => {
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState({
+    dateAndTime: getCurrentDateTimeLocal()
+  });
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -19,7 +29,7 @@ const DailyTest = () => {
   };
 
   const fields = [
-    { label: "תאריך ושעה", name: "dateAndTime" },
+    { label: "תאריך ושעה", name: "dateAndTime", type: "datetime-local" },
     { label: "שם מטופל", name: "name" },
     { label: "תעודת זהות", name: "id" },
     { label: "גיל", name: "age" },
@@ -52,7 +62,7 @@ const DailyTest = () => {
             <div key={field.name} className="form-field">
               <label htmlFor={field.name}>{field.label}</label>
               <input
-                type="text"
+                type={field.type || "text"}
                 id={field.name}
                 name={field.name}
                 value={inputs[field.name] || ""}
