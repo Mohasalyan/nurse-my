@@ -30,15 +30,15 @@ const DailyTest = () => {
     { label: "משקל", name: "weight" },
     { label: "גובה", name: "height" },
     { label: "B.M.I", name: "bmi" },
-    { label: "מקצוע עיקרי", name: "mainSubject" },
+    { label: " idel", name: "idle" },
     { label: "לחץ דם", name: "bloodPressure" },
     { label: "דופק", name: "pulse" },
     { label: "סוכר", name: "sugar" },
-    { label: "תחביבים", name: "hobbies" },
     { label: "תחושת בריאות", name: "healthFeeling" },
     { label: "פעילות גופנית", name: "exercise" },
     { label: "תזונה", name: "nutrition" },
-    { label: "שתיית מים", name: "waterIntake" }
+    { label: "בדיקה נוספת", name: "extraTest" },
+    { label: " הערות", name: "notes" }
   ];
 
   return (
