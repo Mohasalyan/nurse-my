@@ -15,7 +15,7 @@ const DailyTest = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(JSON.stringify(inputs, null, 2)); // show form data as JSON
+    alert(JSON.stringify(inputs, null, 2));
   };
 
   const fields = [
@@ -30,15 +30,10 @@ const DailyTest = () => {
     { label: "משקל", name: "weight" },
     { label: "גובה", name: "height" },
     { label: "B.M.I", name: "bmi" },
-    { label: " idel", name: "idle" },
+    { label: "בדיקה נוספת", name: "extraTest" },
     { label: "לחץ דם", name: "bloodPressure" },
     { label: "דופק", name: "pulse" },
-    { label: "סוכר", name: "sugar" },
-    { label: "תחושת בריאות", name: "healthFeeling" },
-    { label: "פעילות גופנית", name: "exercise" },
-    { label: "תזונה", name: "nutrition" },
-    { label: "בדיקה נוספת", name: "extraTest" },
-    { label: " הערות", name: "notes" }
+    { label: "סוכר", name: "sugar" }
   ];
 
   return (
@@ -48,18 +43,14 @@ const DailyTest = () => {
       </div>
 
       <div className="home">
-        <HomeB
-          image={homeIcon}
-          style={{ width: "50px", height: "50px" }}
-          to="/home"
-        />
+        <HomeB image={homeIcon} style={{ width: "50px", height: "50px" }} to="/home" />
       </div>
 
-      {/* Form Section */}
       <div className="formPart">
         <form onSubmit={handleSubmit} className="daily-form">
           {fields.map((field) => (
             <div key={field.name} className="form-field">
+              <label htmlFor={field.name}>{field.label}</label>
               <input
                 type="text"
                 id={field.name}
@@ -67,9 +58,20 @@ const DailyTest = () => {
                 value={inputs[field.name] || ""}
                 onChange={handleChange}
               />
-              <label htmlFor={field.name}>{field.label}</label>
             </div>
           ))}
+
+          {/* Notes field */}
+          <div className="form-field full-width">
+            <label htmlFor="notes">הערות</label>
+            <textarea
+              id="notes"
+              name="notes"
+              value={inputs.notes || ""}
+              onChange={handleChange}
+              rows="5"
+            />
+          </div>
 
           <div className="buttons">
             <button
@@ -79,11 +81,7 @@ const DailyTest = () => {
             >
               הוספה לרשימת מעקב
             </button>
-            <input
-              type="submit"
-              value="שמירת בדיקה"
-              className="submit-button"
-            />
+            <input type="submit" value="שמירת בדיקה" className="submit-button" />
           </div>
         </form>
       </div>

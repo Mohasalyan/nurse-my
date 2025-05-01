@@ -1,4 +1,3 @@
-/* Reset and global settings */
 body, html, #root {
   height: 100%;
   width: 100%;
@@ -8,12 +7,17 @@ body, html, #root {
   font-family: Arial, sans-serif;
 }
 
+.home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+}
+
 .dailytest {
   min-height: 100vh;
   width: 100%;
   background-color: #f5f5f5;
-  position: relative;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,56 +27,56 @@ body, html, #root {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .daily-form {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 15px;
   direction: rtl;
   max-width: 1200px;
-  width: 100%;
-  padding: 20px;
-  color: rgb(0, 0, 3);
-  background-color: rgb(255, 255, 255);
+  width: 85%;
+  height: 50%;
+  padding: 15px;
+  background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.home {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 25px;
-  background-color: #f5f5f5;
-}
+
 .form-field {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align to the right */
-  gap: 5px;
+  align-items: flex-end;
+  gap: 3px;
 }
 
 .form-field label {
-  white-space: nowrap;
+  align-self: flex-start;
+  color: #000000;
 }
 
-.form-field input {
-  padding: 8px 12px;
+.form-field input,
+.form-field textarea {
+  padding: 8px;
   border: 1px solid #7e7a7a;
-  color: black;
   border-radius: 6px;
   width: 100%;
   box-sizing: border-box;
   background-color: #f8f5f5;
+  color: black;
+  text-align: right;
+  resize: vertical;
+  
 }
 
+.full-width {
+  grid-column: span 4;
+}
 
 .buttons {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
