@@ -17,26 +17,23 @@ const DailyTest = () => {
     event.preventDefault();
     alert(JSON.stringify(inputs, null, 2)); // show form data as JSON
   };
+
   const fields = [
     { label: "תאריך ושעה", name: "dateAndTime" },
     { label: "שם מטופל", name: "name" },
     { label: "תעודת זהות", name: "id" },
     { label: "גיל", name: "age" },
-
     { label: "יישוב", name: "address" },
     { label: "רגישות ואלרגיות", name: "allergies" },
     { label: "תרופות", name: "meds" },
     { label: "צום כן/לא", name: "fasting" },
-
     { label: "משקל", name: "weight" },
     { label: "גובה", name: "height" },
     { label: "B.M.I", name: "bmi" },
     { label: "מקצוע עיקרי", name: "mainSubject" },
-
     { label: "לחץ דם", name: "bloodPressure" },
     { label: "דופק", name: "pulse" },
     { label: "סוכר", name: "sugar" },
-
     { label: "תחביבים", name: "hobbies" },
     { label: "תחושת בריאות", name: "healthFeeling" },
     { label: "פעילות גופנית", name: "exercise" },
@@ -63,7 +60,6 @@ const DailyTest = () => {
         <form onSubmit={handleSubmit} className="daily-form">
           {fields.map((field) => (
             <div key={field.name} className="form-field">
-              <label htmlFor={field.name}>{field.label}</label>
               <input
                 type="text"
                 id={field.name}
@@ -71,22 +67,27 @@ const DailyTest = () => {
                 value={inputs[field.name] || ""}
                 onChange={handleChange}
               />
+              <label htmlFor={field.name}>{field.label}</label>
             </div>
           ))}
-          <div className="buttons" >
-          <button
-            type="button"
-            className="flag-button"
-            onClick={() => alert("The test has been flagged!")}
-          >
-            הוספה לרשימת מעקב
-          </button>
-          <input type="submit" value="שמירת בדיקה" className="submit-button" />
+
+          <div className="buttons">
+            <button
+              type="button"
+              className="flag-button"
+              onClick={() => alert("The test has been flagged!")}
+            >
+              הוספה לרשימת מעקב
+            </button>
+            <input
+              type="submit"
+              value="שמירת בדיקה"
+              className="submit-button"
+            />
           </div>
         </form>
-        </div>
       </div>
-  
+    </div>
   );
 };
 

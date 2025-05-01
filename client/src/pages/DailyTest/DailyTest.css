@@ -7,18 +7,18 @@ body, html, #root {
   overflow-x: hidden;
   font-family: Arial, sans-serif;
 }
+
 .dailytest {
   min-height: 100vh;
   width: 100%;
-
-  background-color: #f5f5f5; /* خلفية بيضاء */
-
+  background-color: #f5f5f5;
   position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .formPart {
   width: 100%;
   display: flex;
@@ -28,13 +28,13 @@ body, html, #root {
 
 .daily-form {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  direction: rtl; /* Right-to-left for Hebrew */
+  direction: rtl;
   max-width: 1200px;
   width: 100%;
   padding: 20px;
-  color:rgb(0, 0, 3);
+  color: rgb(0, 0, 3);
   background-color: rgb(255, 255, 255);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -45,42 +45,45 @@ body, html, #root {
   justify-content: center;
   align-items: center;
   margin-top: 25px;
-  background-color: f5f5f5;
+  background-color: #f5f5f5;
 }
 
 .form-field {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .form-field label {
-  margin-bottom: 5px;
-
+  white-space: nowrap;
+  font-weight: bold;
 }
 
 .form-field input {
   padding: 8px 12px;
-  border: 1px solid #292727;
+  border: 1px solid #7e7a7a;
   border-radius: 6px;
   width: 100%;
   box-sizing: border-box;
-  background-color: #e2dfdf;
+  background-color: #f8f5f5;
 }
+
 .buttons {
-  display: grid;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
   gap: 20px;
+  grid-column: span 4;
 }
+
 .submit-button {
-  /* display: block; */
-  margin: 20px auto;
   font-weight: bold;
   width: 200px;
-  /* grid-column: span 4; //Make the button full width across all columns */
   padding: 12px;
   font-size: 16px;
   background-color: #7bb08e;
@@ -89,12 +92,10 @@ body, html, #root {
   border-radius: 8px;
   cursor: pointer;
 }
+
 .flag-button {
-  /* display: block; */
-  margin: 20px auto;
   font-weight: bold;
   width: 250px;
-  /* grid-column: span 4; //Make the button full width across all columns */
   padding: 12px;
   font-size: 16px;
   background-color: #63cfd9;
@@ -103,6 +104,11 @@ body, html, #root {
   border-radius: 8px;
   cursor: pointer;
 }
+
 .submit-button:hover {
   background-color: #5f9774;
+}
+
+.flag-button:hover {
+  background-color: #184f66;
 }
