@@ -56,21 +56,30 @@ body, html, #root {
 }
 
 .form-field label {
-  margin-bottom: 8px;
-  font-weight: bold;
+  margin-bottom: 5px;
 
 }
 
 .form-field input {
   padding: 8px 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #292727;
   border-radius: 6px;
   width: 100%;
   box-sizing: border-box;
-  background-color: #7bb08e;
+  background-color: #e2dfdf;
 }
-
+.buttons {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 20px;
+}
 .submit-button {
+  /* display: block; */
+  margin: 20px auto;
+  font-weight: bold;
+  width: 200px;
   /* grid-column: span 4; //Make the button full width across all columns */
   padding: 12px;
   font-size: 16px;
@@ -80,7 +89,20 @@ body, html, #root {
   border-radius: 8px;
   cursor: pointer;
 }
-
+.flag-button {
+  /* display: block; */
+  margin: 20px auto;
+  font-weight: bold;
+  width: 250px;
+  /* grid-column: span 4; //Make the button full width across all columns */
+  padding: 12px;
+  font-size: 16px;
+  background-color: #63cfd9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
 .submit-button:hover {
   background-color: #5f9774;
 }

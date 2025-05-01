@@ -73,11 +73,20 @@ const DailyTest = () => {
               />
             </div>
           ))}
-          <input type="submit" value="שלח" className="submit-button" />
+          <div className="buttons" >
+          <button
+            type="button"
+            className="flag-button"
+            onClick={() => alert("The test has been flagged!")}
+          >
+            הוספה לרשימת מעקב
+          </button>
+          <input type="submit" value="שמירת בדיקה" className="submit-button" />
+          </div>
         </form>
-
+        </div>
       </div>
-    </div>
+  
   );
 };
 
