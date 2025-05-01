@@ -26,7 +26,7 @@ const PatientRec = () => {
           />
         </div>
 
-      <div className="card-grid">
+      <div className="cards-grid">
         <Card
           image={patientsImg}
           title=" מטופלים בעבר"

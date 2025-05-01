@@ -4,8 +4,7 @@ import HomeB from "../../Components/HomeB/HomeB";
 import patientsImg from "../../assets/PatientFolder.png";
 import homeIcon from "../../assets/Home.png";
 import Exit from "../../Components/Exit/Exit";
-
-import "./PastPatientsPage.css"; // Import the CSS file for styling
+import "./PastPatientsPage.css"; 
 import Return from "../../Components/Return/Return";
 
 
@@ -36,7 +35,7 @@ const PastPatientsPage = () => {
       </div>
 
 
-      <div className="card-grid">
+      <div className="cards-grid">
         <Card
           image={patientsImg}
           title=" מטופלים שנפטרו"
@@ -51,8 +50,6 @@ const PastPatientsPage = () => {
         />
 
       </div>
-
-
     </div>
 
 

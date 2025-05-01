@@ -46,10 +46,10 @@ const DailyTest = () => {
         <Exit title="יציאה" to="/login" />
       </div>
 
-      <div className="home-icon">
+      <div className="home">
         <HomeB
           image={homeIcon}
-          style={{ width: "50px", height: "50px", backgroundColor: "#f5f5f5" }}
+          style={{ width: "50px", height: "50px" }}
           to="/home"
         />
       </div>

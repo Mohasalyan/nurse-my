@@ -19,11 +19,10 @@ const HomePage = () => {
       <div className="exit-icon">
         <Exit
           title="יציאה"
-          to="/login" // Replace with the correct path
+          to="/login"
         />
       </div>
 
-      {/* زر الهوم */}
       <div className="home-icon">
       <HomeB
           image={homeIcon}
@@ -32,7 +31,6 @@ const HomePage = () => {
         />
       </div>
 
-      {/* الشبكة */}
       <div className="card-grid">
 
         <div className="left-cards">
@@ -54,7 +52,7 @@ const HomePage = () => {
           <Card
             image={patientsImg}
             title="תיקי חולים"
-            to="/patientrec" // Replace with the correct path
+            to="/patientrec" 
           />
         </div>
 
@@ -62,7 +60,7 @@ const HomePage = () => {
           <Card
             image={heartMonitorImg}
             title="בדיקה חדשה"
-            to="/dailytest" // Replace with the correct path
+            to="/dailytest" 
             style={{ width: "440px", height: "430px" }}
           />
 
