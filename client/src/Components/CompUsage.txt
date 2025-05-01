@@ -22,11 +22,11 @@
 ------------
  CSS usage:
 .home-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
 
 ------------------------------CARD button for jsx pages usage------------------------------
 <Card

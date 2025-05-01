@@ -14,7 +14,7 @@ import "./HomePage.css";  // سنعمل له ملف CSS خارجي كمان
 
 const HomePage = () => {
   return (
-    <div className="PatientRec">
+    <div className="homepage">
 
       <div className="exit-icon">
         <Exit
@@ -62,7 +62,7 @@ const HomePage = () => {
           <Card
             image={heartMonitorImg}
             title="בדיקה חדשה"
-            to="/patientrec" // Replace with the correct path
+            to="/dailytest" // Replace with the correct path
             style={{ width: "440px", height: "430px" }}
           />
 

@@ -9,7 +9,7 @@ import "./PatientRec.css"; // Import the CSS file for styling
 
 const PatientRec = () => {
   return (
-    <div className="PatientRec">
+    <div className="patientrec">
 
       <div className="exit-icon">
         <Exit
@@ -19,12 +19,12 @@ const PatientRec = () => {
       </div>
 
       <div className="home-icon">
-      <HomeB
-          image={homeIcon}
-          style={{ width: "50px", height: "50px",  backgroundColor: "#f5f5f5" }}
-          to="/home" 
-        />
-      </div>
+        <HomeB
+            image={homeIcon}
+            style={{ width: "50px", height: "50px",  backgroundColor: "#f5f5f5" }}
+            to="/home" 
+          />
+        </div>
 
       <div className="card-grid">
         <Card
