@@ -56,4 +56,12 @@
 .card:hover {
   transform: translateY(-5px);
 }
--------------------------------------------------------------
+
+------------------------------RETURN button for jsx pages usage------------------------------
+
+<div className="return-icon">
+        <Return
+          title="חזור"
+          to="/patientrec"
+        />
+      </div>
