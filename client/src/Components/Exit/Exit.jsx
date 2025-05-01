@@ -7,7 +7,7 @@ const Exit = ({
   color = "#7bb08e",
   textcolor = "#FFFFFF",
   to = "#",
-  style = {}, // NEW: allow custom styles
+  style = {}, 
 }) => {
   return (
     <Link
@@ -19,8 +19,6 @@ const Exit = ({
         ...style, // apply any custom styles (like width/height)
       }}
     >
-    
-      {/* <img src={image} alt={title} className="card-image" /> */}
       <h3 className="exit-title" style={{ color: textcolor }}>{title}</h3>
     </Link>
   );
