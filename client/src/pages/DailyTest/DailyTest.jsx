@@ -18,21 +18,25 @@ const DailyTest = () => {
     alert(JSON.stringify(inputs, null, 2)); // show form data as JSON
   };
   const fields = [
-    { label: "שם פרטי", name: "firstName" },
-    { label: "שם משפחה", name: "lastName" },
+    { label: "תאריך ושעה", name: "dateAndTime" },
+    { label: "שם מטופל", name: "name" },
+    { label: "תעודת זהות", name: "id" },
     { label: "גיל", name: "age" },
-    { label: "כתובת", name: "address" },
-    { label: "עיר", name: "city" },
-    { label: "טלפון", name: "phone" },
-    { label: "דוא\"ל", name: "email" },
-    { label: "מגדר", name: "gender" },
-    { label: "תאריך לידה", name: "birthDate" },
-    { label: "מספר זהות", name: "idNumber" },
-    { label: "מוסד לימודים", name: "school" },
+
+    { label: "יישוב", name: "address" },
+    { label: "רגישות ואלרגיות", name: "allergies" },
+    { label: "תרופות", name: "meds" },
+    { label: "צום כן/לא", name: "fasting" },
+
+    { label: "משקל", name: "weight" },
+    { label: "גובה", name: "height" },
+    { label: "B.M.I", name: "bmi" },
     { label: "מקצוע עיקרי", name: "mainSubject" },
-    { label: "שעות שינה", name: "sleepHours" },
-    { label: "רמת אנרגיה", name: "energyLevel" },
-    { label: "מצב רוח", name: "mood" },
+
+    { label: "לחץ דם", name: "bloodPressure" },
+    { label: "דופק", name: "pulse" },
+    { label: "סוכר", name: "sugar" },
+
     { label: "תחביבים", name: "hobbies" },
     { label: "תחושת בריאות", name: "healthFeeling" },
     { label: "פעילות גופנית", name: "exercise" },
