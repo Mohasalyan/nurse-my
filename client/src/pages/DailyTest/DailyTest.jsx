@@ -8,6 +8,7 @@ import { db } from '../../firebase/firebaseConfig';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 const getCurrentDateTimeLocal = () => {
   const now = new Date();
@@ -17,6 +18,7 @@ const getCurrentDateTimeLocal = () => {
 };
 
 const DailyTest = () => {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     dateAndTime: getCurrentDateTimeLocal()
   });
@@ -88,7 +90,8 @@ const DailyTest = () => {
 
       toast.success("הבדיקה נשמרה בהצלחה!", {
         position: "top-center",
-        autoClose: 3000,
+        autoClose: 2000,
+        onClose: () => navigate("/testlist"),
       });
 
       setInputs({ dateAndTime: getCurrentDateTimeLocal() });
@@ -163,6 +166,21 @@ const DailyTest = () => {
               הוספה לרשימת מעקב
             </button>
             <input type="submit" value="שמירת בדיקה" className="submit-button" />
+          </div>
+          <div className="clear-button">
+            <button
+              type="button"
+              onClick={() => setInputs({ dateAndTime: getCurrentDateTimeLocal() })}
+            >
+              ניקוי טופס
+            </button>
+            <button
+              type="button"
+              className="view-tests-button"
+              onClick={() => navigate("/testlist")}
+            >
+              מעבר לרשימת בדיקות
+            </button>
           </div>
         </form>
       </div>

@@ -115,3 +115,18 @@ body, html, #root {
 .flag-button:hover {
   background-color: #184f66;
 }
+.view-tests-button {
+  margin-top: 20px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.view-tests-button:hover {
+  background-color: #0d47a1;
+}

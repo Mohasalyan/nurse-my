@@ -16,6 +16,7 @@ import PatientRec from "./pages/PatientRec/PatientRec.jsx";
 import PastPatientsPage from "./pages/PastPatientsPage/PastPatientsPage.jsx";
 import DailyTest from "./pages/DailyTest/DailyTest.jsx";
 import Register from "./pages/Auth/Register/Register";
+import TestList from "./pages/TestList/TestList"; // ✅ إضافة صفحة قائمة الفحوصات
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -50,6 +51,7 @@ function App() {
             <Route path="/patientrec" element={<PatientRec />} />
             <Route path="/pastrec" element={<PastPatientsPage />} />
             <Route path="/dailytest" element={<DailyTest />} />
+            <Route path="/testlist" element={<TestList />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/auth/login" replace />} />
