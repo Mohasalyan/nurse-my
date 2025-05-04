@@ -1,43 +1,41 @@
-
 import React, { useState } from 'react';
-import './Login.css';
-import loginImage from '../../assets/login-illustration.png';
+import './../AuthForm.css';
+import loginImage from '../../../assets/login-illustration.png';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineCloseCircle } from 'react-icons/ai';
 
-import { db } from '../../firebase/firebaseConfig';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { auth } from '../../../firebase/firebaseConfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
-import useUserStore from '../../store/userStore';
+import useUserStore from '../../../store/userStore';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
   const setUsernameGlobal = useUserStore((state) => state.setUsername);
 
   const togglePassword = () => setShowPassword(!showPassword);
-  const clearUsername = () => setUsername('');
+  const clearEmail = () => setEmail('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!username || !password) return alert('الرجاء تعبئة جميع الحقول');
+    if (!email || !password) return alert('אנא מלא את כל השדות');
 
     try {
-      await addDoc(collection(db, 'logins'), {
-        username,
-        password,
-        timestamp: Timestamp.now(),
-      });
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      setUsernameGlobal(username);   
-      navigate('/home');           
+      const username = user.displayName || user.email;
+      setUsernameGlobal(username); // ✅ تخزين الاسم
+
+      navigate('/home');
     } catch (err) {
       console.error(err);
-      alert('خطأ أثناء الحفظ');
+      alert('שגיאה בעת הכניסה למערכת: ' + err.message);
     }
   };
 
@@ -53,14 +51,14 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="input-container">
             <input
-              type="text"
-              placeholder="שם משתמש"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              placeholder="אימייל"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <FaUser className="input-icon" />
-            {username && (
-              <span className="clear-input" onClick={clearUsername}>
+            {email && (
+              <span className="clear-input" onClick={clearEmail}>
                 <AiOutlineCloseCircle />
               </span>
             )}
@@ -68,7 +66,7 @@ const Login = () => {
 
           <div className="input-container">
             <input
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               placeholder="סיסמה"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -81,6 +79,13 @@ const Login = () => {
 
           <button type="submit">כניסה</button>
         </form>
+
+        <p className="register-prompt">
+          אין לך חשבון?
+          <span className="register-link" onClick={() => navigate('/auth/register')}>
+            הרשם עכשיו
+          </span>
+        </p>
       </div>
     </div>
   );

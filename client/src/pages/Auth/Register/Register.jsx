@@ -1,0 +1,153 @@
+import React, { useState, useEffect } from 'react';
+import './../AuthForm.css';
+import loginImage from '../../../assets/login-illustration.png';
+import { FaUser, FaLock } from 'react-icons/fa';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+
+import { auth } from '../../../firebase/firebaseConfig';
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  onAuthStateChanged,
+  updateProfile,
+} from 'firebase/auth';
+
+import { useNavigate } from 'react-router-dom';
+import useUserStore from '../../../store/userStore';
+
+const Register = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [needsVerification, setNeedsVerification] = useState(false);
+
+  const navigate = useNavigate();
+  const setUsernameGlobal = useUserStore((state) => state.setUsername);
+
+  const togglePassword = () => setShowPassword(!showPassword);
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    if (!username || !email || !password || !confirmPassword)
+      return alert('אנא מלא את כל השדות');
+
+    if (password !== confirmPassword)
+      return alert('הסיסמאות אינן תואמות');
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      // ✅ تعيين اسم المستخدم في ملف المستخدم على Firebase
+      await updateProfile(userCredential.user, {
+        displayName: username,
+      });
+
+      await sendEmailVerification(userCredential.user);
+      setUsernameGlobal(username);
+
+      alert('נשלח קישור לאימות הדוא"ל. אנא בדוק את תיבת הדואר שלך.');
+      setNeedsVerification(true);
+    } catch (err) {
+      console.error(err);
+      alert('שגיאה בהרשמה: ' + err.message);
+    }
+  };
+
+  const resendVerification = async () => {
+    if (auth.currentUser && !auth.currentUser.emailVerified) {
+      try {
+        await sendEmailVerification(auth.currentUser);
+        alert('קישור האימות נשלח מחדש');
+      } catch (error) {
+        alert('שגיאה בשליחה מחדש: ' + error.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && !user.emailVerified) {
+        setNeedsVerification(true);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <div className="login-container">
+      <div className="login-image">
+        <img src={loginImage} alt="Register Illustration" />
+      </div>
+
+      <div className="login-form">
+        <h1>הרשמה למערכת</h1>
+        <p>!צור חשבון חדש כדי להתחיל</p>
+        <form onSubmit={handleRegister}>
+          <div className="input-container">
+            <input
+              type="text"
+              placeholder="שם משתמש"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <FaUser className="input-icon" />
+          </div>
+
+          <div className="input-container">
+            <input
+              type="email"
+              placeholder="אימייל"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <FaUser className="input-icon" />
+          </div>
+
+          <div className="input-container">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="סיסמה"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <FaLock className="input-icon" />
+            <span className="toggle-password" onClick={togglePassword}>
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </span>
+          </div>
+
+          <div className="input-container">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="אימות סיסמה"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <FaLock className="input-icon" />
+          </div>
+
+          <button type="submit">צור חשבון</button>
+        </form>
+
+        {needsVerification && (
+          <div className="resend-verification">
+            <p>לא קיבלת את קישור האימות?</p>
+            <button onClick={resendVerification}>שלח שוב קישור אימות</button>
+          </div>
+        )}
+
+        <p className="register-prompt">
+          כבר יש לך חשבון?
+          <span className="register-link" onClick={() => navigate('/auth/login')}>
+            התחבר עכשיו
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Register;

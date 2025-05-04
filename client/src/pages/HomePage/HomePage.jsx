@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../../Components/Card/Card";
 import Exit from "../../Components/Exit/Exit";
 import HomeB from "../../Components/HomeB/HomeB";
@@ -10,10 +10,20 @@ import heartMonitorImg from "../../assets/HeartRate.png";
 import homeIcon from "../../assets/Home.png";
 import "./HomePage.css";
 
-import useUserStore from "../../store/userStore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const HomePage = () => {
-  const username = useUserStore((state) => state.username || "מִשׁתַמֵשׁ");
+  const [displayName, setDisplayName] = useState("מִשׁתַמֵשׁ");
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setDisplayName(user.displayName || user.email || "מִשׁתַמֵשׁ");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="homepage">
@@ -25,7 +35,7 @@ const HomePage = () => {
         <HomeB image={homeIcon} style={{ width: "50px", height: "50px" }} to="/home" />
       </div>
 
-      <h2 className="welcome-message">ברוך הבא, {username}!</h2>
+      <h2 className="welcome-message">ברוך הבא, {displayName}!</h2>
 
       <div className="card-grid">
         <div className="left-cards">
