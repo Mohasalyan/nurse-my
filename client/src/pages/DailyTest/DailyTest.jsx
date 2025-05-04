@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+// src/pages/DailyTest/DailyTest.jsx
+import React, { useState, useEffect } from "react";
 import HomeB from "../../Components/HomeB/HomeB";
 import homeIcon from "../../assets/Home.png";
 import Exit from "../../Components/Exit/Exit";
 import "./DailyTest.css";
+import { db } from '../../firebase/firebaseConfig';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// Utility function to get current datetime in input format
 const getCurrentDateTimeLocal = () => {
   const now = new Date();
   const offset = now.getTimezoneOffset();
   const localTime = new Date(now.getTime() - offset * 60000);
-  return localTime.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:MM"
+  return localTime.toISOString().slice(0, 16);
 };
 
 const DailyTest = () => {
@@ -17,15 +21,83 @@ const DailyTest = () => {
     dateAndTime: getCurrentDateTimeLocal()
   });
 
+  useEffect(() => {
+    const weight = parseFloat(inputs.weight);
+    const height = parseFloat(inputs.height) / 100;
+    if (weight > 0 && height > 0) {
+      const bmi = (weight / (height * height)).toFixed(2);
+      setInputs(prev => ({ ...prev, bmi }));
+    }
+  }, [inputs.weight, inputs.height]);
+
+  useEffect(() => {
+    const systolic = parseInt(inputs.bloodPressure?.split("/")[0], 10);
+    const diastolic = parseInt(inputs.bloodPressure?.split("/")[1], 10);
+    const sugar = parseFloat(inputs.sugar);
+    const pulse = parseInt(inputs.pulse);
+
+    let isNormal = true;
+
+    if (systolic && diastolic) {
+      if (systolic > 140 || diastolic > 90) {
+        toast.warn("לחץ דם גבוה!", { position: "top-center" });
+        isNormal = false;
+      }
+    }
+
+    if (sugar) {
+      if (sugar > 180) {
+        toast.warn("רמת סוכר גבוהה!", { position: "top-center" });
+        isNormal = false;
+      }
+    }
+
+    if (pulse) {
+      if (pulse < 60 || pulse > 100) {
+        toast.warn("דופק לא תקין!", { position: "top-center" });
+        isNormal = false;
+      }
+    }
+
+    if (
+      systolic && diastolic && sugar && pulse &&
+      systolic <= 140 &&
+      diastolic <= 90 &&
+      sugar <= 180 &&
+      pulse >= 60 &&
+      pulse <= 100
+    ) {
+      toast.success("כל המדדים תקינים ✅", { position: "top-center" });
+    }
+  }, [inputs.bloodPressure, inputs.sugar, inputs.pulse]);
+
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    alert(JSON.stringify(inputs, null, 2));
+
+    try {
+      await addDoc(collection(db, 'daily_tests'), {
+        ...inputs,
+        createdAt: Timestamp.now(),
+      });
+
+      toast.success("הבדיקה נשמרה בהצלחה!", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+
+      setInputs({ dateAndTime: getCurrentDateTimeLocal() });
+    } catch (error) {
+      console.error("שגיאה בשמירה:", error);
+      toast.error("שגיאה בשמירת הבדיקה!", {
+        position: "top-center",
+      });
+    }
   };
 
   const fields = [
@@ -67,11 +139,10 @@ const DailyTest = () => {
                 name={field.name}
                 value={inputs[field.name] || ""}
                 onChange={handleChange}
+                readOnly={field.name === "bmi"}
               />
             </div>
           ))}
-
-          {/* Notes field */}
           <div className="form-field full-width">
             <label htmlFor="notes">הערות</label>
             <textarea
@@ -87,7 +158,7 @@ const DailyTest = () => {
             <button
               type="button"
               className="flag-button"
-              onClick={() => alert("The test has been flagged!")}
+              onClick={() => toast.info("הבדיקה סומנה למעקב", { position: "top-center" })}
             >
               הוספה לרשימת מעקב
             </button>
@@ -95,6 +166,7 @@ const DailyTest = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
