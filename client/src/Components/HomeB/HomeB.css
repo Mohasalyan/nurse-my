@@ -1,0 +1,9 @@
+
+.home-image {
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 40%;
+    padding: 8px;
+}

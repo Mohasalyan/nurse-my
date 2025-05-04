@@ -1,0 +1,33 @@
+/* Exit.css */
+
+/* Default exit button styling */
+.return {
+    border-radius: 12px; /* Rounded edges, adjust as needed */
+    width: 100px; /* Set width to make it rectangular */
+    height: 40px; /* Set height to make it rectangular */
+    position: fixed;
+    top: 45px;
+    right: 45px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+  }
+  
+  .return:hover {
+    transform: scale(1.1);
+  }
+  
+  .return-title {
+    font-size: 16px;
+    margin: 0;
+    text-align: center;
+    word-wrap: break-word;
+    line-height: 1;
+  }
+  

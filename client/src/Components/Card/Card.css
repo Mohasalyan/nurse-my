@@ -1,0 +1,60 @@
+/* src/components/Card.css */
+
+/* Default card styling */
+.card {
+  background-color: #7bb08e;       /* Default background, can be overridden via props */
+  color: #ffffff;                  /* Default text color */
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  width: 200px;                    /* Default width */
+  height: 200px;                   /* Default height */
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* Hover effect */
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card image styling */
+.card-image {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+/* Card title styling */
+.card-title {
+  font-size: 18px;
+  margin-top: 10px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 16px;
+  }
+
+  .card-image {
+    width: 70%;
+    height: auto;
+  }
+}

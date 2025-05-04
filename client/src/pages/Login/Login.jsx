@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
-import loginImage from '../assets/login-illustration.png';
+import loginImage from '../../assets/login-illustration.png';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineCloseCircle } from 'react-icons/ai';
 

@@ -1,34 +1,39 @@
-// // src/App.jsx
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
 
-// // Import the Login page
-// import Login from './pages/Login';
-// import HomePage from './pages/HomePage'; // Assuming you have a HomePage component
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         {/* Home route (you can add later) */}
-//         {/* <Route path="/" element={<Home />} /> */}
-
-//         {/* Login route */}
-//         <Route path="/login" element={<Login />} />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-// src/App.jsx
-import HomePage from './pages/HomePage';
+// صحيح الآن
+import Login from './pages/Login/Login.jsx';
+import HomePage from './pages/HomePage/HomePage'; // أيضاً لو حابب تستخدمها
+import PatientRec from './pages/PatientRec/PatientRec.jsx';
+import PastPatientsPage from './pages/PastPatientsPage/PastPatientsPage.jsx';
+import DailyTest from './pages/DailyTest/DailyTest.jsx';
 
 function App() {
   return (
-    <div className="App">
-      <HomePage />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/patientrec" element={<PatientRec />} />
+        <Route path="/pastrec" element={<PastPatientsPage />} />
+        <Route path="/dailytest" element={<DailyTest />} />
+
+      </Routes>
+    </Router>
   );
 }
 
 export default App;
+
+// src/App.jsx
+// import HomePage from './pages/HomePage';
+
+// function App() {
+//   return (
+//     <div className="App">
+//       <HomePage />
+//     </div>
+//   );
+// }
+
+// export default App;
