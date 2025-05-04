@@ -10,6 +10,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../../../store/userStore';
 
+import { toast } from 'react-toastify'; // ✅
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -23,19 +25,24 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) return alert('אנא מלא את כל השדות');
+
+    if (!email || !password) {
+      toast.error('אנא מלא את כל השדות');
+      return;
+    }
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       const username = user.displayName || user.email;
-      setUsernameGlobal(username); // ✅ تخزين الاسم
+      setUsernameGlobal(username);
 
+      toast.success('התחברת בהצלחה!');
       navigate('/home');
     } catch (err) {
       console.error(err);
-      alert('שגיאה בעת הכניסה למערכת: ' + err.message);
+      toast.error('שגיאה בעת הכניסה: ' + err.message);
     }
   };
 
