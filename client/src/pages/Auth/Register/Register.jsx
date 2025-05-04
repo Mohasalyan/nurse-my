@@ -1,3 +1,4 @@
+// ✅ Register.jsx
 import React, { useState, useEffect } from 'react';
 import './../AuthForm.css';
 import loginImage from '../../../assets/login-illustration.png';
@@ -14,6 +15,8 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../../../store/userStore';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -32,15 +35,14 @@ const Register = () => {
     e.preventDefault();
 
     if (!username || !email || !password || !confirmPassword)
-      return alert('אנא מלא את כל השדות');
+      return toast.error('אנא מלא את כל השדות');
 
     if (password !== confirmPassword)
-      return alert('הסיסמאות אינן תואמות');
+      return toast.error('הסיסמאות אינן תואמות');
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      // ✅ تعيين اسم المستخدم في ملف المستخدم على Firebase
       await updateProfile(userCredential.user, {
         displayName: username,
       });
@@ -48,11 +50,11 @@ const Register = () => {
       await sendEmailVerification(userCredential.user);
       setUsernameGlobal(username);
 
-      alert('נשלח קישור לאימות הדוא"ל. אנא בדוק את תיבת הדואר שלך.');
+      toast.success('נשלח קישור לאימות הדוא"ל. אנא בדוק את תיבת הדואר שלך.');
       setNeedsVerification(true);
     } catch (err) {
       console.error(err);
-      alert('שגיאה בהרשמה: ' + err.message);
+      toast.error('שגיאה בהרשמה: ' + err.message);
     }
   };
 
@@ -60,9 +62,9 @@ const Register = () => {
     if (auth.currentUser && !auth.currentUser.emailVerified) {
       try {
         await sendEmailVerification(auth.currentUser);
-        alert('קישור האימות נשלח מחדש');
+        toast.success('קישור האימות נשלח מחדש');
       } catch (error) {
-        alert('שגיאה בשליחה מחדש: ' + error.message);
+        toast.error('שגיאה בשליחה מחדש: ' + error.message);
       }
     }
   };

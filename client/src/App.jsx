@@ -17,6 +17,9 @@ import PastPatientsPage from "./pages/PastPatientsPage/PastPatientsPage.jsx";
 import DailyTest from "./pages/DailyTest/DailyTest.jsx";
 import Register from "./pages/Auth/Register/Register";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -33,10 +36,14 @@ function App() {
 
   return (
     <Router>
+      {/* ✅ Toastify Container */}
+      <ToastContainer position="top-center" autoClose={3000} />
+
       <Routes>
         <Route path="/" element={<Navigate to={user ? "/home" : "/auth/login"} replace />} />
         <Route path="/auth/*" element={<Auth />} />
         <Route path="/register" element={<Register />} />
+
         {user ? (
           <>
             <Route path="/home" element={<HomePage />} />
@@ -47,7 +54,16 @@ function App() {
         ) : (
           <Route path="*" element={<Navigate to="/auth/login" replace />} />
         )}
-        <Route path="*" element={<div style={{ textAlign: 'center', marginTop: '50px' }}><h1>404 - הדף לא נמצא</h1><p>הדף שאתה מחפש לא קיים.</p></div>} />
+
+        <Route
+          path="*"
+          element={
+            <div style={{ textAlign: 'center', marginTop: '50px' }}>
+              <h1>404 - הדף לא נמצא</h1>
+              <p>הדף שאתה מחפש לא קיים.</p>
+            </div>
+          }
+        />
       </Routes>
     </Router>
   );
