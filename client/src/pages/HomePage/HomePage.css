@@ -84,3 +84,9 @@ body, html, #root {
   }
 
 }
+.welcome-message {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-top: 20px;
+}
