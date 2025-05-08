@@ -40,7 +40,7 @@ const HomePage = () => {
       <div className="card-grid">
         <div className="left-cards">
           <Card image={medicationImg} title="תרופות" to="/medication" />
-          <Card image={trackingImg} title="רשימת מעקב" to="/tracking" />
+          <Card image={trackingImg} title="רשימת מעקב" to="/testlist" />
           <Card image={brainImg} title="מינימנטל" to="/minimental" />
           <Card image={patientsImg} title="תיקי חולים" to="/patientrec" />
         </div>
