@@ -1,73 +1,41 @@
 // src/App.jsx
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase/firebaseConfig";
-import "./App.css";
-
-import Auth from "./pages/Auth/Auth";
-import HomePage from "./pages/HomePage/HomePage.jsx";
-import PatientRec from "./pages/PatientRec/PatientRec.jsx";
-import PastPatientsPage from "./pages/PastPatientsPage/PastPatientsPage.jsx";
-import DailyTest from "./pages/DailyTest/DailyTest.jsx";
-import Register from "./pages/Auth/Register/Register";
-import TestList from "./pages/TestList/TestList"; // ✅ إضافة صفحة قائمة الفحوصات
-
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import Auth from './pages/Auth/Auth';
+import HomePage from './pages/HomePage/HomePage';
+import DailyTest from './pages/DailyTest/DailyTest';
+import PatientRec from './pages/PatientRec/PatientRec';
+import PastPatientsPage from './pages/PastPatientsPage/PastPatientsPage';
+import TestList from './pages/TestList/TestList';
+import MiniMentalForm from './pages/MiniMental/MiniMentalForm';
+import MiniMentalHistory from './pages/MiniMental/MiniMentalHistory';
+import Register from './pages/Auth/Register/Register';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-
   return (
-    <Router>
-      {/* ✅ Toastify Container */}
+    <BrowserRouter>
       <ToastContainer position="top-center" autoClose={3000} />
-
       <Routes>
-        <Route path="/" element={<Navigate to={user ? "/home" : "/auth/login"} replace />} />
+        <Route path="/" element={<Navigate to="/auth/login" replace />} />
         <Route path="/auth/*" element={<Auth />} />
         <Route path="/register" element={<Register />} />
 
-        {user ? (
-          <>
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/patientrec" element={<PatientRec />} />
-            <Route path="/pastrec" element={<PastPatientsPage />} />
-            <Route path="/dailytest" element={<DailyTest />} />
-            <Route path="/testlist" element={<TestList />} />
-          </>
-        ) : (
-          <Route path="*" element={<Navigate to="/auth/login" replace />} />
-        )}
+        {/* אחרי התחברות */}
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/dailytest" element={<DailyTest />} />
+        <Route path="/patientrec" element={<PatientRec />} />
+        <Route path="/pastrec" element={<PastPatientsPage />} />
+        <Route path="/testlist" element={<TestList />} />
 
-        <Route
-          path="*"
-          element={
-            <div style={{ textAlign: 'center', marginTop: '50px' }}>
-              <h1>404 - הדף לא נמצא</h1>
-              <p>הדף שאתה מחפש לא קיים.</p>
-            </div>
-          }
-        />
+        {/* MiniMental */}
+        <Route path="/minimental" element={<MiniMentalForm />} />
+        <Route path="/minimental/history" element={<MiniMentalHistory />} />
+
+        <Route path="*" element={<p>404 – הדף לא נמצא</p>} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
