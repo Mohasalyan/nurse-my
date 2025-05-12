@@ -1,8 +1,19 @@
 // src/App.jsx
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation
+} from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase/firebaseConfig';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Auth from './pages/Auth/Auth';
+import Register from './pages/Auth/Register/Register';
 import HomePage from './pages/HomePage/HomePage';
 import DailyTest from './pages/DailyTest/DailyTest';
 import PatientRec from './pages/PatientRec/PatientRec';
@@ -10,30 +21,120 @@ import PastPatientsPage from './pages/PastPatientsPage/PastPatientsPage';
 import TestList from './pages/TestList/TestList';
 import MiniMentalForm from './pages/MiniMental/MiniMentalForm';
 import MiniMentalHistory from './pages/MiniMental/MiniMentalHistory';
-import Register from './pages/Auth/Register/Register';
-import 'react-toastify/dist/ReactToastify.css';
+
+function RequireAuth({ children }) {
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, currentUser => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) return <div>טוען...</div>;
+
+  if (!user) {
+    return <Navigate to="/auth/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+}
 
 function App() {
   return (
     <BrowserRouter>
+      {/* Toastify */}
       <ToastContainer position="top-center" autoClose={3000} />
+
       <Routes>
+        {/* PUBLIC */}
         <Route path="/" element={<Navigate to="/auth/login" replace />} />
         <Route path="/auth/*" element={<Auth />} />
         <Route path="/register" element={<Register />} />
 
-        {/* אחרי התחברות */}
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/dailytest" element={<DailyTest />} />
-        <Route path="/patientrec" element={<PatientRec />} />
-        <Route path="/pastrec" element={<PastPatientsPage />} />
-        <Route path="/testlist" element={<TestList />} />
+        {/* PROTECTED */}
+        {/* תומך גם ב־/minimental ללא פרמטר */}
+        <Route
+          path="/minimental"
+          element={
+            <RequireAuth>
+              <MiniMentalForm />
+            </RequireAuth>
+          }
+        />
 
-        {/* MiniMental */}
-        <Route path="/minimental" element={<MiniMentalForm />} />
-        <Route path="/minimental/history" element={<MiniMentalHistory />} />
+        <Route
+          path="/home"
+          element={
+            <RequireAuth>
+              <HomePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/dailytest"
+          element={
+            <RequireAuth>
+              <DailyTest />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/patientrec"
+          element={
+            <RequireAuth>
+              <PatientRec />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/pastrec"
+          element={
+            <RequireAuth>
+              <PastPatientsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/testlist"
+          element={
+            <RequireAuth>
+              <TestList />
+            </RequireAuth>
+          }
+        />
 
-        <Route path="*" element={<p>404 – הדף לא נמצא</p>} />
+        {/* Mini-Mental עם ובלי פרמטר */}
+        <Route
+          path="/folder/:patientId/mini-mental"
+          element={
+            <RequireAuth>
+              <MiniMentalForm />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/folder/:patientId/mini-mental/history"
+          element={
+            <RequireAuth>
+              <MiniMentalHistory />
+            </RequireAuth>
+          }
+        />
+
+        {/* 404 */}
+        <Route
+          path="*"
+          element={
+            <div style={{ textAlign: 'center', marginTop: 50 }}>
+              404 – הדף לא נמצא
+            </div>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

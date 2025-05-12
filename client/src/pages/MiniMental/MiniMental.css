@@ -1,34 +1,165 @@
 /* src/pages/MiniMental/MiniMental.css */
-.mini-mental-form,
-.mini-mental-history {
+
+/* מכולת העמוד כולה */
+.mm-container {
   max-width: 800px;
   margin: 2rem auto;
-  padding: 1rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
-.question-group {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  margin-bottom: 1rem;
+
+/* הכותרת העליונה (בית + חזרה + בחירת מטופל ותאריך) */
+.mm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.question {
-  margin-bottom: .5rem;
+.mm-header-left, .mm-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
-.answers label {
-  margin-left: 1rem;
-}
-.result-box {
-  background: #f0fdf4;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-.save-btn, .back-btn {
-  background: #2d7a32;
-  color: #fff;
+.mm-icon-btn {
+  background: #f5f5f5;
   border: none;
-  padding: .75rem 1.5rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.mm-icon-btn:hover {
+  background: #e0e0e0;
+}
+
+/* בורר מטופל ותאריך */
+.mm-patient-select,
+.mm-date-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.mm-patient-select select,
+.mm-date-picker input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fafafa;
   cursor: pointer;
 }
-.back-btn {
-  background: #555;
-  margin-bottom: 1rem;
+
+/* כפתור “הצג היסטוריה” */
+.mm-history-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+.mm-history-btn .mm-save-btn {
+  background-color: #fff;
+  border: 1px solid #2d7a32;
+  color: #2d7a32;
+}
+.mm-history-btn .mm-save-btn:hover {
+  background-color: #f0fbf5;
+}
+
+/* כותרת המבחן */
+.mm-title h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #2d7a32;
+}
+.mm-title p {
+  margin: 0.25rem 0 0;
+  color: #555;
+}
+
+/* סליידר ניקוד */
+.mm-score-banner {
+  background: #f0fbf5;
+  border: 1px solid #c2ecc8;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  color: #2d7a32;
+}
+
+/* אקורדיונים */
+.mm-accordions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.mm-accordion-trigger {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.mm-accordion-content {
+  background: #fff;
+  border: 1px solid #eee;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 1rem;
+}
+
+/* שאלה ותשובות */
+.mm-question {
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.mm-question-text {
+  font-weight: 500;
+  color: #333;
+}
+.mm-answers {
+  display: flex;
+  gap: 1.5rem;
+}
+.mm-answers label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* פס השמירה בתחתית */
+.mm-save-bar {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  padding: 1rem;
+  box-shadow: 0 -4px 8px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: center;
+}
+.mm-save-bar .mm-save-btn {
+  background: #2d7a32;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.mm-save-bar .mm-save-btn:hover {
+  background: #276d2c;
+}
+
+/* כפתורי כרטיס וגבולות נקי */
+button.mm-save-btn, button.mm-icon-btn {
+  font-family: inherit;
 }
