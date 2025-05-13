@@ -1,73 +1,183 @@
-// src/pages/MiniMental/MiniMentalHistory.jsx
+// src/pages/MiniMental/MiniMentalForm.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import useUserStore from "../../store/userStore";
+import useMiniMentalStore from "../../store/miniMentalStore";
 import { db } from "../../firebase/firebaseConfig";
-import { collection, query, orderBy, getDocs } from "firebase/firestore";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+
+import { Home as HomeIcon, X as CloseIcon } from "lucide-react";
 import Button from "../../Components/ui/Button/Button";
-import { Home as HomeIcon, ArrowLeft as BackIcon } from "lucide-react";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "../../Components/ui/Accordion/Accordion";
+
 import "./MiniMental.css";
 
-const MiniMentalHistory = () => {
+const MiniMentalForm = () => {
   const navigate = useNavigate();
   const { patientId } = useParams();
-  const [history, setHistory] = useState([]);
+  const username = useUserStore(state => state.username);
+  const { sections, setAnswer, reset } = useMiniMentalStore();
+  const [score, setScore] = useState(0);
+  const [maxScore, setMaxScore] = useState(0);
+  const [testDate, setTestDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
 
+  // חישוב ניקוד
   useEffect(() => {
-    (async () => {
-      const q = query(
-        collection(db, "mini_mental_tests"),
-        orderBy("createdAt", "desc")
-      );
-      const snap = await getDocs(q);
-      setHistory(
-        snap.docs
-          .map(d => ({ id: d.id, ...d.data() }))
-          .filter(x => x.patientId === patientId)
-      );
-    })();
-  }, [patientId]);
+    let s = 0, m = 0;
+    sections.forEach(sec =>
+      sec.questions.forEach(q => {
+        m += q.points;
+        if (q.answer) s += q.points;
+      })
+    );
+    setScore(s);
+    setMaxScore(m);
+  }, [sections]);
+
+  const handleSubmit = async () => {
+    try {
+      await addDoc(collection(db, "mini_mental_tests"), {
+        patientId,
+        sections,
+        score,
+        maxScore,
+        createdAt: Timestamp.now(),
+      });
+      toast.success("המבחן נשמר בהצלחה!");
+      reset();
+      navigate(`/folder/${patientId}/mini-mental/history`);
+    } catch (e) {
+      console.error(e);
+      toast.error("שגיאה בשמירת המבחן");
+    }
+  };
 
   return (
     <div className="mm-container">
       {/* Header */}
       <header className="mm-header">
         <div className="mm-header-left">
-          <Button variant="secondary" onClick={() => navigate("/home")}> 
+          <button
+            className="mm-icon-btn"
+            onClick={() => navigate("/home")}
+            title="בית"
+          >
             <HomeIcon size={20} />
-          </Button>
-          <Button variant="secondary" onClick={() => navigate(-1)}>
-            <BackIcon size={20} />
-          </Button>
+          </button>
+          <button
+            className="mm-icon-btn"
+            onClick={() => navigate(-1)}
+            title="חזרה"
+          >
+            <CloseIcon size={20} />
+          </button>
         </div>
-        <h2 className="mm-history-title">היסטוריית מבחני מינימנטל</h2>
+        <div className="mm-header-center">
+          <span className="mm-user-name">משתמש: {username}</span>
+        </div>
+        <div className="mm-header-right">
+          <div className="mm-date-picker">
+            <label>תאריך:</label>
+            <input
+              type="date"
+              value={testDate}
+              onChange={e => setTestDate(e.target.value)}
+            />
+          </div>
+        </div>
       </header>
 
-      {history.length === 0 ? (
-        <p className="mm-no-history">אין מבחנים בהיסטוריה.</p>
-      ) : (
-        <ul className="mm-history-list">
-          {history.map(item => (
-            <li key={item.id} className="mm-history-item">
-              <span className="mm-history-date">
-                {new Date(item.createdAt.toMillis()).toLocaleString("he-IL")}
-              </span>
-              <span className="mm-history-score">
-                ניקוד: {item.score}/{item.maxScore}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* Title */}
+      <div className="mm-title">
+        <h1>מבחן מצב מנטלי מינימלי</h1>
+        <p>נא להעריך לפי ההנחיות ולבחור את התשובות הנכונות</p>
+      </div>
 
-      {/* Button to return to form */}
-      <Button
-        variant="primary"
-        onClick={() => navigate(`/folder/${patientId}/mini-mental`)}
-      >
-        חזרה למבחן
-      </Button>
+      {/* Score banner */}
+      <div className="mm-score-banner">
+        <span>
+          סה״כ ניקוד: <strong>{score}</strong> מתוך <strong>{maxScore}</strong>
+        </span>
+      </div>
+
+      {/* Accordions */}
+      <div className="mm-accordions">
+        <Accordion type="single" collapsible className="space-y-4">
+          {sections.map(section => (
+            <AccordionItem key={section.id} value={section.id}>
+              <AccordionTrigger className="mm-accordion-trigger">
+                {section.title}
+              </AccordionTrigger>
+              <AccordionContent className="mm-accordion-content">
+                {section.description && (
+                  <p className="mm-section-description">
+                    {section.description}
+                  </p>
+                )}
+                {section.questions.map(q => (
+                  <div key={q.id} className="mm-question">
+                    <label className="mm-question-text">
+                      {q.text} <span>({q.points} נקודה)</span>
+                    </label>
+                    <div className="mm-answers">
+                      <label>
+                        <input
+                          type="radio"
+                          name={q.id}
+                          checked={q.answer === true}
+                          onChange={() =>
+                            setAnswer(section.id, q.id, true)
+                          }
+                        />
+                        נכון
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name={q.id}
+                          checked={q.answer === false}
+                          onChange={() =>
+                            setAnswer(section.id, q.id, false)
+                          }
+                        />
+                        לא נכון
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+
+      {/* Save & History Buttons */}
+      <div className="mm-save-bar">
+        <Button onClick={handleSubmit} className="mm-save-btn">
+          שמור והעבר להיסטוריה
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() =>
+            navigate(`/folder/${patientId}/mini-mental/history`)
+          }
+          className="mm-history-btn"
+        >
+          הצג היסטוריה
+        </Button>
+      </div>
     </div>
   );
 };
 
-export default MiniMentalHistory;
+export default MiniMentalForm;

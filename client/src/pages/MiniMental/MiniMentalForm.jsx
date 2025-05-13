@@ -1,11 +1,12 @@
-// src/pages/MiniMental/MiniMentalForm.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";                // רק toast, בלי ToastContainer
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import useMiniMentalStore from "../../store/miniMentalStore";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
+
 import { Home as HomeIcon, X as CloseIcon } from "lucide-react";
 import Button from "../../Components/ui/Button/Button";
 import {
@@ -14,17 +15,31 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "../../Components/ui/Accordion/Accordion";
+
 import "./MiniMental.css";
+
+// דוגמאות מטופלים — יש להחליף בטעינה אמיתית
+const patients = [
+  { id: "12345", name: "יוסי כהן" },
+  { id: "12346", name: "רחל לוי" },
+];
 
 const MiniMentalForm = () => {
   const navigate = useNavigate();
-  const { patientId } = useParams(); // מזהה המטופל אם מועבר ב־URL
+  const { patientId } = useParams();
   const { sections, setAnswer, reset } = useMiniMentalStore();
+  const [patientName, setPatientName] = useState("");
   const [score, setScore] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
   const [testDate, setTestDate] = useState(
     new Date().toISOString().slice(0, 10)
   );
+
+  // אתחול שם המטופל
+  useEffect(() => {
+    const p = patients.find((p) => p.id === patientId);
+    setPatientName(p?.name || "");
+  }, [patientId]);
 
   // חישוב ניקוד
   useEffect(() => {
@@ -44,6 +59,7 @@ const MiniMentalForm = () => {
     try {
       await addDoc(collection(db, "mini_mental_tests"), {
         patientId,
+        patientName,
         sections,
         score,
         maxScore,
@@ -79,18 +95,8 @@ const MiniMentalForm = () => {
           </button>
         </div>
         <div className="mm-header-right">
-          <div className="mm-patient-select">
-            <label>מטופל:</label>
-            <select
-              value={patientId}
-              onChange={(e) =>
-                navigate(`/folder/${e.target.value}/mini-mental`)
-              }
-            >
-              {/* דוגמאות, יש לטעון ברשימה דינמית */}
-              <option value="12345">12345 – יוסי כהן</option>
-              <option value="12346">12346 – רחל לוי</option>
-            </select>
+          <div className="mm-patient-name">
+            <strong>מטופל:</strong> {patientName}
           </div>
           <div className="mm-date-picker">
             <label>תאריך:</label>
@@ -103,18 +109,6 @@ const MiniMentalForm = () => {
         </div>
       </header>
 
-      {/* כפתור לעמוד היסטוריה */}
-      <div className="mm-history-btn">
-        <Button
-          variant="outline"
-          onClick={() =>
-            navigate(`/folder/${patientId}/mini-mental/history`)
-          }
-        >
-          הצג היסטוריה
-        </Button>
-      </div>
-
       {/* Title */}
       <div className="mm-title">
         <h1>מבחן מצב מנטלי מינימלי</h1>
@@ -123,9 +117,7 @@ const MiniMentalForm = () => {
 
       {/* Score banner */}
       <div className="mm-score-banner">
-        <span>
-          סה״כ ניקוד: <strong>{score}</strong> מתוך <strong>{maxScore}</strong>
-        </span>
+        סה״כ ניקוד: <strong>{score}</strong> מתוך <strong>{maxScore}</strong>
       </div>
 
       {/* Accordions */}
@@ -179,10 +171,19 @@ const MiniMentalForm = () => {
         </Accordion>
       </div>
 
-      {/* Save Button */}
+      {/* Save & History Buttons */}
       <div className="mm-save-bar">
         <Button onClick={handleSubmit} className="mm-save-btn">
           שמור והעבר להיסטוריה
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() =>
+            navigate(`/folder/${patientId}/mini-mental/history`)
+          }
+          className="mm-history-btn"
+        >
+          הצג היסטוריה
         </Button>
       </div>
     </div>
