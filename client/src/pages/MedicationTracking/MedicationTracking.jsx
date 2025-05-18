@@ -54,10 +54,10 @@ const MedicationTracking = () => {
             <span className="cell orange"></span>
             <span className="cell orange"></span>
             <button
-              className={`checkmark-button ${item.taken ? 'green' : 'red'}`}
+              className={`checkmark-button ${item.taken ? 'red' : 'green'}`}
               onClick={() => toggleTaken(index)}
             >
-              {item.taken ? '✔' : '✘'}
+              {item.taken ? '✘' : '✔'}
             </button>
           </div>
         ))}

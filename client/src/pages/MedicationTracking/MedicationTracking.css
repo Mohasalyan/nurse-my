@@ -19,7 +19,7 @@
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 30px;
   color: #222;
   margin-bottom: 30px;
 }
@@ -36,8 +36,11 @@ h2 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 50px;
   font-weight: bold;
+  font-size: 24px;
   color: #0a2342;
   text-align: center;
+  padding: 12px 0; /* optional spacing */
+  border-radius: 12px;
 }
 
 .table-row {
@@ -53,7 +56,7 @@ h2 {
 }
 
 .orange {
-  background-color: #ffb347;
+  background-color: #7bb08e;
 }
 
 .checkmark-button {
@@ -66,6 +69,11 @@ h2 {
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
+  
+  display: flex;               /* ✅ makes content a flexbox */
+  align-items: center;         /* ✅ vertical centering */
+  justify-content: center;     /* ✅ horizontal centering */
+  padding: 0;                  /* optional: remove any internal*/
 }
 
 .checkmark-button.green {
