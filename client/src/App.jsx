@@ -21,6 +21,8 @@ import PastPatientsPage from './pages/PastPatientsPage/PastPatientsPage';
 import TestList from './pages/TestList/TestList';
 import MiniMentalForm from './pages/MiniMental/MiniMentalForm';
 import MiniMentalHistory from './pages/MiniMental/MiniMentalHistory';
+import MedicationTracking from './pages/MedicationTracking/MedicationTracking';
+
 
 function RequireAuth({ children }) {
   const location = useLocation();
@@ -117,11 +119,20 @@ function App() {
             </RequireAuth>
           }
         />
+        
         <Route
           path="/folder/:patientId/mini-mental/history"
           element={
             <RequireAuth>
               <MiniMentalHistory />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/medication"
+          element={
+            <RequireAuth>
+              <MedicationTracking />
             </RequireAuth>
           }
         />

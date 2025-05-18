@@ -1,0 +1,97 @@
+.medication-page {
+  direction: rtl;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.exit-button {
+  position: absolute;
+  top: 20px;
+}
+
+.exit-button.left {
+  left: 20px;
+}
+
+.exit-button a {
+  background-color: #7bb08e;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.home-button {
+  margin-bottom: 20px;
+}
+
+.home-button img {
+  width: 50px;
+  height: 50px;
+}
+
+h2 {
+  font-size: 24px;
+  color: #222;
+  margin-bottom: 30px;
+}
+
+.table {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 50px;
+  font-weight: bold;
+  color: #0a2342;
+  text-align: center;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 50px;
+  align-items: center;
+  gap: 10px;
+}
+
+.cell {
+  height: 40px;
+  border-radius: 8px;
+}
+
+.orange {
+  background-color: #ffb347;
+}
+
+.checkmark-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.checkmark-button.green {
+  background-color: #2ecc71; /* Green */
+}
+
+.checkmark-button.red {
+  background-color: #e74c3c; /* Red */
+}
