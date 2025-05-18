@@ -3,9 +3,10 @@ import React, { useState, useEffect } from "react";
 import HomeB from "../../Components/HomeB/HomeB";
 import homeIcon from "../../assets/Home.png";
 import Exit from "../../Components/Exit/Exit";
+import PatientSearch from "../../Components/PatientSearch/PatientSearch";
 import "./DailyTest.css";
 import { db } from '../../firebase/firebaseConfig';
-import { collection, addDoc, Timestamp, getDocs, doc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, Timestamp, getDocs, setDoc, doc } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
@@ -60,6 +61,25 @@ const DailyTest = () => {
     }
   }, [inputs.bloodPressure, inputs.sugar, inputs.pulse]);
 
+  useEffect(() => {
+    const fetchPatient = async () => {
+      if (inputs.id) {
+        const snapshot = await getDocs(collection(db, "patients"));
+        const allPatients = snapshot.docs.map(doc => doc.data());
+        const match = allPatients.find(p => p.id === inputs.id);
+        if (match) {
+          setInputs(prev => ({
+            ...prev,
+            name: match.name,
+            age: match.age,
+            address: match.address,
+          }));
+        }
+      }
+    };
+    fetchPatient();
+  }, [inputs.id]);
+
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -76,13 +96,12 @@ const DailyTest = () => {
       });
 
       if (inputs.id && inputs.name) {
-        const userRef = doc(db, 'patients', inputs.id);
-        await setDoc(userRef, {
+        await setDoc(doc(db, "patients", inputs.id), {
           id: inputs.id,
           name: inputs.name,
           age: inputs.age,
-          address: inputs.address,
-        }, { merge: true });
+          address: inputs.address
+        });
       }
 
       toast.success("הבדיקה נשמרה בהצלחה!", {
@@ -124,8 +143,19 @@ const DailyTest = () => {
         <Exit title="יציאה" to="/login" />
       </div>
 
-      <div className="home">
-        <HomeB image={homeIcon} style={{ width: "50px", height: "50px" }} to="/home" />
+      <div className="header-row">
+        <div className="home">
+          <HomeB image={homeIcon} style={{ width: "50px", height: "50px" }} to="/home" />
+        </div>
+        <div className="search-box">
+          <PatientSearch onSelect={(patient) => setInputs(prev => ({
+            ...prev,
+            id: patient.id,
+            name: patient.name,
+            age: patient.age,
+            address: patient.address
+          }))} />
+        </div>
       </div>
 
       <div className="formPart">
@@ -139,7 +169,7 @@ const DailyTest = () => {
                 name={field.name}
                 value={inputs[field.name] || ""}
                 onChange={handleChange}
-                readOnly={field.name === "bmi"}
+                readOnly={["bmi"].includes(field.name)}
               />
             </div>
           ))}
@@ -165,6 +195,7 @@ const DailyTest = () => {
             </button>
             <input type="submit" value="שמירת בדיקה" className="submit-button" />
           </div>
+
           <div className="clear-button">
             <button
               type="button"
