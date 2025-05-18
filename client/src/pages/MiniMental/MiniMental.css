@@ -7,21 +7,24 @@
   padding: 1.5rem;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   direction: rtl;
   text-align: right;
+  color: #000;
 }
 
-/* הכותרת העליונה (בית + חזרה + בחירת מטופל ותאריך) */
+/* כותרת עליונה */
 .mm-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  direction: rtl;
 }
-.mm-header-left, .mm-header-right {
+.mm-header-left,
+.mm-header-right {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -33,6 +36,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.2s;
+  color: #000;
 }
 .mm-icon-btn:hover {
   background: #e0e0e0;
@@ -44,6 +48,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  direction: rtl;
 }
 .mm-patient-select select,
 .mm-date-picker input {
@@ -51,6 +56,7 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   background: #fafafa;
+  color: #000;
   cursor: pointer;
 }
 
@@ -58,6 +64,7 @@
 .mm-history-btn {
   display: flex;
   justify-content: flex-end;
+  direction: rtl;
 }
 .mm-history-btn .mm-save-btn {
   background-color: #fff;
@@ -73,12 +80,12 @@
   margin: 0;
   font-size: 1.75rem;
   color: #2d7a32;
+  direction: rtl;
+  text-align: right;
 }
 .mm-title p {
   margin: 0.25rem 0 0;
   color: #555;
-}
-.mm-title {
   direction: rtl;
   text-align: right;
 }
@@ -111,10 +118,11 @@
   justify-content: space-between;
   align-items: center;
   direction: rtl;
-  text-align: right;
+  color: #000;
 }
 .mm-accordion-content {
   background: #fff;
+  color: #000;
   border: 1px solid #eee;
   border-top: none;
   border-radius: 0 0 8px 8px;
@@ -129,22 +137,24 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  direction: rtl;
 }
 .mm-question-text {
   font-weight: 500;
-  color: #333;
+  color: #000;
   direction: rtl;
   text-align: right;
 }
 .mm-answers {
   display: flex;
   gap: 1.5rem;
-  flex-wrap: wrap;
+  direction: rtl;
 }
 .mm-answers label {
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  color: #000;
 }
 
 /* פס השמירה בתחתית */
@@ -155,7 +165,7 @@
   right: 0;
   background: #ffffff;
   padding: 1rem;
-  box-shadow: 0 -4px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: center;
 }
@@ -173,7 +183,22 @@
   background: #276d2c;
 }
 
-/* כפתורי כרטיס וגבולות נקי */
-button.mm-save-btn, button.mm-icon-btn {
+/* כל הכפתורים */
+button.mm-save-btn,
+button.mm-icon-btn {
   font-family: inherit;
+}
+
+/* טיפול בצבעים למצב כהה של כרום */
+@media (prefers-color-scheme: dark) {
+  body,
+  .mm-container,
+  input,
+  select,
+  textarea,
+  button {
+    background-color: #fff !important;
+    color: #000 !important;
+    border-color: #ccc !important;
+  }
 }
