@@ -5,7 +5,7 @@ import "./HomeB.css";
 const HomeB = ({
     image,
   title,
-  color = "#FFFFFF",
+ 
   to = "#",
   style = {}, // NEW: allow custom styles
 }) => {
@@ -14,7 +14,7 @@ const HomeB = ({
       to={to}
       className="home"
       style={{
-        backgroundColor: color,
+        
         ...style, // apply any custom styles (like width/height)
       }}
     >

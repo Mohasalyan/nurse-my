@@ -31,8 +31,8 @@ const HomePage = () => {
         <Exit title="יציאה" to="/login" />
       </div>
 
-      <div className="home-icon">
-        <HomeB image={homeIcon} style={{ width: "50px", height: "50px" }} to="/home" />
+      <div className="home">
+        <HomeB image={homeIcon} style={{ width: "55px", height: "55px" }} to="/home" />
       </div>
 
       <h2 className="welcome-message">ברוך הבא, {displayName}!</h2>

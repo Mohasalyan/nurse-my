@@ -12,7 +12,7 @@ body, html, #root {
   min-height: 100vh;
   width: 100%;
   background-color: #f5f5f5; /* خلفية بيضاء */
-  padding: 15px;
+ 
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -21,10 +21,11 @@ body, html, #root {
 }
 
 
-.home-icon {
+.home {
   display: flex;
   justify-content: center;
   align-items: center;
+ 
 }
 .card-grid {
   display: grid;
@@ -33,7 +34,7 @@ body, html, #root {
   gap: 20px;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+ 
 }
 
 .left-cards {
@@ -88,5 +89,5 @@ body, html, #root {
   text-align: center;
   font-size: 24px;
   color: #333;
-  margin-top: 20px;
+
 }

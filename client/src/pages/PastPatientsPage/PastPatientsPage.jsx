@@ -19,10 +19,10 @@ const PastPatientsPage = () => {
         />
       </div>
 
-      <div className="home-icon">
+      <div className="home">
         <HomeB
           image={homeIcon}
-          style={{ width: "50px", height: "50px", backgroundColor: "#f5f5f5" }}
+          style={{ width: "55px", height: "55px" }}
           to="/home"
         />
       </div>
