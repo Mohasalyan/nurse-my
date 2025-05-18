@@ -11,7 +11,7 @@ body, html, #root {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 25px;
+  margin-top: 70px;
 }
 
 .dailytest {
@@ -27,7 +27,7 @@ body, html, #root {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .daily-form {

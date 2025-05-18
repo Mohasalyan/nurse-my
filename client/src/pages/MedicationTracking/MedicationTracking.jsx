@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import './MedicationTracking.css';
 import homeIcon from '../../assets/Home.png';
+import Exit from "../../Components/Exit/Exit";
+import HomeB from "../../Components/HomeB/HomeB";
 
 const initialData = [
   { name: '', medication: '', dose: '', taken: true },
@@ -21,14 +23,19 @@ const MedicationTracking = () => {
 
   return (
     <div className="medication-page">
-      <div className="exit-button left">
-        <Link to="/login">יציאה</Link>
+     <div className="exit-icon">
+        <Exit
+          title="יציאה"
+          to="/login" // Replace with the correct path
+        />
       </div>
 
-      <div className="home-button">
-        <Link to="/home">
-          <img src={homeIcon} alt="home" />
-        </Link>
+      <div className="home">
+        <HomeB
+          image={homeIcon}
+          style={{ width: "55px", height: "55px" }}
+          to="/home"
+        />
       </div>
 
       <h2>מעקב תרופות</h2>

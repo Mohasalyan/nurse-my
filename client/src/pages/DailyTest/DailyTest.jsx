@@ -145,7 +145,7 @@ const DailyTest = () => {
 
       <div className="header-row">
         <div className="home">
-          <HomeB image={homeIcon} style={{ width: "50px", height: "50px" }} to="/home" />
+          <HomeB image={homeIcon} style={{ width: "55px", height: "55px" }} to="/home" />
         </div>
         <div className="search-box">
           <PatientSearch onSelect={(patient) => setInputs(prev => ({

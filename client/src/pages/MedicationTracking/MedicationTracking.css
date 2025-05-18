@@ -2,7 +2,7 @@
   direction: rtl;
   background-color: #f9f9f9;
   min-height: 100vh;
-  padding: 40px;
+
   box-sizing: border-box;
   font-family: Arial, sans-serif;
   display: flex;
@@ -11,31 +11,12 @@
   position: relative;
 }
 
-.exit-button {
-  position: absolute;
-  top: 20px;
-}
 
-.exit-button.left {
-  left: 20px;
-}
-
-.exit-button a {
-  background-color: #7bb08e;
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.home-button {
-  margin-bottom: 20px;
-}
-
-.home-button img {
-  width: 50px;
-  height: 50px;
+.home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 }
 
 h2 {
