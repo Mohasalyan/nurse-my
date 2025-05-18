@@ -1,0 +1,10 @@
+.question-group {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .description {
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+  
