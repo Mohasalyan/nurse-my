@@ -12,8 +12,11 @@ import { auth } from './firebase/firebaseConfig';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// صفحات عامة
 import Auth from './pages/Auth/Auth';
 import Register from './pages/Auth/Register/Register';
+
+// صفحات محمية
 import HomePage from './pages/HomePage/HomePage';
 import DailyTest from './pages/DailyTest/DailyTest';
 import PatientRec from './pages/PatientRec/PatientRec';
@@ -21,6 +24,7 @@ import PastPatientsPage from './pages/PastPatientsPage/PastPatientsPage';
 import TestList from './pages/TestList/TestList';
 import MiniMentalForm from './pages/MiniMental/MiniMentalForm';
 import MiniMentalHistory from './pages/MiniMental/MiniMentalHistory';
+import PatientsList from './pages/Patients/PatientsList'; // ⭐️ تمت الإضافة هنا
 
 function RequireAuth({ children }) {
   const location = useLocation();
@@ -47,26 +51,15 @@ function RequireAuth({ children }) {
 function App() {
   return (
     <BrowserRouter>
-      {/* Toastify */}
       <ToastContainer position="top-center" autoClose={3000} />
 
       <Routes>
-        {/* PUBLIC */}
+        {/* مسارات عامة */}
         <Route path="/" element={<Navigate to="/auth/login" replace />} />
         <Route path="/auth/*" element={<Auth />} />
         <Route path="/register" element={<Register />} />
 
-        {/* PROTECTED */}
-        {/* תומך גם ב־/minimental ללא פרמטר */}
-        <Route
-          path="/minimental"
-          element={
-            <RequireAuth>
-              <MiniMentalForm />
-            </RequireAuth>
-          }
-        />
-
+        {/* مسارات محمية */}
         <Route
           path="/home"
           element={
@@ -108,7 +101,15 @@ function App() {
           }
         />
 
-        {/* Mini-Mental עם ובלי פרמטר */}
+        {/* Mini Mental */}
+        <Route
+          path="/minimental"
+          element={
+            <RequireAuth>
+              <MiniMentalForm />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/folder/:patientId/mini-mental"
           element={
@@ -126,7 +127,17 @@ function App() {
           }
         />
 
-        {/* 404 */}
+        {/* ⭐️ صفحة قائمة المرضى */}
+        <Route
+          path="/patients"
+          element={
+            <RequireAuth>
+              <PatientsList />
+            </RequireAuth>
+          }
+        />
+
+        {/* صفحة غير موجودة */}
         <Route
           path="*"
           element={
