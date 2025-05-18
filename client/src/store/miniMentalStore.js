@@ -41,50 +41,28 @@ const useMiniMentalStore = create((set) => ({
       title: 'יכולת זיכרון',
       description: 'על הנבדק לשנן שלוש מילים, פעם אחת מיד ולשנן אותן שוב אחר זמן מה.',
       questions: [
-        { id: 'mem-1', text: 'לשנן 3 מילים מיד לאחר שמיעה', points: 1, answer: null },
-        { id: 'mem-2', text: 'לשנן את אותן 3 מילים אחרי כמה דקות', points: 1, answer: null },
+        { id: 'mem-1', text: 'לשנן 3 מילים מיד לאחר שמיעה', points: 3, answer: null },
+        { id: 'mem-2', text: 'לשנן את אותן 3 מילים אחרי כמה דקות', points: 3, answer: null },
       ],
     },
     {
       id: 'language',
-      title: 'שפה ויכולת דיבור',
+      title: 'שפה',
       questions: [
-        { id: 'lang-1', text: 'להקשיב שוב לרצף מילים ולחזור עליו במדויק', points: 1, answer: null },
-        { id: 'lang-2', text: 'להציע שם לחפץ פשוט', points: 1, answer: null },
+        { id: 'lang-1', text: ' יש לזהות שני חפצים פשוטים - נקודה לכל אחד', points: 2, answer: null },
+        { id: 'lang-2', text: 'יש לחזור על משפט', points: 1, answer: null },
+        { id: 'lang-3', text: 'יש לבצע הוראה פשוטה בת שלושה שלבים - נקודה לכל שלב', points: 3, answer: null },
+        { id: 'lang-4', text: 'יש לבצע הוראה כתובה', points: 1, answer: null },
+        { id: 'lang-5', text: 'יש לכתוב משפט', points: 1, answer: null },
+
+
       ],
     },
-    {
-      id: 'repetition',
-      title: 'חזרה אחר משפט',
-      questions: [
-        { id: 'rep-1', text: 'לחזור משפט מורכב בן 5 מילים', points: 1, answer: null },
-      ],
-    },
-    {
-      id: 'comprehension',
-      title: 'הבנת הוראות',
-      questions: [
-        { id: 'comp-1', text: 'לבצע שתי הוראות פשוטות לפי הסדר', points: 1, answer: null },
-      ],
-    },
-    {
-      id: 'reading',
-      title: 'קריאה',
-      questions: [
-        { id: 'read-1', text: 'לקרוא הוראה פשוטה ולפעול על פיה', points: 1, answer: null },
-      ],
-    },
-    {
-      id: 'writing',
-      title: 'כתיבה',
-      questions: [
-        { id: 'write-1', text: 'לכתוב משפט פשוט עם משמעות', points: 1, answer: null },
-      ],
-    },
+    
     {
       id: 'copy',
       title: 'העתקה',
-      description: 'העתקת צורה דו־ממדית מורכבת, כמו שני חומשים או ציור בתוך ריבוע.',
+      description: 'יש להעתיק מבנה מורכב, כמו שני מחומשים, או עיגול בתוך ריבוע',
       questions: [
         { id: 'copy-1', text: 'העתקה של מבנה גיאומטרי', points: 1, answer: null },
       ],
