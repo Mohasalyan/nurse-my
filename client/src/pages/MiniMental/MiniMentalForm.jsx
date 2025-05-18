@@ -1,11 +1,13 @@
+// src/pages/MiniMental/MiniMentalForm.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import useUserStore from "../../store/userStore";
 import useMiniMentalStore from "../../store/miniMentalStore";
 import { db } from "../../firebase/firebaseConfig";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, addDoc, Timestamp, getDocs } from "firebase/firestore";
 
 import { Home as HomeIcon, X as CloseIcon } from "lucide-react";
 import Button from "../../Components/ui/Button/Button";
@@ -18,35 +20,22 @@ import {
 
 import "./MiniMental.css";
 
-// דוגמאות מטופלים — יש להחליף בטעינה אמיתית
-const patients = [
-  { id: "12345", name: "יוסי כהן" },
-  { id: "12346", name: "רחל לוי" },
-];
-
 const MiniMentalForm = () => {
   const navigate = useNavigate();
   const { patientId } = useParams();
+  const username = useUserStore(state => state.username);
   const { sections, setAnswer, reset } = useMiniMentalStore();
-  const [patientName, setPatientName] = useState("");
   const [score, setScore] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
-  const [testDate, setTestDate] = useState(
-    new Date().toISOString().slice(0, 10)
-  );
+  const [testDate, setTestDate] = useState(new Date().toISOString().slice(0, 10));
 
-  // אתחול שם המטופל
-  useEffect(() => {
-    const p = patients.find((p) => p.id === patientId);
-    setPatientName(p?.name || "");
-  }, [patientId]);
+  const [patients, setPatients] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // חישוב ניקוד
   useEffect(() => {
-    let s = 0,
-      m = 0;
-    sections.forEach((sec) =>
-      sec.questions.forEach((q) => {
+    let s = 0, m = 0;
+    sections.forEach(sec =>
+      sec.questions.forEach(q => {
         m += q.points;
         if (q.answer) s += q.points;
       })
@@ -55,11 +44,23 @@ const MiniMentalForm = () => {
     setMaxScore(m);
   }, [sections]);
 
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "patients"));
+        const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setPatients(list);
+      } catch (error) {
+        toast.error("שגיאה בטעינת המטופלים");
+      }
+    };
+    fetchPatients();
+  }, []);
+
   const handleSubmit = async () => {
     try {
       await addDoc(collection(db, "mini_mental_tests"), {
         patientId,
-        patientName,
         sections,
         score,
         maxScore,
@@ -76,51 +77,64 @@ const MiniMentalForm = () => {
 
   return (
     <div className="mm-container">
-      {/* Header */}
       <header className="mm-header">
         <div className="mm-header-left">
-          <button
-            className="mm-icon-btn"
-            onClick={() => navigate("/home")}
-            title="בית"
-          >
+          <button className="mm-icon-btn" onClick={() => navigate("/home")} title="בית">
             <HomeIcon size={20} />
           </button>
-          <button
-            className="mm-icon-btn"
-            onClick={() => navigate(-1)}
-            title="חזרה"
-          >
+          <button className="mm-icon-btn" onClick={() => navigate(-1)} title="חזרה">
             <CloseIcon size={20} />
           </button>
         </div>
+        <div className="mm-header-center">
+          <span className="mm-user-name">משתמש: {username}</span>
+        </div>
         <div className="mm-header-right">
-          <div className="mm-patient-name">
-            <strong>מטופל:</strong> {patientName}
-          </div>
           <div className="mm-date-picker">
             <label>תאריך:</label>
             <input
               type="date"
               value={testDate}
-              onChange={(e) => setTestDate(e.target.value)}
+              onChange={e => setTestDate(e.target.value)}
             />
           </div>
         </div>
       </header>
 
-      {/* Title */}
       <div className="mm-title">
         <h1>מבחן מצב מנטלי מינימלי</h1>
         <p>נא להעריך לפי ההנחיות ולבחור את התשובות הנכונות</p>
       </div>
 
-      {/* Score banner */}
-      <div className="mm-score-banner">
-        סה״כ ניקוד: <strong>{score}</strong> מתוך <strong>{maxScore}</strong>
+      <div className="mm-patient-select">
+        <label>חיפוש מטופל:</label>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="חפש לפי שם או ת.ז"
+        />
+        <select
+          onChange={(e) => navigate(`/folder/${e.target.value}/mini-mental`)}
+          defaultValue=""
+        >
+          <option value="" disabled>בחר מטופל</option>
+          {patients
+            .filter(p => p.name?.includes(searchTerm) || p.id?.includes(searchTerm))
+            .map(p => (
+              <option key={p.id} value={p.id}>
+                {p.id} – {p.name}
+              </option>
+            ))}
+        </select>
       </div>
 
-      {/* Accordions */}
+      <div className="mm-score-banner">
+        <span>
+          סה״כ ניקוד: <strong>{score}</strong> מתוך <strong>{maxScore}</strong>
+        </span>
+      </div>
+
       <div className="mm-accordions">
         <Accordion type="single" collapsible className="space-y-4">
           {sections.map((section) => (
@@ -145,9 +159,7 @@ const MiniMentalForm = () => {
                           type="radio"
                           name={q.id}
                           checked={q.answer === true}
-                          onChange={() =>
-                            setAnswer(section.id, q.id, true)
-                          }
+                          onChange={() => setAnswer(section.id, q.id, true)}
                         />
                         נכון
                       </label>
@@ -156,9 +168,7 @@ const MiniMentalForm = () => {
                           type="radio"
                           name={q.id}
                           checked={q.answer === false}
-                          onChange={() =>
-                            setAnswer(section.id, q.id, false)
-                          }
+                          onChange={() => setAnswer(section.id, q.id, false)}
                         />
                         לא נכון
                       </label>
@@ -171,16 +181,13 @@ const MiniMentalForm = () => {
         </Accordion>
       </div>
 
-      {/* Save & History Buttons */}
       <div className="mm-save-bar">
         <Button onClick={handleSubmit} className="mm-save-btn">
           שמור והעבר להיסטוריה
         </Button>
         <Button
           variant="outline"
-          onClick={() =>
-            navigate(`/folder/${patientId}/mini-mental/history`)
-          }
+          onClick={() => navigate(`/folder/${patientId}/mini-mental/history`)}
           className="mm-history-btn"
         >
           הצג היסטוריה

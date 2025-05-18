@@ -5,7 +5,7 @@ import homeIcon from "../../assets/Home.png";
 import Exit from "../../Components/Exit/Exit";
 import "./DailyTest.css";
 import { db } from '../../firebase/firebaseConfig';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, Timestamp, getDocs, doc, setDoc } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
@@ -38,27 +38,14 @@ const DailyTest = () => {
     const sugar = parseFloat(inputs.sugar);
     const pulse = parseInt(inputs.pulse);
 
-    let isNormal = true;
-
-    if (systolic && diastolic) {
-      if (systolic > 140 || diastolic > 90) {
-        toast.warn("לחץ דם גבוה!", { position: "top-center" });
-        isNormal = false;
-      }
+    if (systolic && diastolic && (systolic > 140 || diastolic > 90)) {
+      toast.warn("לחץ דם גבוה!", { position: "top-center" });
     }
-
-    if (sugar) {
-      if (sugar > 180) {
-        toast.warn("רמת סוכר גבוהה!", { position: "top-center" });
-        isNormal = false;
-      }
+    if (sugar && sugar > 180) {
+      toast.warn("רמת סוכר גבוהה!", { position: "top-center" });
     }
-
-    if (pulse) {
-      if (pulse < 60 || pulse > 100) {
-        toast.warn("דופק לא תקין!", { position: "top-center" });
-        isNormal = false;
-      }
+    if (pulse && (pulse < 60 || pulse > 100)) {
+      toast.warn("דופק לא תקין!", { position: "top-center" });
     }
 
     if (
@@ -88,6 +75,16 @@ const DailyTest = () => {
         createdAt: Timestamp.now(),
       });
 
+      if (inputs.id && inputs.name) {
+        const userRef = doc(db, 'patients', inputs.id);
+        await setDoc(userRef, {
+          id: inputs.id,
+          name: inputs.name,
+          age: inputs.age,
+          address: inputs.address,
+        }, { merge: true });
+      }
+
       toast.success("הבדיקה נשמרה בהצלחה!", {
         position: "top-center",
         autoClose: 2000,
@@ -105,8 +102,8 @@ const DailyTest = () => {
 
   const fields = [
     { label: "תאריך ושעה", name: "dateAndTime", type: "datetime-local" },
-    { label: "שם מטופל", name: "name" },
     { label: "תעודת זהות", name: "id" },
+    { label: "שם מטופל", name: "name" },
     { label: "גיל", name: "age" },
     { label: "יישוב", name: "address" },
     { label: "רגישות ואלרגיות", name: "allergies" },
@@ -146,6 +143,7 @@ const DailyTest = () => {
               />
             </div>
           ))}
+
           <div className="form-field full-width">
             <label htmlFor="notes">הערות</label>
             <textarea

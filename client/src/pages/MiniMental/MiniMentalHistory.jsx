@@ -23,19 +23,17 @@ import "./MiniMental.css";
 const MiniMentalForm = () => {
   const navigate = useNavigate();
   const { patientId } = useParams();
-  const username = useUserStore(state => state.username);
+  const username = useUserStore((state) => state.username);
   const { sections, setAnswer, reset } = useMiniMentalStore();
+
   const [score, setScore] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
-  const [testDate, setTestDate] = useState(
-    new Date().toISOString().slice(0, 10)
-  );
+  const [testDate, setTestDate] = useState(new Date().toISOString().slice(0, 10));
 
-  // חישוב ניקוד
   useEffect(() => {
     let s = 0, m = 0;
-    sections.forEach(sec =>
-      sec.questions.forEach(q => {
+    sections.forEach((sec) =>
+      sec.questions.forEach((q) => {
         m += q.points;
         if (q.answer) s += q.points;
       })
@@ -48,6 +46,8 @@ const MiniMentalForm = () => {
     try {
       await addDoc(collection(db, "mini_mental_tests"), {
         patientId,
+        username,
+        testDate,
         sections,
         score,
         maxScore,
@@ -67,23 +67,17 @@ const MiniMentalForm = () => {
       {/* Header */}
       <header className="mm-header">
         <div className="mm-header-left">
-          <button
-            className="mm-icon-btn"
-            onClick={() => navigate("/home")}
-            title="בית"
-          >
+          <button className="mm-icon-btn" onClick={() => navigate("/home")} title="בית">
             <HomeIcon size={20} />
           </button>
-          <button
-            className="mm-icon-btn"
-            onClick={() => navigate(-1)}
-            title="חזרה"
-          >
+          <button className="mm-icon-btn" onClick={() => navigate(-1)} title="חזרה">
             <CloseIcon size={20} />
           </button>
         </div>
         <div className="mm-header-center">
-          <span className="mm-user-name">משתמש: {username}</span>
+          <span className="mm-user-name">
+            ברוך הבא, <strong>{username}</strong>
+          </span>
         </div>
         <div className="mm-header-right">
           <div className="mm-date-picker">
@@ -91,7 +85,7 @@ const MiniMentalForm = () => {
             <input
               type="date"
               value={testDate}
-              onChange={e => setTestDate(e.target.value)}
+              onChange={(e) => setTestDate(e.target.value)}
             />
           </div>
         </div>
@@ -103,28 +97,26 @@ const MiniMentalForm = () => {
         <p>נא להעריך לפי ההנחיות ולבחור את התשובות הנכונות</p>
       </div>
 
-      {/* Score banner */}
+      {/* Score */}
       <div className="mm-score-banner">
         <span>
           סה״כ ניקוד: <strong>{score}</strong> מתוך <strong>{maxScore}</strong>
         </span>
       </div>
 
-      {/* Accordions */}
+      {/* Accordion */}
       <div className="mm-accordions">
         <Accordion type="single" collapsible className="space-y-4">
-          {sections.map(section => (
+          {sections.map((section) => (
             <AccordionItem key={section.id} value={section.id}>
               <AccordionTrigger className="mm-accordion-trigger">
                 {section.title}
               </AccordionTrigger>
               <AccordionContent className="mm-accordion-content">
                 {section.description && (
-                  <p className="mm-section-description">
-                    {section.description}
-                  </p>
+                  <p className="mm-section-description">{section.description}</p>
                 )}
-                {section.questions.map(q => (
+                {section.questions.map((q) => (
                   <div key={q.id} className="mm-question">
                     <label className="mm-question-text">
                       {q.text} <span>({q.points} נקודה)</span>
@@ -135,9 +127,7 @@ const MiniMentalForm = () => {
                           type="radio"
                           name={q.id}
                           checked={q.answer === true}
-                          onChange={() =>
-                            setAnswer(section.id, q.id, true)
-                          }
+                          onChange={() => setAnswer(section.id, q.id, true)}
                         />
                         נכון
                       </label>
@@ -146,9 +136,7 @@ const MiniMentalForm = () => {
                           type="radio"
                           name={q.id}
                           checked={q.answer === false}
-                          onChange={() =>
-                            setAnswer(section.id, q.id, false)
-                          }
+                          onChange={() => setAnswer(section.id, q.id, false)}
                         />
                         לא נכון
                       </label>
@@ -167,11 +155,9 @@ const MiniMentalForm = () => {
           שמור והעבר להיסטוריה
         </Button>
         <Button
-          variant="outline"
-          onClick={() =>
-            navigate(`/folder/${patientId}/mini-mental/history`)
-          }
+          onClick={() => navigate(`/folder/${patientId}/mini-mental/history`)}
           className="mm-history-btn"
+          variant="outline"
         >
           הצג היסטוריה
         </Button>
