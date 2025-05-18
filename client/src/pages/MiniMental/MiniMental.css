@@ -48,11 +48,12 @@ background-color: #f5f5f5;
   direction: rtl;
 }
 .mm-patient-select select,
+.mm-patient-select input,
 .mm-date-picker input {
   padding: 0.4rem 0.6rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background: #fafafa;
+  background-color: #fafafa;
   color: #000;
   cursor: pointer;
 }
@@ -66,7 +67,7 @@ background-color: #f5f5f5;
 }
 .mm-history-btn .mm-save-btn {
   background-color: #fff;
-  border: 1px solid #2d7a32;
+  border: 1px solid #7bb08e;
   color: #2d7a32;
 }
 .mm-history-btn .mm-save-btn:hover {
@@ -96,7 +97,7 @@ background-color: #f5f5f5;
   border-radius: 8px;
   text-align: center;
   font-weight: 500;
-  color: #2d7a32;
+  color: #7bb08e;
   direction: rtl;
 }
 
@@ -169,7 +170,7 @@ background-color: #f5f5f5;
   gap: 1rem; /* Add space between bottom buttons */
 }
 .mm-save-bar .mm-save-btn {
-  background: #2d7a32;
+  background: #7bb08e;
   color: #fff;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -179,7 +180,7 @@ background-color: #f5f5f5;
   transition: background 0.2s;
 }
 .mm-save-bar .mm-save-btn:hover {
-  background: #276d2c;
+  background: #7bb08e;
 }
 
 /* כפתורים כלליים */
