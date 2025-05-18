@@ -69,6 +69,14 @@ const MiniMentalForm = () => {
       {/* Header */}
       <header className="mm-header">
         
+
+
+        <div className="mm-header-center">
+          <span className="mm-user-name">
+            ברוך הבא, <strong>{username}</strong>
+          </span>
+        </div>
+
         <div className="mm-header-left">
           <div className="home">
             <HomeB
@@ -80,13 +88,6 @@ const MiniMentalForm = () => {
           <div className="exit-icon">
             <Exit title="יציאה" to={-1} />
           </div>
-        </div>
-
-
-        <div className="mm-header-center">
-          <span className="mm-user-name">
-            ברוך הבא, <strong>{username}</strong>
-          </span>
         </div>
         <div className="mm-header-right">
           <div className="mm-date-picker">

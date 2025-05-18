@@ -1,8 +1,17 @@
 /* src/pages/MiniMental/MiniMental.css */
-
+body,
+html,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+background-color: #f5f5f5;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
 /* מכולת העמוד כולה */
 .mm-container {
-  max-width: 800px;
+  width: 80%;
   margin: 2rem auto;
   padding: 1.5rem;
   background: #ffffff;
@@ -27,7 +36,7 @@
 .mm-header-right {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  
 }
 
 /* בורר מטופל ותאריך */
