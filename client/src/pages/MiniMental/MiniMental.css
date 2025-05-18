@@ -64,6 +64,7 @@
 .mm-history-btn {
   display: flex;
   justify-content: flex-end;
+  gap: 0.75rem; /* Add space between buttons */
   direction: rtl;
 }
 .mm-history-btn .mm-save-btn {
@@ -168,6 +169,7 @@
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: center;
+  gap: 1rem; /* Add space between bottom buttons */
 }
 .mm-save-bar .mm-save-btn {
   background: #2d7a32;
@@ -183,22 +185,31 @@
   background: #276d2c;
 }
 
-/* כל הכפתורים */
+/* כפתורים כלליים */
 button.mm-save-btn,
 button.mm-icon-btn {
   font-family: inherit;
 }
 
-/* טיפול בצבעים למצב כהה של כרום */
+/* תיקון תצוגה במצב כהה של כרום */
 @media (prefers-color-scheme: dark) {
-  body,
   .mm-container,
-  input,
-  select,
-  textarea,
-  button {
-    background-color: #fff !important;
-    color: #000 !important;
+  .mm-header,
+  .mm-title,
+  .mm-question,
+  .mm-accordion-content,
+  .mm-question-text,
+  .mm-answers label,
+  .mm-accordion-trigger,
+  .mm-score-banner {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .mm-date-picker input,
+  .mm-patient-select select {
+    background-color: #fafafa !important;
+    color: #000000 !important;
     border-color: #ccc !important;
   }
 }
