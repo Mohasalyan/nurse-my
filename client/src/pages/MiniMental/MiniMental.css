@@ -11,6 +11,8 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  direction: rtl;
+  text-align: right;
 }
 
 /* הכותרת העליונה (בית + חזרה + בחירת מטופל ותאריך) */
@@ -76,6 +78,10 @@
   margin: 0.25rem 0 0;
   color: #555;
 }
+.mm-title {
+  direction: rtl;
+  text-align: right;
+}
 
 /* סליידר ניקוד */
 .mm-score-banner {
@@ -86,6 +92,7 @@
   text-align: center;
   font-weight: 500;
   color: #2d7a32;
+  direction: rtl;
 }
 
 /* אקורדיונים */
@@ -103,6 +110,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  direction: rtl;
+  text-align: right;
 }
 .mm-accordion-content {
   background: #fff;
@@ -110,6 +119,8 @@
   border-top: none;
   border-radius: 0 0 8px 8px;
   padding: 1rem;
+  direction: rtl;
+  text-align: right;
 }
 
 /* שאלה ותשובות */
@@ -122,10 +133,13 @@
 .mm-question-text {
   font-weight: 500;
   color: #333;
+  direction: rtl;
+  text-align: right;
 }
 .mm-answers {
   display: flex;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 .mm-answers label {
   display: flex;
