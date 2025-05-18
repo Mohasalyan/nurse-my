@@ -25,6 +25,7 @@ import TestList from './pages/TestList/TestList';
 import MiniMentalForm from './pages/MiniMental/MiniMentalForm';
 import MiniMentalHistory from './pages/MiniMental/MiniMentalHistory';
 import PatientsList from './pages/Patients/PatientsList'; // ⭐ تمت الإضافة هنا
+import MedicationTracking from './pages/MedicationTracking/MedicationTracking'; // ⭐ تمت الإضافة هنا
 
 function RequireAuth({ children }) {
   const location = useLocation();
@@ -97,6 +98,14 @@ function App() {
           element={
             <RequireAuth>
               <TestList />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/medication"
+          element={
+            <RequireAuth>
+              <MedicationTracking />
             </RequireAuth>
           }
         />
