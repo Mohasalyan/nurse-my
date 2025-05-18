@@ -38,7 +38,7 @@ const MedicationTracking = () => {
           <span>שם המטופל</span>
           <span>שם התרופה</span>
           <span>מינון</span>
-          <span>✔</span>
+          <span></span>
         </div>
 
         {data.map((item, index) => (
