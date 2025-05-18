@@ -32,7 +32,8 @@ const PatientRec = () => {
         <Card
           image={patientsImg}
           title="מטופלים נוכחיים"
-          to="/patients" // ✅ الربط الجديد
+          color="#28a745"
+          to="/patients"
         />
       </div>
     </div>

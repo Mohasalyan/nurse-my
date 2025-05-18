@@ -5,17 +5,20 @@ import { db } from "../../firebase/firebaseConfig";
 import HomeB from "../../Components/HomeB/HomeB";
 import homeIcon from "../../assets/Home.png";
 import Exit from "../../Components/Exit/Exit";
+import { useNavigate } from "react-router-dom";
 import "./PatientsList.css";
 
 const PatientsList = () => {
   const [patients, setPatients] = useState([]);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPatients = async () => {
       const snapshot = await getDocs(collection(db, "patients"));
       setPatients(snapshot.docs.map(doc => doc.data()));
     };
+
     fetchPatients();
   }, []);
 
@@ -46,12 +49,32 @@ const PatientsList = () => {
 
       <ul className="patients-list">
         {filtered.map((p, i) => (
-          <li key={i} className="patient-item">
-            <strong>{p.name}</strong><br />
+          <li
+            key={i}
+            className="patient-item clickable"
+            onClick={() => navigate(`/dailytest?patientId=${p.id}`)}
+          >
+            <strong>{p.name}</strong> <br />
             ת.ז: {p.id} | גיל: {p.age} | כתובת: {p.address}
           </li>
         ))}
       </ul>
+
+      <div style={{ textAlign: "center", marginTop: "2rem" }}>
+        <button
+          onClick={() => navigate("/patientrec")}
+          style={{
+            padding: "0.6rem 1.5rem",
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+        >
+          חזרה
+        </button>
+      </div>
     </div>
   );
 };

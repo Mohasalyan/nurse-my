@@ -127,7 +127,6 @@ function App() {
           }
         />
 
-        {/* ⭐️ صفحة قائمة المرضى */}
         <Route
           path="/patients"
           element={

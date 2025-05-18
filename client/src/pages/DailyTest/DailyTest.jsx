@@ -23,6 +23,7 @@ const DailyTest = () => {
   const [inputs, setInputs] = useState({
     dateAndTime: getCurrentDateTimeLocal()
   });
+  const [showSearch, setShowSearch] = useState(false);
 
   useEffect(() => {
     const weight = parseFloat(inputs.weight);
@@ -148,13 +149,22 @@ const DailyTest = () => {
           <HomeB image={homeIcon} style={{ width: "50px", height: "50px" }} to="/home" />
         </div>
         <div className="search-box">
-          <PatientSearch onSelect={(patient) => setInputs(prev => ({
-            ...prev,
-            id: patient.id,
-            name: patient.name,
-            age: patient.age,
-            address: patient.address
-          }))} />
+          {!showSearch ? (
+            <button className="open-search-button" onClick={() => setShowSearch(true)}>
+              בחירת מטופל
+            </button>
+          ) : (
+            <PatientSearch onSelect={(patient) => {
+              setInputs(prev => ({
+                ...prev,
+                id: patient.id,
+                name: patient.name,
+                age: patient.age,
+                address: patient.address
+              }));
+              setShowSearch(false);
+            }} />
+          )}
         </div>
       </div>
 
