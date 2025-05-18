@@ -11,9 +11,10 @@ background-color: #f5f5f5;
 }
 /* מכולת העמוד כולה */
 .mm-container {
+
   width: 80%;
-  margin: 2rem auto;
-  padding: 1.5rem;
+  margin: 15px auto;
+  padding: 20px;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
@@ -32,7 +33,7 @@ background-color: #f5f5f5;
   align-items: center;
   direction: rtl;
 }
-.mm-header-left,
+
 .mm-header-right {
   display: flex;
   align-items: center;
@@ -57,7 +58,11 @@ background-color: #f5f5f5;
   color: #000;
   cursor: pointer;
 }
+.home {
 
+  justify-content: center;
+  align-items: center;
+}
 /* כפתור “הצג היסטוריה” */
 .mm-history-btn {
   display: flex;

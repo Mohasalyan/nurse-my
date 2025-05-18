@@ -79,13 +79,7 @@ const MiniMentalForm = () => {
 
   return (
     <div className="mm-container">
-      <header className="mm-header">
-        
-        <div className="mm-header-center">
-          <span className="mm-user-name">משתמש: {username}</span>
-        </div>
-        <div className="mm-header-left">
-          <div className="home">
+      <div className="home">
             <HomeB
               image={homeIcon}
               style={{ width: "55px", height: "55px" }}
@@ -95,7 +89,11 @@ const MiniMentalForm = () => {
           <div className="exit-icon">
             <Exit title="יציאה" to={-1} />
           </div>
+      <header className="mm-header">
+        <div className="mm-header-center">
+          <span className="mm-user-name">משתמש: {username}</span>
         </div>
+        
         <div className="mm-header-right">
           <div className="mm-date-picker">
             <label>תאריך:</label>
