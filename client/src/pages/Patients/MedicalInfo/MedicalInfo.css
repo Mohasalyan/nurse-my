@@ -1,0 +1,72 @@
+.medical-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+  direction: rtl;
+  font-family: "Assistant", sans-serif;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.top-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.save-button {
+  background-color: #388e3c;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.save-button:hover {
+  background-color: #2e7d32;
+}
+
+.back-button {
+  background-color: #c8e6c9;
+  color: #1b5e20;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.back-button:hover {
+  background-color: #a5d6a7;
+}
+
+.warning-msg {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.medical-loading,
+.medical-error {
+  text-align: center;
+  padding: 30px;
+  font-size: 18px;
+  color: #555;
+}

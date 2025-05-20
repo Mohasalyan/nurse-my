@@ -1,0 +1,42 @@
+.section-card {
+  background-color: #f9fdfb;
+  border: 1px solid #d9e8df;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  padding: 16px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e8f5ec;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  color: #14532d;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.icon-button:hover {
+  transform: scale(1.1);
+}
+
+.history-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item span {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+}

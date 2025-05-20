@@ -1,0 +1,59 @@
+.section-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.section-header {
+  background-color: #e8f5e9;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: right;
+}
+
+.add-row-btn {
+  float: left;
+  background-color: #66bb6a;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.add-row-btn:hover {
+  background-color: #43a047;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.appointments-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: center;
+}
+
+.appointments-table th,
+.appointments-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.appointments-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.empty {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+}
