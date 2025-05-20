@@ -1,0 +1,63 @@
+.section-card {
+  background-color: #fefefe;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.section-header {
+  background-color: #f3f4f6;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.note-entry {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.note-entry textarea {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.add-note-button {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.logs-list {
+  list-style: none;
+  padding: 0;
+}
+
+.log-item {
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.log-date {
+  font-weight: bold;
+  color: #555;
+}
+
+.empty {
+  color: #999;
+  font-style: italic;
+}

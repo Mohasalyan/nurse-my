@@ -1,0 +1,60 @@
+.section-card {
+  background-color: #73133c;
+  border: 1px solid #08500a;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  padding: 16px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #033331;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  color: #2e7d32;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.icon-button:hover {
+  transform: scale(1.1);
+}
+
+.vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.vitals-grid div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  direction: rtl;
+}
+
+
+.vitals-grid span {
+  font-weight: bold;
+  color: #711010;
+}
+
+input {
+  border: 1px solid #340303;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 14px;
+  width: 100%;
+}

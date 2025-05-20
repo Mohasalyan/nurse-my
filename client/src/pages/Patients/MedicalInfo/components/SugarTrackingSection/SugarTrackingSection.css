@@ -1,0 +1,59 @@
+.section-card {
+  background-color: #fefefe;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  padding: 16px;
+}
+
+.section-header {
+  background-color: #fbe9e7;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: right;
+}
+
+.add-row-btn {
+  float: left;
+  background-color: #ef5350;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.add-row-btn:hover {
+  background-color: #d32f2f;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.tracking-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 14px;
+}
+
+.tracking-table th,
+.tracking-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.tracking-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.empty {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+}
