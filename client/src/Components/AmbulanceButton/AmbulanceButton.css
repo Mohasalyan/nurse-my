@@ -1,0 +1,23 @@
+.ambulance-button {
+  position: fixed;
+  top: 45px;
+  right: 100px;
+  background-color: transparent;
+  border: none;
+  border-radius: 30%;
+  
+  padding: 2px;
+  cursor: pointer;
+  width: 70px;
+  height: 60px;
+   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ambulance-icon {
+  width: 140%;
+    height: 140%;
+    object-fit: contain;
+
+}

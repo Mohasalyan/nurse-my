@@ -9,6 +9,8 @@ import patientsImg from "../../assets/PatientFolder.png";
 import heartMonitorImg from "../../assets/HeartRate.png";
 import homeIcon from "../../assets/Home.png";
 import "./HomePage.css";
+import AmbulanceButton from '../../Components/AmbulanceButton/AmbulanceButton';
+
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -30,6 +32,14 @@ const HomePage = () => {
       <div className="exit-icon">
         <Exit title="יציאה" to="/login" />
       </div>
+        
+        
+ <div>
+      <AmbulanceButton />
+    </div>
+
+
+
 
       <div className="home">
         <HomeB image={homeIcon} style={{ width: "55px", height: "55px" }} to="/home" />
