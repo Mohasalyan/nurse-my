@@ -32,12 +32,34 @@
   text-align: right;
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.patient-card h3 {
-  margin-top: 0;
+.patient-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
+}
+
+.card-header h3 {
+  margin: 0;
   font-size: 20px;
+  font-weight: bold;
+}
+
+.inline-status {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
 .patient-card p {
@@ -60,6 +82,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  transition: background-color 0.2s ease;
 }
 
 .button:hover {
@@ -87,8 +110,20 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .back-button:hover {
   background-color: #5a6268;
+}
+
+.form-field select {
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.patients-back.top-left {
+  text-align: left;
+  margin-bottom: 20px;
 }

@@ -4,20 +4,23 @@
   margin: 0 auto;
   font-family: Arial, sans-serif;
   direction: rtl;
+  background-color: #f9f9f9;
 }
 
 .page-title {
   font-size: 28px;
   text-align: center;
   margin-bottom: 32px;
+  color: #333;
 }
 
 .section-box {
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
   margin-bottom: 24px;
   padding: 16px 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .section-title {
@@ -27,6 +30,7 @@
   background-color: #e8f5e9;
   padding: 10px;
   border-radius: 6px;
+  color: #2e7d32;
 }
 
 .form-grid {
@@ -48,14 +52,17 @@
 .form-field label {
   font-weight: bold;
   margin-bottom: 6px;
+  color: #555;
 }
 
 .form-field input,
-.form-field textarea {
+.form-field textarea,
+.form-field select {
   padding: 10px;
   font-size: 15px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  background-color: #fff;
 }
 
 .form-actions {
@@ -64,14 +71,18 @@
   margin-top: 32px;
 }
 
+.save-button, .next-button, .back-button {
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
 .save-button {
   background-color: #78b98b;
   color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
 }
 
 .save-button:hover {
@@ -81,34 +92,10 @@
 .back-button {
   background-color: #6c757d;
   color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
 }
 
 .back-button:hover {
   background-color: #5a6268;
-}
-.form-actions.top {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.save-button, .next-button, .back-button {
-  padding: 10px 18px;
-  border-radius: 6px;
-  font-size: 15px;
-  cursor: pointer;
-  border: none;
-}
-
-.save-button {
-  background-color: #78b98b;
-  color: white;
 }
 
 .next-button {
@@ -116,7 +103,13 @@
   color: white;
 }
 
-.back-button {
-  background-color: #6c757d;
-  color: white;
+.next-button:hover {
+  background-color: #222;
+}
+
+.form-actions.top {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
 }

@@ -1,26 +1,25 @@
-// ✅ Patients.jsx
 import React, { useState } from "react";
-import Index from "./index/index";
 import PatientsList from "./PatientsList/PatientsList";
 import PersonalInfo from "./PersonalInfo/PersonalInfo";
 import MedicalInfo from "./MedicalInfo/MedicalInfo";
-
+import HomeB from "../../Components/HomeB/HomeB";
+import homeIcon from "../../assets/Home.png";
 
 const Patients = () => {
-  const [step, setStep] = useState("index");
+  const [step, setStep] = useState("list"); // ← مباشرة على القائمة
   const [selectedPatientId, setSelectedPatientId] = useState(null);
 
   const handleBack = () => {
-    if (step === "medical") setStep("personal");
+    if (step === "medical") setStep("list");
     else if (step === "personal") setStep("list");
-    else if (step === "list") setStep("index");
   };
 
   return (
     <div className="p-4">
-      {step === "index" && (
-        <Index onContinue={() => setStep("list")} />
-      )}
+      {/* زر الرجوع للصفحة الرئيسية */}
+      <div className="top-home-button">
+        <HomeB image={homeIcon} to="/home" style={{ width: "50px", height: "50px" }} />
+      </div>
 
       {step === "list" && (
         <PatientsList

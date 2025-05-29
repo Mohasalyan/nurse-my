@@ -19,6 +19,7 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
     notes: "",
   });
 
+  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,6 +43,7 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
             clinic: data.clinic || "",
             notes: data.notes || "",
           });
+          setStatus(data.status || "");
         }
       } catch (err) {
         console.error("שגיאה בטעינת נתונים:", err);
@@ -60,11 +62,20 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
   const handleSave = async () => {
     try {
       const docRef = doc(db, "patients", patientId);
-      await updateDoc(docRef, formData);
+      await updateDoc(docRef, { ...formData, status: status });
       toast.success("✅ השינויים נשמרו בהצלחה!");
     } catch (err) {
       console.error("שגיאה בשמירה:", err);
       toast.error("❌ שגיאה בשמירת הנתונים");
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "פעיל": return "#c8e6c9";
+      case "עזב": return "#fff9c4";
+      case "נפתר": return "#ffcdd2";
+      default: return "#eeeeee";
     }
   };
 
@@ -74,18 +85,21 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
     <div className="personal-page">
       <h2 className="page-title">פרטים אישיים</h2>
 
-      {/* ✅ الأزرار في الأعلى - تم عكس الترتيب */}
+      <div style={{
+        backgroundColor: getStatusColor(status),
+        padding: "10px",
+        borderRadius: "8px",
+        fontWeight: "bold",
+        textAlign: "center",
+        marginBottom: "16px"
+      }}>
+        סטטוס המטופל: {status || "לא ידוע"}
+      </div>
+
       <div className="form-actions top">
         <button
           className="next-button"
-          onClick={() => {
-            console.log("✅ Navigating to medical step");
-            if (onNext) {
-              onNext();
-            } else {
-              console.warn("❌ onNext is not defined");
-            }
-          }}
+          onClick={() => onNext && onNext()}
         >
           ➤ המשך לרשומה רפואית
         </button>
@@ -146,6 +160,20 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
         <div className="form-field full-width">
           <label>קופת חולים</label>
           <input name="clinic" value={formData.clinic} onChange={handleChange} />
+        </div>
+
+        <div className="form-field full-width">
+          <label>סטטוס המטופל</label>
+          <select
+            name="status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="">בחר סטטוס</option>
+            <option value="פעיל">פעיל</option>
+            <option value="נפתר">נפתר</option>
+            <option value="עזב">עזב</option>
+          </select>
         </div>
       </div>
 
