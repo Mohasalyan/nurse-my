@@ -52,7 +52,7 @@ const HomePage = () => {
           <Card image={medicationImg} title="תרופות" to="/medication" />
           <Card image={trackingImg} title="רשימת מעקב" to="/testlist" />
           <Card image={brainImg} title="מינימנטל" to="/minimental" />
-          <Card image={patientsImg} title="תיקי חולים" to="/patientrec" />
+          <Card image={patientsImg} title="תיקי חולים" to="/Patients" />
         </div>
 
         <div className="big-card">
