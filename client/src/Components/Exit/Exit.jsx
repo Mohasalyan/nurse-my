@@ -1,14 +1,16 @@
-// src/Components/Exit/Exit.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
 import useUserStore from '../../store/userStore';
-import './Exit.css'; // ✅ ربط ملف التنسيق
+import './Exit.css';
+
+import ConfirmLogoutModal from '../ConfirmLogoutModal/ConfirmLogoutModal'; // ✅
 
 const Exit = ({ title = "יציאה" }) => {
   const navigate = useNavigate();
   const clearUser = useUserStore((state) => state.setUsername);
+  const [showModal, setShowModal] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -21,9 +23,18 @@ const Exit = ({ title = "יציאה" }) => {
   };
 
   return (
-    <div className="exit" onClick={handleLogout}>
-      <span className="exit-title">{title}</span>
-    </div>
+    <>
+      <div className="exit" onClick={() => setShowModal(true)}>
+        <span className="exit-title">{title}</span>
+      </div>
+
+      {showModal && (
+        <ConfirmLogoutModal
+          onConfirm={handleLogout}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
+    </>
   );
 };
 
