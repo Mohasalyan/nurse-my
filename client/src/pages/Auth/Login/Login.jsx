@@ -10,7 +10,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../../../store/userStore';
 
-import { toast } from 'react-toastify'; // ✅
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -86,13 +86,18 @@ const Login = () => {
 
           <button type="submit">כניסה</button>
         </form>
-
-        <p className="register-prompt">
-          אין לך חשבון?
-          <span className="register-link" onClick={() => navigate('/auth/register')}>
-            הרשם עכשיו
-          </span>
-        </p>
+<p className="register-prompt">
+  אין לך חשבון?
+  <span className="register-link" onClick={() => navigate('/auth/register')}>
+    הרשם עכשיו
+  </span>
+</p>
+<p className="register-prompt">
+  שכחת סיסמה?
+  <span className="register-link" onClick={() => navigate('/auth/forgot')}>
+    לחץ כאן
+  </span>
+</p>
       </div>
     </div>
   );

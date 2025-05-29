@@ -19,12 +19,13 @@ import Register from './pages/Auth/Register/Register';
 // صفحات محمية
 import HomePage from './pages/HomePage/HomePage';
 import DailyTest from './pages/DailyTest/DailyTest';
-import PatientRec from './pages/PatientRec/PatientRec';
 import PastPatientsPage from './pages/PastPatientsPage/PastPatientsPage';
 import TestList from './pages/TestList/TestList';
 import MiniMentalForm from './pages/MiniMental/MiniMentalForm';
 import MiniMentalHistory from './pages/MiniMental/MiniMentalHistory';
 import MedicationTracking from './pages/MedicationTracking/MedicationTracking'; // ⭐ تمت الإضافة هنا
+import ForgotPassword from './pages/Auth/ForgotPassword/ForgotPassword';
+
 import Patients from './pages/Patients/Patients';
 
 function RequireAuth({ children }) {
@@ -56,9 +57,10 @@ function App() {
 
       <Routes>
         {/* مسارات عامة */}
-        <Route path="/" element={<Navigate to="/auth/login" replace />} />
-        <Route path="/auth/*" element={<Auth />} />
-        <Route path="/register" element={<Register />} />
+         <Route path="/" element={<Navigate to="/auth/login" replace />} />
+  <Route path="/auth/*" element={<Auth />} />
+  <Route path="/auth/forgot" element={<ForgotPassword />} /> {/* ✅ تمت الإضافة هنا */}
+  <Route path="/register" element={<Register />} />
 
         {/* مسارات محمية */}
         <Route
@@ -77,22 +79,7 @@ function App() {
             </RequireAuth>
           }
         />
-        <Route
-          path="/patientrec"
-          element={
-            <RequireAuth>
-              <PatientRec />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/pastrec"
-          element={
-            <RequireAuth>
-              <PastPatientsPage />
-            </RequireAuth>
-          }
-        />
+        
         <Route
           path="/testlist"
           element={
