@@ -25,6 +25,8 @@ import MiniMentalForm from './pages/MiniMental/MiniMentalForm';
 import MiniMentalHistory from './pages/MiniMental/MiniMentalHistory';
 import MedicationTracking from './pages/MedicationTracking/MedicationTracking'; // ⭐ تمت الإضافة هنا
 import ForgotPassword from './pages/Auth/ForgotPassword/ForgotPassword';
+import FollowUpList from './pages/FollowUpTests/FollowUpList'; // ⭐ تمت الإضافة هنا
+
 
 import Patients from './pages/Patients/Patients';
 
@@ -131,6 +133,14 @@ function App() {
             </RequireAuth>
           }
         />
+<Route
+  path="/followup-list"
+  element={
+    <RequireAuth>
+      <FollowUpList />
+    </RequireAuth>
+  }
+/>
 
         {/* صفحة غير موجودة */}
         <Route

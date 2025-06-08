@@ -70,9 +70,11 @@ const DailyTest = () => {
         if (match) {
           setInputs(prev => ({
             ...prev,
-            name: match.name,
+            name: match.name || `${match.firstName || ''} ${match.lastName || ''}`,
             age: match.age,
             address: match.address,
+            firstName: match.firstName,
+            lastName: match.lastName
           }));
         }
       }
@@ -87,55 +89,118 @@ const DailyTest = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    try {
-      await addDoc(collection(db, 'daily_tests'), {
-        ...inputs,
-        createdAt: Timestamp.now(),
+  const reasons = [];
+
+  const [sys, dia] = (inputs.bloodPressure || '').split('/').map(Number);
+  const sugar = Number(inputs.sugar?.toString().trim());
+  const pulse = Number(inputs.pulse?.toString().trim());
+  const bmi = Number(inputs.bmi?.toString().trim());
+
+  if (sys && dia && (sys > 140 || sys < 90 || dia > 90 || dia < 60)) {
+    reasons.push("לחץ דם לא תקין");
+  }
+  if (sugar && (sugar > 180 || sugar < 70)) {
+    reasons.push("סוכר לא תקין");
+  }
+  if (pulse && (pulse < 60 || pulse > 100)) {
+    reasons.push("דופק לא תקין");
+  }
+  if (bmi && bmi >= 30) {
+    reasons.push("BMI גבוה");
+  }
+
+  // تأكيد الاسم الكامل
+  const firstName = inputs.firstName || '';
+  const lastName = inputs.lastName || '';
+  const patientName = inputs.name?.trim() || `${firstName} ${lastName}`.trim();
+
+  try {
+    // ✅ تحديث البيانات الحيوية في ملف المريض
+    if (inputs.id) {
+      await setDoc(doc(db, "patients", inputs.id), {
+        medical: {
+          vitalSigns: {
+            bloodPressure: inputs.bloodPressure || '',
+            sugar: inputs.sugar || '',
+            pulse: inputs.pulse || '',
+            bmi: inputs.bmi || '',
+            weight: inputs.weight || '',
+          }
+        }
+      }, { merge: true });
+    }
+
+    // ✅ إضافة الفحص لجدول الفحوصات اليومية
+    await addDoc(collection(db, 'daily_tests'), {
+      ...inputs,
+      createdAt: Timestamp.now(),
+    });
+
+    // ✅ تحديث بيانات المريض الأساسية
+    if (inputs.id && patientName) {
+      await setDoc(doc(db, "patients", inputs.id), {
+        id: inputs.id,
+        name: patientName,
+        firstName,
+        lastName,
+        age: inputs.age,
+        address: inputs.address
+      }, { merge: true });
+    }
+
+    // ✅ إضافة تلقائية إلى רשימת מעקב إذا في مؤشرات غير طبيعية
+    if (reasons.length > 0) {
+      await addDoc(collection(db, 'follow_up_list'), {
+        patientId: inputs.id,
+        patientName,
+        firstName,
+        lastName,
+        reason: reasons.join(', '),
+        addedBy: "מערכת אוטומטית",
+        createdAt: Timestamp.now()
       });
 
-      if (inputs.id && inputs.name) {
-        await setDoc(doc(db, "patients", inputs.id), {
-          id: inputs.id,
-          name: inputs.name,
-          age: inputs.age,
-          address: inputs.address
-        });
-      }
-
-      toast.success("הבדיקה נשמרה בהצלחה!", {
-        position: "top-center",
-        autoClose: 2000,
-        onClose: () => navigate("/testlist"),
-      });
-
-      setInputs({ dateAndTime: getCurrentDateTimeLocal() });
-    } catch (error) {
-      console.error("שגיאה בשמירה:", error);
-      toast.error("שגיאה בשמירת הבדיקה!", {
-        position: "top-center",
+      toast.info("המטופל נוסף לרשימת מעקב אוטומטית ✅", {
+        position: "top-center"
       });
     }
-  };
 
-  const fields = [
-    { label: "תאריך ושעה", name: "dateAndTime", type: "datetime-local" },
-    { label: "תעודת זהות", name: "id" },
-    { label: "שם מטופל", name: "name" },
-    { label: "גיל", name: "age" },
-    { label: "יישוב", name: "address" },
-    { label: "רגישות ואלרגיות", name: "allergies" },
-    { label: "תרופות", name: "meds" },
-    { label: "צום כן/לא", name: "fasting" },
-    { label: "משקל", name: "weight" },
-    { label: "גובה", name: "height" },
-    { label: "B.M.I", name: "bmi" },
-    { label: "בדיקה נוספת", name: "extraTest" },
-    { label: "לחץ דם", name: "bloodPressure" },
-    { label: "דופק", name: "pulse" },
-    { label: "סוכר", name: "sugar" }
-  ];
+    toast.success("הבדיקה נשמרה בהצלחה!", {
+      position: "top-center",
+      autoClose: 2000,
+      onClose: () => navigate("/testlist"),
+    });
+
+    setInputs({ dateAndTime: getCurrentDateTimeLocal() });
+
+  } catch (error) {
+    console.error("שגיאה בשמירה:", error);
+    toast.error("שגיאה בשמירת הבדיקה!", {
+      position: "top-center",
+    });
+  }
+};
+
+const fields = [
+  { label: "תאריך ושעה", name: "dateAndTime", type: "datetime-local" },
+  { label: "תעודת זהות", name: "id" },
+  { label: "שם פרטי", name: "firstName" },
+  { label: "שם משפחה", name: "lastName" },
+  { label: "גיל", name: "age" },
+  { label: "יישוב", name: "address" },
+  { label: "רגישות ואלרגיות", name: "allergies" },
+  { label: "תרופות", name: "meds" },
+  { label: "צום כן/לא", name: "fasting" },
+  { label: "משקל", name: "weight" },
+  { label: "גובה", name: "height" },
+  { label: "B.M.I", name: "bmi" },
+  { label: "בדיקה נוספת", name: "extraTest" },
+  { label: "לחץ דם", name: "bloodPressure" },
+  { label: "דופק", name: "pulse" },
+  { label: "סוכר", name: "sugar" }
+];
 
   return (
     <div className="dailytest">
@@ -153,7 +218,9 @@ const DailyTest = () => {
             id: patient.id,
             name: patient.name,
             age: patient.age,
-            address: patient.address
+            address: patient.address,
+            firstName: patient.firstName,
+            lastName: patient.lastName
           }))} />
         </div>
       </div>
