@@ -66,6 +66,33 @@ body, html, #root {
   width: 442px;
   height:300px;
 }
+.followup-alert {
+  background-color: #ffdddd;
+  color: #a70000;
+  border: 1px solid #a70000;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin: 20px 0 10px 0;
+  font-weight: bold;
+  font-size: 18px;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* حركة خفيفة عند الظهور */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 
 @media (max-width: 768px) {
