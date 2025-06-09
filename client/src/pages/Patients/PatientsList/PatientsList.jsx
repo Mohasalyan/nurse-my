@@ -7,7 +7,7 @@ import "./PatientsList.css";
 const getStatusColor = (status) => {
   switch (status) {
     case "פעיל": return "#c8e6c9";
-    case "נפתר": return "#ffcdd2";
+    case "נפטר": return "#ffcdd2";
     case "עזב": return "#fff9c4";
     default: return "#eeeeee";
   }
