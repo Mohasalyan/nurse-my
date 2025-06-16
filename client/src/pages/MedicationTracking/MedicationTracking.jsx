@@ -6,14 +6,15 @@ import {
   updateDoc,
   doc,
   addDoc,
-  deleteDoc
+  deleteDoc,
+  getDoc
 } from 'firebase/firestore';
-import { db } from '../../firebase/firebaseConfig';
+import { db } from '@/firebase/firebaseConfig';
 
 import './MedicationTracking.css';
 import homeIcon from '../../assets/Home.png';
-import Exit from "../../Components/Exit/Exit";
-import HomeB from "../../Components/HomeB/HomeB";
+import Exit from '../../Components/Exit/Exit';
+import HomeB from '../../Components/HomeB/HomeB';
 import PatientSearch from '../../Components/PatientSearch/PatientSearch';
 
 const MedicationTracking = () => {
@@ -22,7 +23,7 @@ const MedicationTracking = () => {
   const [selectedPatientId, setSelectedPatientId] = useState('');
   const [selectedPatientName, setSelectedPatientName] = useState('');
   const [medications, setMedications] = useState([]);
-  const [filterUnTaken, setFilterUnTaken] = useState(false);
+  const [filterUnTaken, setFilterUnTaken] = useState(true);
   const [newMedication, setNewMedication] = useState({ medication: '', dose: '' });
 
   useEffect(() => {
@@ -35,8 +36,18 @@ const MedicationTracking = () => {
           name: `${d.firstName || ''} ${d.lastName || ''}`.trim(),
         };
       });
-      setPatients(data);
-      setFilteredPatients(data);
+
+      const filtered = [];
+      for (const patient of data) {
+        const medsSnap = await getDocs(collection(db, 'patients', patient.id, 'medications'));
+        const meds = medsSnap.docs.map(doc => doc.data());
+        if (meds.some(m => !m.taken)) {
+          filtered.push(patient);
+        }
+      }
+
+      setPatients(filtered);
+      setFilteredPatients(filtered);
     };
 
     fetchPatients();
@@ -49,6 +60,21 @@ const MedicationTracking = () => {
       id: doc.id,
       ...doc.data()
     }));
+
+    const patientRef = doc(db, 'patients', patientId);
+    const patientSnap = await getDoc(patientRef);
+    const patientData = patientSnap.exists() ? patientSnap.data() : null;
+
+    if (patientData?.medical?.medications) {
+      const medicalMeds = patientData.medical.medications;
+      meds.forEach((med) => {
+        const found = medicalMeds.find(m => m.medication === med.medication);
+        if (found && found.medicalComment) {
+          med.medicalComment = found.medicalComment;
+        }
+      });
+    }
+
     setMedications(meds);
   };
 
@@ -83,7 +109,7 @@ const MedicationTracking = () => {
   };
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm("هل أنت متأكد من حذف الدواء؟");
+    const confirm = window.confirm("האם אתה בטוח שברצונך למחוק את התרופה?");
     if (!confirm) return;
 
     await deleteDoc(doc(db, 'patients', selectedPatientId, 'medications', id));
@@ -179,6 +205,7 @@ const MedicationTracking = () => {
                 <th>שם התרופה</th>
                 <th>מינון</th>
                 <th>הערה</th>
+                <th>הערה רפואית</th>
                 <th>תאריך אחרון</th>
                 <th>סטטוס</th>
                 <th>מחיקה</th>
@@ -197,6 +224,7 @@ const MedicationTracking = () => {
                       placeholder="הערה"
                     />
                   </td>
+                  <td>{item.medicalComment || '-'}</td>
                   <td>
                     {item.lastTakenTime
                       ? new Date(item.lastTakenTime.seconds * 1000).toLocaleString()
