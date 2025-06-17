@@ -4,6 +4,7 @@ import PersonalInfo from "./PersonalInfo/PersonalInfo";
 import MedicalInfo from "./MedicalInfo/MedicalInfo";
 import HomeB from "../../Components/HomeB/HomeB";
 import homeIcon from "../../assets/Home.png";
+//added 
 
 const Patients = () => {
   const [step, setStep] = useState("list"); // ← مباشرة على القائمة

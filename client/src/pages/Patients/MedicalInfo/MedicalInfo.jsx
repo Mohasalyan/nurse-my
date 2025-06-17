@@ -15,6 +15,7 @@ import NurseLogsSection from "./components/NurseLogsSection/NurseLogsSection";
 import BloodTrackingSection from "./components/BloodTrackingSection/BloodTrackingSection";
 import SugarTrackingSection from "./components/SugarTrackingSection/SugarTrackingSection";
 import AppointmentsSection from "./components/AppointmentsSection/AppointmentsSection";
+import MedicationsSection from "./components/MedicationsSection/MedicationsSection";
 import { toast } from "react-toastify";
 import "./MedicalInfo.css";
 
@@ -31,11 +32,12 @@ const MedicalInfo = ({ patientId, onBack }) => {
         const patient = docSnap.exists() ? docSnap.data() : null;
 
         if (patient?.medical) {
-          const [bloodSnap, sugarSnap, nurseSnap, appointSnap] = await Promise.all([
+          const [bloodSnap, sugarSnap, nurseSnap, appointSnap, medsSnap] = await Promise.all([
             getDocs(collection(db, "patients", patientId, "bloodTracking")),
             getDocs(collection(db, "patients", patientId, "sugarTracking")),
             getDocs(collection(db, "patients", patientId, "nurseLogs")),
-            getDocs(collection(db, "patients", patientId, "appointments"))
+            getDocs(collection(db, "patients", patientId, "appointments")),
+            getDocs(collection(db, "patients", patientId, "medications")),
           ]);
 
           setMedicalData({
@@ -44,6 +46,7 @@ const MedicalInfo = ({ patientId, onBack }) => {
             sugarTracking: sugarSnap.docs.map((doc) => doc.data()),
             nurseNotes: nurseSnap.docs.map((doc) => doc.data()),
             appointments: appointSnap.docs.map((doc) => doc.data()),
+            medications: medsSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
           });
         } else {
           const q = query(
@@ -85,6 +88,7 @@ const MedicalInfo = ({ patientId, onBack }) => {
               ],
               sugarTracking: [],
               appointments: [],
+              medications: [],
             };
 
             setMedicalData(fallbackData);
@@ -106,10 +110,6 @@ const MedicalInfo = ({ patientId, onBack }) => {
 
   if (loading) return <div className="medical-loading">טוען מידע רפואי...</div>;
   if (!medicalData) return <div className="medical-error">לא נמצאה רשומה רפואית</div>;
-
-  const handleAddRow = () => {
-    toast.info("➕ הוסף שורה - פונקציונליות בהמשך");
-  };
 
   return (
     <div className="medical-page">
@@ -198,6 +198,15 @@ const MedicalInfo = ({ patientId, onBack }) => {
           setMedicalData((prev) => ({
             ...prev,
             appointments: [...(prev?.appointments || []), newRow],
+          }))
+        }
+      />
+      <MedicationsSection
+        patientId={patientId}
+        onRowAdded={(newMed) =>
+          setMedicalData((prev) => ({
+            ...prev,
+            medications: [...(prev?.medications || []), newMed],
           }))
         }
       />
