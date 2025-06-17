@@ -114,6 +114,7 @@ const MedicationTracking = () => {
 
     await deleteDoc(doc(db, 'patients', selectedPatientId, 'medications', id));
     setMedications(prev => prev.filter(med => med.id !== id));
+    toast.success("התרופה נמחקה בהצלחה");
   };
 
   const handleNoteChange = async (index, newNote) => {
