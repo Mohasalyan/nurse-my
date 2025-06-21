@@ -131,6 +131,7 @@ const exportToPDF = () => {
 };
 
   return (
+    //fix HomeB component
     <div className="followup-container">
       <div className="top-bar">
         <Exit title="יציאה" to="/auth/login" />
