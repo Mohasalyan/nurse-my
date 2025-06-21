@@ -16,6 +16,7 @@ import homeIcon from '../../assets/Home.png';
 import Exit from '../../Components/Exit/Exit';
 import HomeB from '../../Components/HomeB/HomeB';
 import PatientSearch from '../../Components/PatientSearch/PatientSearch';
+import { Link } from 'react-router-dom';
 
 const MedicationTracking = () => {
   const [patients, setPatients] = useState([]);
@@ -142,10 +143,17 @@ const MedicationTracking = () => {
         <Exit title="יציאה" to="/login" />
       </div>
 
-      <div className="home">
-        <HomeB image={homeIcon} style={{ width: "55px", height: "55px" }} to="/home" />
-      </div>
 
+<div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+  <Link to="/home">
+    <HomeB
+      image={homeIcon}
+      title="מטה יהודה"
+      plain
+      style={{ width: "100px", height: "auto", cursor: "pointer" }}
+    />
+  </Link>
+</div>
       <h2>מעקב תרופות</h2>
 
       <div className="patient-section">

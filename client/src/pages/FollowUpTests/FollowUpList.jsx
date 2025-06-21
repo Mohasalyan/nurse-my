@@ -13,6 +13,7 @@ import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import '../../utils/AlefFont'; // تأكد من المسار
+import { Link } from 'react-router-dom';
 
 const FollowUpList = () => {
   const [followUps, setFollowUps] = useState([]);
@@ -134,7 +135,16 @@ const exportToPDF = () => {
       <div className="top-bar">
         <Exit title="יציאה" to="/auth/login" />
         <div className="nurse-name">שלום, {nurseName} 👩‍⚕️</div>
-        <HomeB image={homeIcon} style={{ width: '50px', height: '50px' }} to="/home" />
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+  <Link to="/home">
+    <HomeB
+      image={homeIcon}
+      title="מטה יהודה"
+      plain
+      style={{ width: "100px", height: "auto", cursor: "pointer" }}
+    />
+  </Link>
+</div>
       </div>
 
       <h2>📋 רשימת מעקב לפי מדדים לא תקינים</h2>

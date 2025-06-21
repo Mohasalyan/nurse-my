@@ -4,6 +4,7 @@ import PersonalInfo from "./PersonalInfo/PersonalInfo";
 import MedicalInfo from "./MedicalInfo/MedicalInfo";
 import HomeB from "../../Components/HomeB/HomeB";
 import homeIcon from "../../assets/Home.png";
+import { Link } from "react-router-dom";
 //added 
 
 const Patients = () => {
@@ -18,9 +19,16 @@ const Patients = () => {
   return (
     <div className="p-4">
       {/* زر الرجوع للصفحة الرئيسية */}
-      <div className="top-home-button">
-        <HomeB image={homeIcon} to="/home" style={{ width: "50px", height: "50px" }} />
-      </div>
+     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+  <Link to="/home">
+    <HomeB
+      image={homeIcon}
+      title="מטה יהודה"
+      plain
+      style={{ width: "100px", height: "auto", cursor: "pointer" }}
+    />
+  </Link>
+</div>
 
       {step === "list" && (
         <PatientsList

@@ -3,24 +3,23 @@ import { Link } from "react-router-dom";
 import "./HomeB.css";
 
 const HomeB = ({
-    image,
+  image,
   title,
- 
   to = "#",
-  style = {}, // NEW: allow custom styles
+  style = {},
+  plain = false // عرض كصورة فقط
 }) => {
+  if (plain) {
+    return (
+      <div className="home-plain-wrapper">
+        <img src={image} alt={title} className="home-image" style={style} />
+      </div>
+    );
+  }
+
   return (
-    <Link
-      to={to}
-      className="home"
-      style={{
-        
-        ...style, // apply any custom styles (like width/height)
-      }}
-    >
-    
+    <Link to={to} className="home" style={style}>
       <img src={image} alt={title} className="home-image" />
-      {/* <h3 className="home-title" style={{ color: textcolor }}>{title}</h3> */}
     </Link>
   );
 };

@@ -8,6 +8,7 @@ import './TestList.css';
 import HomeB from '../../Components/HomeB/HomeB';
 import Exit from '../../Components/Exit/Exit';
 import homeIcon from '../../assets/Home.png';
+import { Link } from 'react-router-dom';
 
 const TestList = () => {
   const [tests, setTests] = useState([]);
@@ -36,9 +37,16 @@ const TestList = () => {
         <Exit title="יציאה" to="/login" />
       </div>
 
-      <div className="home">
-        <HomeB image={homeIcon} style={{ width: '55px', height: '55px' }} to="/home" />
-      </div>
+     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+  <Link to="/home">
+    <HomeB
+      image={homeIcon}
+      title="מטה יהודה"
+      plain
+      style={{ width: "100px", height: "auto", cursor: "pointer" }}
+    />
+  </Link>
+</div>
 
       <h2>רשימת בדיקות</h2>
 
