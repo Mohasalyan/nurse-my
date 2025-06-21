@@ -90,14 +90,21 @@ const FollowUpList = () => {
     );
   };
 
-  const handleRemove = async () => {
-    if (selectedPatientId) {
-      await deleteDoc(doc(db, 'follow_up_list', selectedPatientId));
-      setFollowUps(prev => prev.filter(p => p.id !== selectedPatientId));
+  
+ const handleRemove = async () => {
+  if (selectedPatientId) {
+    try {
+      await deleteDoc(doc(db, 'patients', selectedPatientId)); 
+
+      fetchFollowUps();
       setSelectedPatientId(null);
       setShowModal(false);
+    } catch (error) {
+      console.error("Error deleting patient: ", error);
     }
-  };
+  }
+};
+
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(followUps);
