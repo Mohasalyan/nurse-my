@@ -26,9 +26,11 @@ const MiniMentalHistory = () => {
         const patientTests = miniMentalSnap.docs.map((doc) => doc.data());
 
         if (patientTests.length > 0) {
-          // ✅ ترتيب النتائج حسب التاريخ (الأحدث أولًا)
-          patientTests.sort((a, b) => new Date(b.createdAt?.toDate()) - new Date(a.createdAt?.toDate()));
-          
+          patientTests.sort(
+            (a, b) =>
+              new Date(b.createdAt?.toDate()) -
+              new Date(a.createdAt?.toDate())
+          );
           allResults.push({
             patientId,
             patientName:
@@ -70,7 +72,9 @@ const MiniMentalHistory = () => {
                 <div
                   key={index}
                   className="test-item"
-                  onClick={() => setSelectedTest({ ...test, patientName: patient.patientName })}
+                  onClick={() =>
+                    setSelectedTest({ ...test, patientName: patient.patientName })
+                  }
                 >
                   <div className="test-date">
                     📅 {new Date(test.createdAt?.toDate()).toLocaleDateString("he-IL")} •{" "}

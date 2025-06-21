@@ -5,10 +5,6 @@ import { db } from '../../firebase/firebaseConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './TestList.css';
-import HomeB from '../../Components/HomeB/HomeB';
-import Exit from '../../Components/Exit/Exit';
-import homeIcon from '../../assets/Home.png';
-import { Link } from 'react-router-dom';
 
 const TestList = () => {
   const [tests, setTests] = useState([]);
@@ -33,21 +29,6 @@ const TestList = () => {
 
   return (
     <div className="test-list">
-      <div className="exit-icon">
-        <Exit title="יציאה" to="/login" />
-      </div>
-
-     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-  <Link to="/home">
-    <HomeB
-      image={homeIcon}
-      title="מטה יהודה"
-      plain
-      style={{ width: "100px", height: "auto", cursor: "pointer" }}
-    />
-  </Link>
-</div>
-
       <h2>רשימת בדיקות</h2>
 
       {loading ? (

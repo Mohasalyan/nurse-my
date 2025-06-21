@@ -11,6 +11,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase/firebaseConfig';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navigation from './Components/Navigation/Navigation';
 
 // صفحات عامة
 import Auth from './pages/Auth/Auth';
@@ -23,12 +24,21 @@ import PastPatientsPage from './pages/PastPatientsPage/PastPatientsPage';
 import TestList from './pages/TestList/TestList';
 import MiniMentalForm from './pages/MiniMental/MiniMentalForm';
 import MiniMentalHistory from './pages/MiniMental/MiniMentalHistory';
-import MedicationTracking from './pages/MedicationTracking/MedicationTracking'; // ⭐ تمت الإضافة هنا
+import MedicationTracking from './pages/MedicationTracking/MedicationTracking';
 import ForgotPassword from './pages/Auth/ForgotPassword/ForgotPassword';
-import FollowUpList from './pages/FollowUpTests/FollowUpList'; // ⭐ تمت الإضافة هنا
-
-
+import FollowUpList from './pages/FollowUpTests/FollowUpList';
 import Patients from './pages/Patients/Patients';
+
+function ProtectedLayout({ children }) {
+  return (
+    <div className="app-layout">
+      <Navigation />
+      <main className="main-content">
+        {children}
+      </main>
+    </div>
+  );
+}
 
 function RequireAuth({ children }) {
   const location = useLocation();
@@ -49,7 +59,7 @@ function RequireAuth({ children }) {
     return <Navigate to="/auth/login" state={{ from: location }} replace />;
   }
 
-  return children;
+  return <ProtectedLayout>{children}</ProtectedLayout>;
 }
 
 function App() {
@@ -59,10 +69,10 @@ function App() {
 
       <Routes>
         {/* مسارات عامة */}
-         <Route path="/" element={<Navigate to="/auth/login" replace />} />
-  <Route path="/auth/*" element={<Auth />} />
-  <Route path="/auth/forgot" element={<ForgotPassword />} /> {/* ✅ تمت الإضافة هنا */}
-  <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Navigate to="/auth/login" replace />} />
+        <Route path="/auth/*" element={<Auth />} />
+        <Route path="/auth/forgot" element={<ForgotPassword />} />
+        <Route path="/register" element={<Register />} />
 
         {/* مسارات محمية */}
         <Route
@@ -133,14 +143,14 @@ function App() {
             </RequireAuth>
           }
         />
-<Route
-  path="/followup-list"
-  element={
-    <RequireAuth>
-      <FollowUpList />
-    </RequireAuth>
-  }
-/>
+        <Route
+          path="/followup-list"
+          element={
+            <RequireAuth>
+              <FollowUpList />
+            </RequireAuth>
+          }
+        />
 
         {/* صفحة غير موجودة */}
         <Route

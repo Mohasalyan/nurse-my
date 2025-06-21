@@ -4,7 +4,9 @@
   align-items: center;
   background-color: transparent;
   border-radius: 30%;
-  padding: 16px;
+  padding: 6px;
+  width: 35px;
+  height: 35px;
 }
 
 .home-image {
@@ -12,6 +14,14 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.home-plain-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
 }
 
 .plain-logo {

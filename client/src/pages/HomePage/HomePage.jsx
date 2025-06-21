@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Card from "../../Components/Card/Card";
-import Exit from "../../Components/Exit/Exit";
-import HomeB from "../../Components/HomeB/HomeB";
 import medicationImg from "../../assets/medicine.png";
 import trackingImg from "../../assets/medicalReport.png";
 import brainImg from "../../assets/brainPic.png";
 import patientsImg from "../../assets/PatientFolder.png";
 import heartMonitorImg from "../../assets/HeartRate.png";
-import homeIcon from "../../assets/Home.png"; // شعار מטה יהודה
-import AmbulanceButton from '../../Components/AmbulanceButton/AmbulanceButton';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
@@ -55,24 +51,6 @@ const HomePage = () => {
 
   return (
     <div className="homepage">
-      <div className="exit-icon">
-        <Exit title="יציאה" to="/login" />
-      </div>
-
-      {/* ✨ شعار מטה יהודה في الأعلى وبالمنتصف */}
-      <HomeB
-        image={homeIcon}
-        title="מטה יהודה"
-        plain
-        style={{ width: "100px", height: "auto", marginTop: "10px" }} to="/home" 
-      />
-
-      <AmbulanceButton />
-
-      {/* <div className="home">
-        <HomeB image={homeIcon} style={{ width: "55px", height: "55px" }} to="/home" />
-      </div> */}
-
       {hasFollowUps && (
         <div className="followup-alert">
           ⚠️ ישנם מטופלים ברשימת המעקב שעדיין לא טופלו!

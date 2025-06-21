@@ -1,8 +1,5 @@
 // src/pages/DailyTest/DailyTest.jsx
 import React, { useState, useEffect } from "react";
-import HomeB from "../../Components/HomeB/HomeB";
-import homeIcon from "../../assets/Home.png";
-import Exit from "../../Components/Exit/Exit";
 import PatientSearch from "../../Components/PatientSearch/PatientSearch";
 import "./DailyTest.css";
 import { db } from '../../firebase/firebaseConfig';
@@ -10,7 +7,6 @@ import { collection, addDoc, Timestamp, getDocs, setDoc, doc } from 'firebase/fi
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 const getCurrentDateTimeLocal = () => {
   const now = new Date();
@@ -205,21 +201,7 @@ const fields = [
 
   return (
     <div className="dailytest">
-      <div className="exit-icon">
-        <Exit title="יציאה" to="/login" />
-      </div>
-
       <div className="header-row">
-       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-  <Link to="/home">
-    <HomeB
-      image={homeIcon}
-      title="מטה יהודה"
-      plain
-      style={{ width: "100px", height: "auto", cursor: "pointer" }}
-    />
-  </Link>
-</div>
         <div className="search-box">
           <PatientSearch onSelect={(patient) => setInputs(prev => ({
             ...prev,

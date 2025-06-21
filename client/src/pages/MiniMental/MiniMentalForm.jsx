@@ -3,13 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import HomeB from "../../Components/HomeB/HomeB";
-import homeIcon from "../../assets/Home.png";
-import Exit from "../../Components/Exit/Exit";
 import useUserStore from "../../store/userStore";
 import useMiniMentalStore from "../../store/miniMentalStore";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, addDoc, Timestamp, getDocs } from "firebase/firestore";
+
+import { Home as HomeIcon, X as CloseIcon } from "lucide-react";
 import Button from "../../Components/ui/Button/Button";
 import {
   Accordion,
