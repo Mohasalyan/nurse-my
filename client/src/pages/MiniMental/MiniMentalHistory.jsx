@@ -1,21 +1,11 @@
 // src/pages/MiniMental/MiniMentalHistory.jsx
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import useUserStore from "../../store/userStore";
-import useMiniMentalStore from "../../store/miniMentalStore";
 import { db } from "../../firebase/firebaseConfig";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
-
-import { Home as HomeIcon, X as CloseIcon } from "lucide-react";
-import Button from "../../Components/ui/Button/Button";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "../../Components/ui/Accordion/Accordion";
+import { collection, getDocs } from "firebase/firestore";
+import HomeB from "../../Components/HomeB/HomeB";
+import homeIcon from "../../assets/Home.png";
+import { Link } from "react-router-dom";
+import "./MiniMentalHistory.css";
 
 const MiniMentalHistory = () => {
   const [results, setResults] = useState([]);
@@ -36,9 +26,11 @@ const MiniMentalHistory = () => {
         const patientTests = miniMentalSnap.docs.map((doc) => doc.data());
 
         if (patientTests.length > 0) {
-          // ✅ ترتيب النتائج حسب التاريخ (الأحدث أولًا)
-          patientTests.sort((a, b) => new Date(b.createdAt?.toDate()) - new Date(a.createdAt?.toDate()));
-          
+          patientTests.sort(
+            (a, b) =>
+              new Date(b.createdAt?.toDate()) -
+              new Date(a.createdAt?.toDate())
+          );
           allResults.push({
             patientId,
             patientName:
@@ -54,29 +46,6 @@ const MiniMentalHistory = () => {
   }, []);
 
   return (
-    <div className="mm-container">
-      <header className="mm-header">
-        <div className="mm-header-center">
-          <span className="mm-user-name">
-            ברוך הבא, <strong>{username}</strong>
-          </span>
-        </div>
-
-        <div className="mm-header-left">
-        </div>
-      </header>
-
-      <div className="mm-content">
-        <Accordion type="single" collapsible className="space-y-4">
-          {sections.map((section) => (
-            <AccordionItem key={section.id} value={section.id}>
-              <AccordionTrigger className="mm-accordion-trigger">
-                {section.title}
-              </AccordionTrigger>
-              <AccordionContent className="mm-accordion-content">
-                {section.description && (
-                  <p className="mm-section-description">{section.description}</p>
-                )}
     <div className="history-page">
       <div className="logo-container">
         <Link to="/home">
@@ -103,7 +72,9 @@ const MiniMentalHistory = () => {
                 <div
                   key={index}
                   className="test-item"
-                  onClick={() => setSelectedTest({ ...test, patientName: patient.patientName })}
+                  onClick={() =>
+                    setSelectedTest({ ...test, patientName: patient.patientName })
+                  }
                 >
                   <div className="test-date">
                     📅 {new Date(test.createdAt?.toDate()).toLocaleDateString("he-IL")} •{" "}
@@ -137,24 +108,14 @@ const MiniMentalHistory = () => {
                     </span>
                   </div>
                 ))}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </div>
-
-      <div className="mm-save-bar">
-        <Button onClick={handleSubmit} className="mm-save-btn">
-          שמור והעבר להיסטוריה
-        </Button>
-        <Button
-          onClick={() => navigate(`/folder/${patientId}/mini-mental/history`)}
-          className="mm-history-btn"
-          variant="outline"
-        >
-          הצג היסטוריה
-        </Button>
-      </div>
+              </div>
+            ))}
+            <button className="modal-close" onClick={() => setSelectedTest(null)}>
+              סגור
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
