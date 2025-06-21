@@ -10,10 +10,6 @@ import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import '../../utils/AlefFont'; // تأكد من المسار
-import { Link } from 'react-router-dom';
-import Exit from "../../Components/Exit/Exit";
-import HomeB from "../../Components/HomeB/HomeB";
-import homeIcon from "../../assets/Home.png";
 
 const FollowUpList = () => {
   const [followUps, setFollowUps] = useState([]);
@@ -139,24 +135,7 @@ const FollowUpList = () => {
   };
 
   return (
-    
     <div className="followup-container">
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-  <Link to="/home">
-    <HomeB
-      image={homeIcon}
-      title="מטה יהודה"
-      plain
-      style={{ width: "100px", height: "auto", cursor: "pointer" }}
-    />
-  </Link>
-</div>
-      <div className="top-bar">
-        <Exit title="יציאה" to="/auth/login" />
-        <div className="nurse-name">שלום, {nurseName} 👩‍⚕️</div>
-
-      </div>
-
       <h2>📋 רשימת מעקב לפי מדדים לא תקינים</h2>
 
       {followUps.length > 0 && (

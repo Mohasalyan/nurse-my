@@ -48,16 +48,7 @@ const MiniMentalHistory = () => {
 
   return (
     <div className="history-page">
-      <div className="logo-container">
-        <Link to="/home">
-          <HomeB
-            image={homeIcon}
-            title="מטה יהודה"
-            plain
-            style={{ width: "100px", height: "auto", cursor: "pointer" }}
-          />
-        </Link>
-      </div>
+      
 
       <h1 className="history-title">📋 תוצאות מבחני מיני מנטל</h1>
 

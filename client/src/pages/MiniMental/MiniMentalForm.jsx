@@ -98,20 +98,8 @@ const MiniMentalForm = () => {
 
   return (
     <div className="mm-container">
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}>
-        <Link to="/home">
-          <HomeB
-            image={homeIcon}
-            title="מטה יהודה"
-            plain
-            style={{ width: "100px", height: "auto", cursor: "pointer" }}
-          />
-        </Link>
-      </div>
+      
 
-      <div className="exit-icon">
-        <Exit title="יציאה" to={-1} />
-      </div>
 
       <header className="mm-header">
         <div className="mm-header-center">
