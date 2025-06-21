@@ -1,6 +1,6 @@
 // src/pages/MiniMental/MiniMentalForm.jsx
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HomeB from "../../Components/HomeB/HomeB";
@@ -10,9 +10,6 @@ import useUserStore from "../../store/userStore";
 import useMiniMentalStore from "../../store/miniMentalStore";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, addDoc, Timestamp, getDocs } from "firebase/firestore";
-import { Link } from "react-router-dom";
-
-import { Home as HomeIcon, X as CloseIcon } from "lucide-react";
 import Button from "../../Components/ui/Button/Button";
 import {
   Accordion,
@@ -20,25 +17,40 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "../../Components/ui/Accordion/Accordion";
-
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // ✅ لإحضار الاسم
 import "./MiniMental.css";
 
 const MiniMentalForm = () => {
   const navigate = useNavigate();
   const { patientId } = useParams();
-  const username = useUserStore(state => state.username);
+  const username = useUserStore((state) => state.username);
   const { sections, setAnswer, reset } = useMiniMentalStore();
+
+  const [nurseName, setNurseName] = useState("אחות"); // ✅ الاسم من Auth
   const [score, setScore] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
   const [testDate, setTestDate] = useState(new Date().toISOString().slice(0, 10));
-
   const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPatientName, setSelectedPatientName] = useState("");
+
+  // ✅ جلب الاسم من Auth
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setNurseName(user.displayName || user.email || "אחות");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
-    let s = 0, m = 0;
-    sections.forEach(sec =>
-      sec.questions.forEach(q => {
+    let s = 0,
+      m = 0;
+
+    sections.forEach((sec) =>
+      sec.questions.forEach((q) => {
         m += q.points;
         if (q.answer) s += q.points;
       })
@@ -51,7 +63,7 @@ const MiniMentalForm = () => {
     const fetchPatients = async () => {
       try {
         const snapshot = await getDocs(collection(db, "patients"));
-        const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setPatients(list);
       } catch (error) {
         toast.error("שגיאה בטעינת המטופלים");
@@ -62,8 +74,12 @@ const MiniMentalForm = () => {
 
   const handleSubmit = async () => {
     try {
-      await addDoc(collection(db, "mini_mental_tests"), {
-        patientId,
+      if (!patientId) {
+        toast.error("לא נבחר מטופל");
+        return;
+      }
+
+      await addDoc(collection(db, "patients", patientId, "mini_mental_tests"), {
         sections,
         score,
         maxScore,
@@ -80,37 +96,40 @@ const MiniMentalForm = () => {
 
   return (
     <div className="mm-container">
-      {/* <div className="home"> */}
-<div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-  <Link to="/home">
-    <HomeB
-      image={homeIcon}
-      title="מטה יהודה"
-      plain
-      style={{ width: "100px", height: "auto", cursor: "pointer" }}
-    />
-  </Link>
-</div>
-          {/* </div> */}
-          <div className="exit-icon">
-            <Exit title="יציאה" to={-1} />
-          </div>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}>
+        <Link to="/home">
+          <HomeB
+            image={homeIcon}
+            title="מטה יהודה"
+            plain
+            style={{ width: "100px", height: "auto", cursor: "pointer" }}
+          />
+        </Link>
+      </div>
+
+      <div className="exit-icon">
+        <Exit title="יציאה" to={-1} />
+      </div>
+
       <header className="mm-header">
         <div className="mm-header-center">
-          <span className="mm-user-name">משתמש: {username}</span>
+          <span className="mm-user-name">משתמש: {nurseName}</span>
         </div>
-        
         <div className="mm-header-right">
           <div className="mm-date-picker">
             <label>תאריך:</label>
             <input
               type="date"
               value={testDate}
-              onChange={e => setTestDate(e.target.value)}
+              onChange={(e) => setTestDate(e.target.value)}
             />
           </div>
         </div>
       </header>
+
+      {selectedPatientName && (
+        <h2 className="selected-patient-name">👤 מטופל נבחר: {selectedPatientName}</h2>
+      )}
 
       <div className="mm-title">
         <h1>מבחן מצב מנטלי מינימלי</h1>
@@ -126,13 +145,25 @@ const MiniMentalForm = () => {
           placeholder="חפש לפי שם או ת.ז"
         />
         <select
-          onChange={(e) => navigate(`/folder/${e.target.value}/mini-mental`)}
+          onChange={(e) => {
+            const patientId = e.target.value;
+            const patient = patients.find((p) => p.id === patientId);
+            if (patient) {
+              setSelectedPatientName(
+                patient.name ||
+                  `${patient.firstName || ""} ${patient.lastName || ""}`.trim()
+              );
+              navigate(`/folder/${patientId}/mini-mental`);
+            }
+          }}
           defaultValue=""
         >
-          <option value="" disabled>בחר מטופל</option>
+          <option value="" disabled>
+            בחר מטופל
+          </option>
           {patients
-            .filter(p => p.name?.includes(searchTerm) || p.id?.includes(searchTerm))
-            .map(p => (
+            .filter((p) => p.name?.includes(searchTerm) || p.id?.includes(searchTerm))
+            .map((p) => (
               <option key={p.id} value={p.id}>
                 {p.id} – {p.name}
               </option>
@@ -155,9 +186,7 @@ const MiniMentalForm = () => {
               </AccordionTrigger>
               <AccordionContent className="mm-accordion-content">
                 {section.description && (
-                  <p className="mm-section-description">
-                    {section.description}
-                  </p>
+                  <p className="mm-section-description">{section.description}</p>
                 )}
                 {section.questions.map((q) => (
                   <div key={q.id} className="mm-question">
