@@ -1,4 +1,3 @@
-// src/pages/HomePage/HomePage.jsx
 import React, { useEffect, useState } from "react";
 import Card from "../../Components/Card/Card";
 import Exit from "../../Components/Exit/Exit";
@@ -8,7 +7,7 @@ import trackingImg from "../../assets/medicalReport.png";
 import brainImg from "../../assets/brainPic.png";
 import patientsImg from "../../assets/PatientFolder.png";
 import heartMonitorImg from "../../assets/HeartRate.png";
-import homeIcon from "../../assets/Home.png";
+import homeIcon from "../../assets/Home.png"; // شعار מטה יהודה
 import AmbulanceButton from '../../Components/AmbulanceButton/AmbulanceButton';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "../../firebase/firebaseConfig";
@@ -60,11 +59,19 @@ const HomePage = () => {
         <Exit title="יציאה" to="/login" />
       </div>
 
+      {/* ✨ شعار מטה יהודה في الأعلى وبالمنتصف */}
+      <HomeB
+        image={homeIcon}
+        title="מטה יהודה"
+        plain
+        style={{ width: "100px", height: "auto", marginTop: "10px" }} to="/home" 
+      />
+
       <AmbulanceButton />
 
-      <div className="home">
+      {/* <div className="home">
         <HomeB image={homeIcon} style={{ width: "55px", height: "55px" }} to="/home" />
-      </div>
+      </div> */}
 
       {hasFollowUps && (
         <div className="followup-alert">

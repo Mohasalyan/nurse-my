@@ -19,6 +19,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "../../Components/ui/Accordion/Accordion";
+import { Link } from "react-router-dom";
 
 import "./MiniMental.css";
 
@@ -78,13 +79,18 @@ const MiniMentalForm = () => {
         </div>
 
         <div className="mm-header-left">
-          <div className="home">
-            <HomeB
-              image={homeIcon}
-              style={{ width: "55px", height: "55px" }}
-              to="/home"
-            />
-          </div>
+          {/* <div className="home"> */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+  <Link to="/home">
+    <HomeB
+      image={homeIcon}
+      title="מטה יהודה"
+      plain
+      style={{ width: "100px", height: "auto", cursor: "pointer" }}
+    />
+  </Link>
+</div>
+          {/* </div> */}
           <div className="exit-icon">
             <Exit title="יציאה" to={-1} />
           </div>

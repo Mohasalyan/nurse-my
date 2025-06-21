@@ -10,6 +10,7 @@ import { collection, addDoc, Timestamp, getDocs, setDoc, doc } from 'firebase/fi
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const getCurrentDateTimeLocal = () => {
   const now = new Date();
@@ -209,9 +210,16 @@ const fields = [
       </div>
 
       <div className="header-row">
-        <div className="home">
-          <HomeB image={homeIcon} style={{ width: "55px", height: "55px" }} to="/home" />
-        </div>
+       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+  <Link to="/home">
+    <HomeB
+      image={homeIcon}
+      title="מטה יהודה"
+      plain
+      style={{ width: "100px", height: "auto", cursor: "pointer" }}
+    />
+  </Link>
+</div>
         <div className="search-box">
           <PatientSearch onSelect={(patient) => setInputs(prev => ({
             ...prev,
