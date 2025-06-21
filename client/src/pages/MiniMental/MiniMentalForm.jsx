@@ -17,6 +17,9 @@ import {
   AccordionContent,
 } from "../../Components/ui/Accordion/Accordion";
 import { getAuth, onAuthStateChanged } from "firebase/auth"; // ✅ لإحضار الاسم
+import Exit from "../../Components/Exit/Exit";
+import HomeB from "../../Components/HomeB/HomeB";
+import homeIcon from "../../assets/Home.png";
 import "./MiniMental.css";
 
 const MiniMentalForm = () => {
