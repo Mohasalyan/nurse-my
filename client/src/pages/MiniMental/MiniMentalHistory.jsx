@@ -1,4 +1,4 @@
-// src/pages/MiniMental/MiniMentalForm.jsx
+// src/pages/MiniMental/MiniMentalHistory.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -17,49 +17,41 @@ import {
   AccordionContent,
 } from "../../Components/ui/Accordion/Accordion";
 
-import "./MiniMental.css";
-
-const MiniMentalForm = () => {
-  const navigate = useNavigate();
-  const { patientId } = useParams();
-  const username = useUserStore((state) => state.username);
-  const { sections, setAnswer, reset } = useMiniMentalStore();
-
-  const [score, setScore] = useState(0);
-  const [maxScore, setMaxScore] = useState(0);
-  const [testDate, setTestDate] = useState(new Date().toISOString().slice(0, 10));
+const MiniMentalHistory = () => {
+  const [results, setResults] = useState([]);
+  const [selectedTest, setSelectedTest] = useState(null);
 
   useEffect(() => {
-    let s = 0, m = 0;
-    sections.forEach((sec) =>
-      sec.questions.forEach((q) => {
-        m += q.points;
-        if (q.answer) s += q.points;
-      })
-    );
-    setScore(s);
-    setMaxScore(m);
-  }, [sections]);
+    const fetchResults = async () => {
+      const patientsSnapshot = await getDocs(collection(db, "patients"));
+      const allResults = [];
 
-  const handleSubmit = async () => {
-    try {
-      await addDoc(collection(db, "mini_mental_tests"), {
-        patientId,
-        username,
-        testDate,
-        sections,
-        score,
-        maxScore,
-        createdAt: Timestamp.now(),
-      });
-      toast.success("המבחן נשמר בהצלחה!");
-      reset();
-      navigate(`/folder/${patientId}/mini-mental/history`);
-    } catch (e) {
-      console.error(e);
-      toast.error("שגיאה בשמירת המבחן");
-    }
-  };
+      for (const patientDoc of patientsSnapshot.docs) {
+        const patientData = patientDoc.data();
+        const patientId = patientDoc.id;
+
+        const miniMentalSnap = await getDocs(
+          collection(db, "patients", patientId, "mini_mental_tests")
+        );
+        const patientTests = miniMentalSnap.docs.map((doc) => doc.data());
+
+        if (patientTests.length > 0) {
+          // ✅ ترتيب النتائج حسب التاريخ (الأحدث أولًا)
+          patientTests.sort((a, b) => new Date(b.createdAt?.toDate()) - new Date(a.createdAt?.toDate()));
+          
+          allResults.push({
+            patientId,
+            patientName:
+              patientData.name ||
+              `${patientData.firstName || ""} ${patientData.lastName || ""}`.trim(),
+            tests: patientTests,
+          });
+        }
+      }
+      setResults(allResults);
+    };
+    fetchResults();
+  }, []);
 
   return (
     <div className="mm-container">
@@ -85,31 +77,64 @@ const MiniMentalForm = () => {
                 {section.description && (
                   <p className="mm-section-description">{section.description}</p>
                 )}
+    <div className="history-page">
+      <div className="logo-container">
+        <Link to="/home">
+          <HomeB
+            image={homeIcon}
+            title="מטה יהודה"
+            plain
+            style={{ width: "100px", height: "auto", cursor: "pointer" }}
+          />
+        </Link>
+      </div>
+
+      <h1 className="history-title">📋 תוצאות מבחני מיני מנטל</h1>
+
+      {results.length === 0 ? (
+        <p className="no-results">אין תוצאות זמינות</p>
+      ) : (
+        results.map((patient) => (
+          <div key={patient.patientId} className="patient-card">
+            <h2 className="patient-name">{patient.patientName}</h2>
+
+            <div className="tests-list">
+              {patient.tests.map((test, index) => (
+                <div
+                  key={index}
+                  className="test-item"
+                  onClick={() => setSelectedTest({ ...test, patientName: patient.patientName })}
+                >
+                  <div className="test-date">
+                    📅 {new Date(test.createdAt?.toDate()).toLocaleDateString("he-IL")} •{" "}
+                    {new Date(test.createdAt?.toDate()).toLocaleTimeString("he-IL", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </div>
+                  <div className="test-score">
+                    ניקוד: <span>{test.score}</span> / {test.maxScore}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      )}
+
+      {selectedTest && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>תשובות של {selectedTest.patientName}</h2>
+            {selectedTest.sections?.map((section) => (
+              <div key={section.id} className="modal-section">
+                <h3>{section.title}</h3>
                 {section.questions.map((q) => (
-                  <div key={q.id} className="mm-question">
-                    <label className="mm-question-text">
-                      {q.text} <span>({q.points} נקודה)</span>
-                    </label>
-                    <div className="mm-answers">
-                      <label>
-                        <input
-                          type="radio"
-                          name={q.id}
-                          checked={q.answer === true}
-                          onChange={() => setAnswer(section.id, q.id, true)}
-                        />
-                        נכון
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          name={q.id}
-                          checked={q.answer === false}
-                          onChange={() => setAnswer(section.id, q.id, false)}
-                        />
-                        לא נכון
-                      </label>
-                    </div>
+                  <div key={q.id} className="modal-question">
+                    <span>{q.text}</span> -
+                    <span className={q.answer ? "correct" : "incorrect"}>
+                      {q.answer ? "נכון ✅" : "לא נכון ❌"}
+                    </span>
                   </div>
                 ))}
               </AccordionContent>
@@ -134,4 +159,4 @@ const MiniMentalForm = () => {
   );
 };
 
-export default MiniMentalForm;
+export default MiniMentalHistory;

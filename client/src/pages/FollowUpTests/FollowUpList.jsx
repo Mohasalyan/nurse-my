@@ -12,6 +12,7 @@ import autoTable from 'jspdf-autotable';
 import '../../utils/AlefFont'; // تأكد من المسار
 import { Link } from 'react-router-dom';
 
+
 const FollowUpList = () => {
   const [followUps, setFollowUps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -87,14 +88,21 @@ const FollowUpList = () => {
     );
   };
 
-  const handleRemove = async () => {
-    if (selectedPatientId) {
-      await deleteDoc(doc(db, 'follow_up_list', selectedPatientId));
-      setFollowUps(prev => prev.filter(p => p.id !== selectedPatientId));
+  
+ const handleRemove = async () => {
+  if (selectedPatientId) {
+    try {
+      await deleteDoc(doc(db, 'patients', selectedPatientId)); 
+
+      fetchFollowUps();
       setSelectedPatientId(null);
       setShowModal(false);
+    } catch (error) {
+      console.error("Error deleting patient: ", error);
     }
-  };
+  }
+};
+
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(followUps);
@@ -129,9 +137,22 @@ const FollowUpList = () => {
   };
 
   return (
+    
     <div className="followup-container">
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+  <Link to="/home">
+    <HomeB
+      image={homeIcon}
+      title="מטה יהודה"
+      plain
+      style={{ width: "100px", height: "auto", cursor: "pointer" }}
+    />
+  </Link>
+</div>
       <div className="top-bar">
+        <Exit title="יציאה" to="/auth/login" />
         <div className="nurse-name">שלום, {nurseName} 👩‍⚕️</div>
+
       </div>
 
       <h2>📋 רשימת מעקב לפי מדדים לא תקינים</h2>
