@@ -11,7 +11,9 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import '../../utils/AlefFont'; // تأكد من المسار
 import { Link } from 'react-router-dom';
-
+import Exit from "../../Components/Exit/Exit";
+import HomeB from "../../Components/HomeB/HomeB";
+import homeIcon from "../../assets/Home.png";
 
 const FollowUpList = () => {
   const [followUps, setFollowUps] = useState([]);

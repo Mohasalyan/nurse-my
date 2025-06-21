@@ -7,6 +7,7 @@ import homeIcon from "../../assets/Home.png";
 import { Link } from "react-router-dom";
 import "./MiniMentalHistory.css";
 
+
 const MiniMentalHistory = () => {
   const [results, setResults] = useState([]);
   const [selectedTest, setSelectedTest] = useState(null);
