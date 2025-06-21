@@ -1,10 +1,11 @@
 import React from 'react';
+import ambulanceIcon from '../../assets/ambulance.png';
 import './AmbulanceButton.css';
-import ambulanceIcon from '../../assets/ambulance.png'; // adjust path if needed
-const AmbulanceButton = () => {
+
+const AmbulanceButton = ({ onClick }) => {
   return (
-    <button className="ambulance-button">
-      <img src={ambulanceIcon} alt="Ambulance" className="ambulance-icon" />
+    <button className="ambulance-button" onClick={onClick}>
+      <img src={ambulanceIcon} alt="Ambulance" />
     </button>
   );
 };

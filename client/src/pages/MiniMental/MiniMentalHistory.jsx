@@ -3,9 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import HomeB from "../../Components/HomeB/HomeB";
-import homeIcon from "../../assets/Home.png";
-import Exit from "../../Components/Exit/Exit";
 import useUserStore from "../../store/userStore";
 import useMiniMentalStore from "../../store/miniMentalStore";
 import { db } from "../../firebase/firebaseConfig";
@@ -19,7 +16,6 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "../../Components/ui/Accordion/Accordion";
-import { Link } from "react-router-dom";
 
 import "./MiniMental.css";
 
@@ -67,11 +63,7 @@ const MiniMentalForm = () => {
 
   return (
     <div className="mm-container">
-      {/* Header */}
       <header className="mm-header">
-        
-
-
         <div className="mm-header-center">
           <span className="mm-user-name">
             ברוך הבא, <strong>{username}</strong>
@@ -79,49 +71,10 @@ const MiniMentalForm = () => {
         </div>
 
         <div className="mm-header-left">
-          {/* <div className="home"> */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-  <Link to="/home">
-    <HomeB
-      image={homeIcon}
-      title="מטה יהודה"
-      plain
-      style={{ width: "100px", height: "auto", cursor: "pointer" }}
-    />
-  </Link>
-</div>
-          {/* </div> */}
-          <div className="exit-icon">
-            <Exit title="יציאה" to={-1} />
-          </div>
-        </div>
-        <div className="mm-header-right">
-          <div className="mm-date-picker">
-            <label>תאריך:</label>
-            <input
-              type="date"
-              value={testDate}
-              onChange={(e) => setTestDate(e.target.value)}
-            />
-          </div>
         </div>
       </header>
 
-      {/* Title */}
-      <div className="mm-title">
-        <h1>מבחן מצב מנטלי מינימלי</h1>
-        <p>נא להעריך לפי ההנחיות ולבחור את התשובות הנכונות</p>
-      </div>
-
-      {/* Score */}
-      <div className="mm-score-banner">
-        <span>
-          סה״כ ניקוד: <strong>{score}</strong> מתוך <strong>{maxScore}</strong>
-        </span>
-      </div>
-
-      {/* Accordion */}
-      <div className="mm-accordions">
+      <div className="mm-content">
         <Accordion type="single" collapsible className="space-y-4">
           {sections.map((section) => (
             <AccordionItem key={section.id} value={section.id}>
@@ -165,7 +118,6 @@ const MiniMentalForm = () => {
         </Accordion>
       </div>
 
-      {/* Save & History Buttons */}
       <div className="mm-save-bar">
         <Button onClick={handleSubmit} className="mm-save-btn">
           שמור והעבר להיסטוריה

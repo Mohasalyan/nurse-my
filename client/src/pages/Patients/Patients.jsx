@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import PatientsList from "./PatientsList/PatientsList";
 import PersonalInfo from "./PersonalInfo/PersonalInfo";
 import MedicalInfo from "./MedicalInfo/MedicalInfo";
-import HomeB from "../../Components/HomeB/HomeB";
-import homeIcon from "../../assets/Home.png";
-import { Link } from "react-router-dom";
 //added 
 
 const Patients = () => {
@@ -18,18 +15,6 @@ const Patients = () => {
 
   return (
     <div className="p-4">
-      {/* زر الرجوع للصفحة الرئيسية */}
-     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-  <Link to="/home">
-    <HomeB
-      image={homeIcon}
-      title="מטה יהודה"
-      plain
-      style={{ width: "100px", height: "auto", cursor: "pointer" }}
-    />
-  </Link>
-</div>
-
       {step === "list" && (
         <PatientsList
           onSelectPatient={(id, nextStep) => {

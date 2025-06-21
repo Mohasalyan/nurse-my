@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 import './FollowUpList.css';
-import HomeB from '../../Components/HomeB/HomeB';
-import Exit from '../../Components/Exit/Exit';
-import homeIcon from '../../assets/Home.png';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import PatientSearch from '../../Components/PatientSearch/PatientSearch';
 import { FaExclamationTriangle } from 'react-icons/fa';
@@ -105,46 +102,36 @@ const FollowUpList = () => {
     XLSX.utils.book_append_sheet(workbook, worksheet, "FollowUpList");
     XLSX.writeFile(workbook, "follow_up_list.xlsx");
   };
-const exportToPDF = () => {
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'A4' });
 
-  const tableColumn = ["שם מטופל", "ת.ז", "לחץ דם", "סוכר", "BMI", "דופק", "סיבת מעקב"];
-  const tableRows = followUps.map(p => [
-    p.name,
-    p.id,
-    p.bloodPressure,
-    p.sugar,
-    p.bmi,
-    p.pulse,
-    p.reasons
-  ]);
+  const exportToPDF = () => {
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'A4' });
 
-  autoTable(doc, {
-    head: [tableColumn],
-    body: tableRows,
-    styles: { font: 'helvetica', fontSize: 10 }, // ← تأكد من استخدام خط مدعوم
-    headStyles: { fillColor: [123, 176, 142], textColor: 255 },
-    margin: { top: 40 }
-  });
+    const tableColumn = ["שם מטופל", "ת.ז", "לחץ דם", "סוכר", "BMI", "דופק", "סיבת מעקב"];
+    const tableRows = followUps.map(p => [
+      p.name,
+      p.id,
+      p.bloodPressure,
+      p.sugar,
+      p.bmi,
+      p.pulse,
+      p.reasons
+    ]);
 
-  doc.save("follow_up_list.pdf");
-};
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      styles: { font: 'helvetica', fontSize: 10 }, // ← تأكد من استخدام خط مدعوم
+      headStyles: { fillColor: [123, 176, 142], textColor: 255 },
+      margin: { top: 40 }
+    });
+
+    doc.save("follow_up_list.pdf");
+  };
 
   return (
     <div className="followup-container">
       <div className="top-bar">
-        <Exit title="יציאה" to="/auth/login" />
         <div className="nurse-name">שלום, {nurseName} 👩‍⚕️</div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-  <Link to="/home">
-    <HomeB
-      image={homeIcon}
-      title="מטה יהודה"
-      plain
-      style={{ width: "100px", height: "auto", cursor: "pointer" }}
-    />
-  </Link>
-</div>
       </div>
 
       <h2>📋 רשימת מעקב לפי מדדים לא תקינים</h2>

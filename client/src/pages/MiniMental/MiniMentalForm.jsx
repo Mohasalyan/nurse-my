@@ -3,14 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import HomeB from "../../Components/HomeB/HomeB";
-import homeIcon from "../../assets/Home.png";
-import Exit from "../../Components/Exit/Exit";
 import useUserStore from "../../store/userStore";
 import useMiniMentalStore from "../../store/miniMentalStore";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, addDoc, Timestamp, getDocs } from "firebase/firestore";
-import { Link } from "react-router-dom";
 
 import { Home as HomeIcon, X as CloseIcon } from "lucide-react";
 import Button from "../../Components/ui/Button/Button";
@@ -80,21 +76,6 @@ const MiniMentalForm = () => {
 
   return (
     <div className="mm-container">
-      {/* <div className="home"> */}
-<div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-  <Link to="/home">
-    <HomeB
-      image={homeIcon}
-      title="מטה יהודה"
-      plain
-      style={{ width: "100px", height: "auto", cursor: "pointer" }}
-    />
-  </Link>
-</div>
-          {/* </div> */}
-          <div className="exit-icon">
-            <Exit title="יציאה" to={-1} />
-          </div>
       <header className="mm-header">
         <div className="mm-header-center">
           <span className="mm-user-name">משתמש: {username}</span>
