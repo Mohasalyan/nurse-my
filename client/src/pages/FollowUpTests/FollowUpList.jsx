@@ -135,8 +135,7 @@ const exportToPDF = () => {
       <div className="top-bar">
         <Exit title="יציאה" to="/auth/login" />
         <div className="nurse-name">שלום, {nurseName} 👩‍⚕️</div>
-      </div>
-       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
   <Link to="/home">
     <HomeB
       image={homeIcon}
@@ -146,6 +145,8 @@ const exportToPDF = () => {
     />
   </Link>
 </div>
+      </div>
+
       <h2>📋 רשימת מעקב לפי מדדים לא תקינים</h2>
 
       {followUps.length > 0 && (
