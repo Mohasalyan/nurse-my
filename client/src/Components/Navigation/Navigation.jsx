@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Exit from '../Exit/Exit';
 import AmbulanceButton from '../AmbulanceButton/AmbulanceButton';
 import PatientSearch from '../PatientSearch/PatientSearch';
@@ -13,10 +13,12 @@ import brainIcon from '../../assets/brainPic.png';
 
 const Navigation = () => {
   const [showPatientSearch, setShowPatientSearch] = useState(false);
+  const location = useLocation();
 
   const handleAmbulanceClick = () => {
     setShowPatientSearch(!showPatientSearch);
   };
+
   const navButtons = [
     { to: '/minimental', icon: brainIcon, title: 'Mini Mental' },
     { to: '/Patients', icon: patientFolderIcon, title: 'Patients' },
@@ -43,7 +45,7 @@ const Navigation = () => {
             <Link 
               key={index} 
               to={button.to} 
-              className="nav-button"
+              className={`nav-button ${location.pathname === button.to ? 'active' : ''}`}
               title={button.title}
             >
               <img src={button.icon} alt={button.title} />
