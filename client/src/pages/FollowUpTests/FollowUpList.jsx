@@ -163,7 +163,6 @@ const FollowUpList = () => {
           <table>
             <thead>
               <tr>
-                <th>טופל</th>
                 <th>שם מטופל</th>
                 <th>ת.ז</th>
                 <th>לחץ דם</th>
@@ -171,11 +170,19 @@ const FollowUpList = () => {
                 <th>BMI</th>
                 <th>דופק</th>
                 <th>סיבת מעקב</th>
+                <th>טופל</th>
               </tr>
             </thead>
             <tbody>
               {followUps.map((p, i) => (
                 <tr key={i}>
+                  <td>{p.name}</td>
+                  <td>{p.id}</td>
+                  <td>{p.bloodPressure}</td>
+                  <td>{p.sugar}</td>
+                  <td>{p.bmi}</td>
+                  <td>{p.pulse}</td>
+                  <td>{p.reasons}</td>
                   <td>
                     <button
                       className="mark-handled-button"
@@ -187,13 +194,6 @@ const FollowUpList = () => {
                       טופל + הסרה
                     </button>
                   </td>
-                  <td>{p.name}</td>
-                  <td>{p.id}</td>
-                  <td>{p.bloodPressure}</td>
-                  <td>{p.sugar}</td>
-                  <td>{p.bmi}</td>
-                  <td>{p.pulse}</td>
-                  <td>{p.reasons}</td>
                 </tr>
               ))}
             </tbody>
