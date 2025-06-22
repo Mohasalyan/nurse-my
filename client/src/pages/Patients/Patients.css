@@ -1,0 +1,109 @@
+.patients-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+  direction: rtl;
+}
+
+.patient-info-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.info-header {
+  text-align: center;
+  padding: 24px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.page-title {
+  font-size: 28px;
+  color: #333;
+  margin: 0 0 24px 0;
+  font-weight: bold;
+}
+
+.info-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+.toggle-button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  min-width: 160px;
+}
+
+.toggle-button:not(.active) {
+  background-color: #fff;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.toggle-button.active {
+  background-color: #2b4e77;
+  color: white;
+  box-shadow: 0 2px 4px rgba(43, 78, 119, 0.2);
+}
+
+.toggle-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background-color: #2b4e77;
+  border-radius: 2px;
+}
+
+.toggle-button:hover:not(.active) {
+  background-color: #f8f9fa;
+  border-color: #2b4e77;
+  color: #2b4e77;
+}
+
+/* Table styles to prevent overflow */
+.patient-info-container table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+}
+
+.patient-info-container table td,
+.patient-info-container table th {
+  padding: 0.75rem;
+  text-align: right;
+  border-bottom: 1px solid #dee2e6;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* Add horizontal scroll for very wide tables on small screens */
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 0 1rem 0;
+  padding: 0 1rem;
+}
+
+/* Content padding */
+.content-section {
+  padding: 1.5rem;
+} 

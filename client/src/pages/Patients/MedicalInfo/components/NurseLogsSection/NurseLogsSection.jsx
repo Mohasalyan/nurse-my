@@ -38,33 +38,36 @@ const NurseLogsSection = ({ logs = [], patientId, onRowAdded }) => {
   };
 
   return (
-    <div className="section-card">
+    <div className="section">
       <div className="section-header">
-        יומן אחיות
+        <h3 className="section-title">יומן אחיות</h3>
       </div>
 
-      <div className="note-entry">
-        <textarea
-          placeholder="כתוב הערה חדשה..."
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-        />
-        <button onClick={addNote} className="add-note-button">
-          <Plus size={16} /> הוסף
-        </button>
-      </div>
+      <div className="section-content">
+        <div className="note-entry">
+          <textarea
+            className="form-control"
+            placeholder="כתוב הערה חדשה..."
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
+          <button onClick={addNote} className="action-button">
+            <Plus size={16} /> הוסף
+          </button>
+        </div>
 
-      <ul className="logs-list">
-        {logList.length === 0 ? (
-          <p className="empty">אין הערות</p>
-        ) : (
-          logList.map((log, i) => (
-            <li key={i}>
-              <span className="log-date">{log.date}</span> - {log.note}
-            </li>
-          ))
-        )}
-      </ul>
+        <ul className="logs-list">
+          {logList.length === 0 ? (
+            <p className="empty">אין הערות</p>
+          ) : (
+            logList.map((log, i) => (
+              <li key={i}>
+                <span className="log-date">{log.date}</span> - {log.note}
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
     </div>
   );
 };

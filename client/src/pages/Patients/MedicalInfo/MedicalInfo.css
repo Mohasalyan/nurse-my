@@ -1,72 +1,158 @@
+/* Color Variables */
+:root {
+  --primary: #2b4e77;
+  --primary-light: #eef2f7;
+  --primary-hover: #1d3557;
+  --success: #DFF5E1;
+  --warning: #FAF3D3;
+  --neutral: #E5E7EB;
+  --border: #dee2e6;
+  --text-dark: #333;
+  --text-light: #666;
+}
+
 .medical-page {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 16px;
+  padding: 24px;
   direction: rtl;
-  font-family: "Assistant", sans-serif;
 }
 
-.page-title {
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.top-actions {
+.medical-sections {
   display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-  margin-bottom: 24px;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.save-button {
-  background-color: #388e3c;
+.section {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.section-header {
+  background-color: var(--primary);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 20px;
+}
+
+.section-title {
+  margin: 0;
   color: white;
-  padding: 10px 20px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
+  font-size: 1.1rem;
   font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.2s ease-in-out;
 }
 
-.save-button:hover {
-  background-color: #2e7d32;
+.section-content {
+  padding: 16px;
 }
 
-.back-button {
-  background-color: #c8e6c9;
-  color: #1b5e20;
-  padding: 10px 20px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
+.table-responsive table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.table-responsive th,
+.table-responsive td {
+  padding: 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.table-responsive th {
+  background-color: var(--primary-light);
   font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.2s ease-in-out;
-}
-
-.back-button:hover {
-  background-color: #a5d6a7;
+  color: var(--primary);
 }
 
 .warning-msg {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeeba;
-  padding: 10px;
+  background-color: var(--warning);
+  color: var(--text-dark);
+  padding: 12px 16px;
   border-radius: 8px;
-  font-size: 14px;
   margin-bottom: 20px;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.save-button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.save-button:hover {
+  background-color: var(--primary-hover);
 }
 
 .medical-loading,
 .medical-error {
   text-align: center;
-  padding: 30px;
-  font-size: 18px;
-  color: #555;
+  padding: 40px;
+  font-size: 1.1rem;
+  color: var(--text-light);
+}
+
+.medical-error {
+  color: #dc3545;
+}
+
+/* Form controls */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 1rem;
+  text-align: right;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(43, 78, 119, 0.1);
+}
+
+/* Buttons */
+.action-button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: var(--primary-hover);
+}
+
+.action-button:disabled {
+  background-color: var(--neutral);
+  cursor: not-allowed;
 }

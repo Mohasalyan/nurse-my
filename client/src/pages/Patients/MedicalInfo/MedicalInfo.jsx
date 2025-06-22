@@ -19,7 +19,7 @@ import MedicationsSection from "./components/MedicationsSection/MedicationsSecti
 import { toast } from "react-toastify";
 import "./MedicalInfo.css";
 
-const MedicalInfo = ({ patientId, onBack }) => {
+const MedicalInfo = ({ patientId }) => {
   const [medicalData, setMedicalData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [fromDaily, setFromDaily] = useState(false);
@@ -57,7 +57,6 @@ const MedicalInfo = ({ patientId, onBack }) => {
 
           if (!querySnapshot.empty) {
             const d = querySnapshot.docs[0].data();
-
             const fallbackData = {
               vitalSigns: {
                 bloodPressure: d.bloodPressure || "-",
@@ -113,8 +112,9 @@ const MedicalInfo = ({ patientId, onBack }) => {
 
   return (
     <div className="medical-page">
-      <div className="top-actions">
-        {fromDaily && (
+      {fromDaily && (
+        <div className="warning-msg">
+          מוצג מתוך בדיקות יומיות (לא קיימת רשומה מלאה).
           <button
             className="save-button"
             onClick={async () => {
@@ -129,87 +129,81 @@ const MedicalInfo = ({ patientId, onBack }) => {
           >
             💾 שמור רשומה רפואית
           </button>
-        )}
-        <button className="back-button" onClick={onBack}>⬅ חזרה</button>
-      </div>
-
-      <h2 className="page-title">כרטיס מעקב למטופל</h2>
-
-      {fromDaily && (
-        <div className="warning-msg">
-          מוצג מתוך בדיקות יומיות (לא קיימת רשומה מלאה).
         </div>
       )}
 
-      <VitalsSection
-        initialVitals={medicalData.vitalSigns || {}}
-        patientId={patientId}
-        onVitalsUpdated={(updatedVitals) =>
-          setMedicalData((prev) => ({
-            ...prev,
-            vitalSigns: updatedVitals,
-          }))
-        }
-      />
-      <MedicalHistorySection
-        history={medicalData.history || {}}
-        patientId={patientId}
-        onHistoryUpdated={(updatedHistory) =>
-          setMedicalData((prev) => ({
-            ...prev,
-            history: updatedHistory,
-          }))
-        }
-      />
-      <NurseLogsSection
-        logs={medicalData.nurseNotes || []}
-        patientId={patientId}
-        onRowAdded={(newRow) =>
-          setMedicalData((prev) => ({
-            ...prev,
-            nurseNotes: [newRow, ...(prev?.nurseNotes || [])],
-          }))
-        }
-      />
-      <BloodTrackingSection
-        data={medicalData.bloodTracking || []}
-        patientId={patientId}
-        onRowAdded={(newRow) =>
-          setMedicalData((prev) => ({
-            ...prev,
-            bloodTracking: [...(prev?.bloodTracking || []), newRow],
-          }))
-        }
-      />
-      <SugarTrackingSection
-        data={medicalData.sugarTracking || []}
-        patientId={patientId}
-        onRowAdded={(newRow) =>
-          setMedicalData((prev) => ({
-            ...prev,
-            sugarTracking: [...(prev?.sugarTracking || []), newRow],
-          }))
-        }
-      />
-      <AppointmentsSection
-        appointments={medicalData.appointments || []}
-        patientId={patientId}
-        onRowAdded={(newRow) =>
-          setMedicalData((prev) => ({
-            ...prev,
-            appointments: [...(prev?.appointments || []), newRow],
-          }))
-        }
-      />
-      <MedicationsSection
-        patientId={patientId}
-        onRowAdded={(newMed) =>
-          setMedicalData((prev) => ({
-            ...prev,
-            medications: [...(prev?.medications || []), newMed],
-          }))
-        }
-      />
+      <div className="medical-sections">
+        <VitalsSection
+          initialVitals={medicalData.vitalSigns || {}}
+          patientId={patientId}
+          onVitalsUpdated={(updatedVitals) =>
+            setMedicalData((prev) => ({
+              ...prev,
+              vitalSigns: updatedVitals,
+            }))
+          }
+        />
+        <MedicalHistorySection
+          history={medicalData.history || {}}
+          patientId={patientId}
+          onHistoryUpdated={(updatedHistory) =>
+            setMedicalData((prev) => ({
+              ...prev,
+              history: updatedHistory,
+            }))
+          }
+        />
+        <NurseLogsSection
+          logs={medicalData.nurseNotes || []}
+          patientId={patientId}
+          onRowAdded={(newRow) =>
+            setMedicalData((prev) => ({
+              ...prev,
+              nurseNotes: [newRow, ...(prev?.nurseNotes || [])],
+            }))
+          }
+        />
+        <BloodTrackingSection
+          data={medicalData.bloodTracking || []}
+          patientId={patientId}
+          onRowAdded={(newRow) =>
+            setMedicalData((prev) => ({
+              ...prev,
+              bloodTracking: [...(prev?.bloodTracking || []), newRow],
+            }))
+          }
+        />
+        <SugarTrackingSection
+          data={medicalData.sugarTracking || []}
+          patientId={patientId}
+          onRowAdded={(newRow) =>
+            setMedicalData((prev) => ({
+              ...prev,
+              sugarTracking: [...(prev?.sugarTracking || []), newRow],
+            }))
+          }
+        />
+        <AppointmentsSection
+          appointments={medicalData.appointments || []}
+          patientId={patientId}
+          onRowAdded={(newRow) =>
+            setMedicalData((prev) => ({
+              ...prev,
+              appointments: [...(prev?.appointments || []), newRow],
+            }))
+          }
+        />
+        <MedicationsSection
+          medications={medicalData.medications || []}
+          patientId={patientId}
+          onMedicationsUpdated={(updatedMeds) =>
+            setMedicalData((prev) => ({
+              ...prev,
+              medications: updatedMeds,
+            }))
+          }
+        />
+      </div>
     </div>
   );
 };

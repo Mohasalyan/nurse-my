@@ -4,7 +4,7 @@ import { db } from "@/firebase/firebaseConfig";
 import { toast } from "react-toastify";
 import "./PersonalInfo.css";
 
-const PersonalInfo = ({ patientId, onNext, onBack }) => {
+const PersonalInfo = ({ patientId }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -72,9 +72,9 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "פעיל": return "#c8e6c9";
-      case "עזב": return "#fff9c4";
-      case "נפטר": return "#ffcdd2";
+      case "פעיל": return "#DFF5E1";
+      case "עזב": return "#FAF3D3";
+      case "נפטר": return "#E5E7EB";
       default: return "#eeeeee";
     }
   };
@@ -83,8 +83,6 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
 
   return (
     <div className="personal-page">
-      <h2 className="page-title">פרטים אישיים</h2>
-
       <div style={{
         backgroundColor: getStatusColor(status),
         padding: "10px",
@@ -96,96 +94,92 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
         סטטוס המטופל: {status || "לא ידוע"}
       </div>
 
-      <div className="form-actions top">
-        <button
-          className="next-button"
-          onClick={() => onNext && onNext()}
-        >
-          ➤ המשך לרשומה רפואית
-        </button>
-        <button className="save-button" onClick={handleSave}>💾 שמור</button>
-        <button className="back-button" onClick={onBack}>⬅ חזרה</button>
+      <div className="form-actions">
+        <button className="save-button" onClick={handleSave}>💾 שמור שינויים</button>
       </div>
 
-      <div className="section-box">
-        <div className="section-title">פרטים אישיים</div>
-        <div className="form-grid">
-          <div className="form-field">
-            <label>שם פרטי</label>
-            <input name="firstName" value={formData.firstName} onChange={handleChange} />
+      <div className="sections-container">
+        <div className="section-box">
+          <div className="section-title">פרטים אישיים</div>
+          <div className="form-grid">
+            <div className="form-field">
+              <label>שם פרטי</label>
+              <input name="firstName" value={formData.firstName} onChange={handleChange} />
+            </div>
+            <div className="form-field">
+              <label>שם משפחה</label>
+              <input name="lastName" value={formData.lastName} onChange={handleChange} />
+            </div>
+            <div className="form-field">
+              <label>תעודת זהות</label>
+              <input name="id" value={formData.id} onChange={handleChange} />
+            </div>
+            <div className="form-field">
+              <label>תאריך לידה</label>
+              <input type="date" name="birthDate" value={formData.birthDate} onChange={handleChange} />
+            </div>
+            <div className="form-field">
+              <label>טלפון</label>
+              <input name="phone" value={formData.phone} onChange={handleChange} />
+            </div>
+            <div className="form-field full-width">
+              <label>כתובת</label>
+              <input name="address" value={formData.address} onChange={handleChange} />
+            </div>
           </div>
-          <div className="form-field">
-            <label>שם משפחה</label>
-            <input name="lastName" value={formData.lastName} onChange={handleChange} />
+        </div>
+
+        <div className="section-box">
+          <div className="section-title">אנשי קשר</div>
+          <div className="form-grid">
+            <div className="form-field">
+              <label>שם</label>
+              <input name="contactName" value={formData.contactName} onChange={handleChange} />
+            </div>
+            <div className="form-field">
+              <label>טלפון</label>
+              <input name="contactPhone" value={formData.contactPhone} onChange={handleChange} />
+            </div>
+            <div className="form-field full-width">
+              <label>כתובת</label>
+              <input name="contactAddress" value={formData.contactAddress} onChange={handleChange} />
+            </div>
           </div>
-          <div className="form-field">
-            <label>תעודת זהות</label>
-            <input name="id" value={formData.id} onChange={handleChange} />
+        </div>
+
+        <div className="section-box">
+          <div className="section-title">פרטים רפואיים בסיסיים</div>
+          <div className="form-grid">
+            <div className="form-field">
+              <label>קופת חולים</label>
+              <input name="clinic" value={formData.clinic} onChange={handleChange} />
+            </div>
+            <div className="form-field">
+              <label>סטטוס המטופל</label>
+              <select
+                name="status"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="">בחר סטטוס</option>
+                <option value="פעיל">פעיל</option>
+                <option value="נפטר">נפטר</option>
+                <option value="עזב">עזב</option>
+              </select>
+            </div>
           </div>
-          <div className="form-field">
-            <label>תאריך לידה</label>
-            <input type="date" name="birthDate" value={formData.birthDate} onChange={handleChange} />
-          </div>
-          <div className="form-field">
-            <label>טלפון</label>
-            <input name="phone" value={formData.phone} onChange={handleChange} />
-          </div>
+        </div>
+
+        <div className="section-box">
+          <div className="section-title">תצפיות והערות</div>
           <div className="form-field full-width">
-            <label>כתובת</label>
-            <input name="address" value={formData.address} onChange={handleChange} />
+            <textarea
+              name="notes"
+              rows={4}
+              value={formData.notes}
+              onChange={handleChange}
+            />
           </div>
-        </div>
-      </div>
-
-      <div className="section-box">
-        <div className="section-title">אנשי קשר</div>
-        <div className="form-grid">
-          <div className="form-field">
-            <label>שם</label>
-            <input name="contactName" value={formData.contactName} onChange={handleChange} />
-          </div>
-          <div className="form-field">
-            <label>טלפון</label>
-            <input name="contactPhone" value={formData.contactPhone} onChange={handleChange} />
-          </div>
-          <div className="form-field full-width">
-            <label>כתובת</label>
-            <input name="contactAddress" value={formData.contactAddress} onChange={handleChange} />
-          </div>
-        </div>
-      </div>
-
-      <div className="section-box">
-        <div className="section-title">פרטים רפואיים בסיסיים</div>
-        <div className="form-field full-width">
-          <label>קופת חולים</label>
-          <input name="clinic" value={formData.clinic} onChange={handleChange} />
-        </div>
-
-        <div className="form-field full-width">
-          <label>סטטוס המטופל</label>
-          <select
-            name="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <option value="">בחר סטטוס</option>
-            <option value="פעיל">פעיל</option>
-            <option value="נפטר">נפטר</option>
-            <option value="עזב">עזב</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="section-box">
-        <div className="section-title">תצפיות והערות</div>
-        <div className="form-field full-width">
-          <textarea
-            name="notes"
-            rows={4}
-            value={formData.notes}
-            onChange={handleChange}
-          />
         </div>
       </div>
     </div>

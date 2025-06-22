@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Exit from '../Exit/Exit';
 import AmbulanceButton from '../AmbulanceButton/AmbulanceButton';
 import PatientSearch from '../PatientSearch/PatientSearch';
@@ -14,6 +14,7 @@ import brainIcon from '../../assets/brainPic.png';
 const Navigation = () => {
   const [showPatientSearch, setShowPatientSearch] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const searchRef = useRef(null);
   const ambulanceButtonRef = useRef(null);
 
@@ -43,6 +44,11 @@ const Navigation = () => {
     setShowPatientSearch(!showPatientSearch);
   };
 
+  const handleNavClick = (path, e) => {
+    e.preventDefault();
+    navigate(path, { replace: true });
+  };
+
   const navButtons = [
     { to: '/minimental', icon: brainIcon, title: 'Mini Mental', hebrewTitle: 'מינימנטל' },
     { to: '/Patients', icon: patientFolderIcon, title: 'Patients', hebrewTitle: 'מטופלים' },
@@ -66,17 +72,18 @@ const Navigation = () => {
         
         <div className="nav-section right">
           {navButtons.map((button, index) => (
-            <Link 
+            <a 
               key={index} 
-              to={button.to} 
-              className={`nav-button ${location.pathname === button.to ? 'active' : ''}`}
+              href={button.to}
+              className={`nav-button ${location.pathname.startsWith(button.to) ? 'active' : ''}`}
               title={button.title}
+              onClick={(e) => handleNavClick(button.to, e)}
             >
               <div className="nav-button-content">
                 <img src={button.icon} alt={button.title} />
                 <span className="nav-button-text">{button.hebrewTitle}</span>
               </div>
-            </Link>
+            </a>
           ))}
           <div 
             className="nav-button" 
