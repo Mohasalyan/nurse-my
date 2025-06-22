@@ -136,7 +136,7 @@ const FollowUpList = () => {
 
   return (
     <div className="followup-container">
-      <h2>📋 רשימת מעקב לפי מדדים לא תקינים</h2>
+      <h2>רשימת מעקב - מדדים חריגים</h2>
 
       {followUps.length > 0 && (
         <div className="followup-alert">

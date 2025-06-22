@@ -24,11 +24,19 @@ body, html, #root {
   padding: 10px 20px;
 }
 
+.nurse-diary-header {
+  color: #000000;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
 .header-row {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .search-box {
@@ -41,7 +49,7 @@ body, html, #root {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .daily-form {
