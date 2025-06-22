@@ -12,6 +12,7 @@ import { auth } from './firebase/firebaseConfig';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navigation from './Components/Navigation/Navigation';
+import Footer from './Components/ui/Footer/Footer';
 
 // صفحات عامة
 import Auth from './pages/Auth/Auth';
@@ -36,6 +37,7 @@ function ProtectedLayout({ children }) {
       <main className="main-content">
         {children}
       </main>
+      <Footer />
     </div>
   );
 }
