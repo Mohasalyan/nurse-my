@@ -64,7 +64,7 @@ const HomePage = () => {
           <Card image={medicationImg} title="תרופות" to="/medication" />
           <Card image={trackingImg} title="רשימת מעקב" to="/followup-list" />
           <Card image={brainImg} title="מינימנטל" to="/minimental" />
-          <Card image={patientsImg} title="תיקי חולים" to="/Patients" />
+          <Card image={patientsImg} title="תיקי מטופלים" to="/Patients" />
         </div>
 
         <div className="big-card">
