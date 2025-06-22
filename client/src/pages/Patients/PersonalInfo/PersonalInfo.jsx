@@ -74,7 +74,7 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
     switch (status) {
       case "פעיל": return "#c8e6c9";
       case "עזב": return "#fff9c4";
-      case "נפתר": return "#ffcdd2";
+      case "נפטר": return "#ffcdd2";
       default: return "#eeeeee";
     }
   };
@@ -171,7 +171,7 @@ const PersonalInfo = ({ patientId, onNext, onBack }) => {
           >
             <option value="">בחר סטטוס</option>
             <option value="פעיל">פעיל</option>
-            <option value="נפתר">נפתר</option>
+            <option value="נפטר">נפטר</option>
             <option value="עזב">עזב</option>
           </select>
         </div>
