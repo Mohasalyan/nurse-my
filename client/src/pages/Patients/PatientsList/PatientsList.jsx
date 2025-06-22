@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "@/firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import PatientSearch from "../../../Components/PatientSearch/PatientSearch";
 import "./PatientsList.css";
 
 const getStatusColor = (status) => {
@@ -15,7 +16,7 @@ const getStatusColor = (status) => {
 
 const PatientsList = ({ onSelectPatient }) => {
   const [patients, setPatients] = useState([]);
-  const [search, setSearch] = useState("");
+  const [filteredPatients, setFilteredPatients] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,27 +27,30 @@ const PatientsList = ({ onSelectPatient }) => {
         ...doc.data(),
       }));
       setPatients(data);
+      setFilteredPatients(data);
     };
 
     fetchPatients();
   }, []);
 
-  const filteredPatients = patients.filter(
-    (p) =>
-      p.name?.toLowerCase().includes(search.toLowerCase()) ||
-      p.id?.includes(search)
-  );
+  const handlePatientSearch = (patient) => {
+    if (patient) {
+      setFilteredPatients(patients.filter(p => p.id === patient.id));
+    } else {
+      setFilteredPatients(patients);
+    }
+  };
 
   return (
     <div className="patients-wrapper">
       <h2 className="patients-header">ניהול מטופלים</h2>
-      <input
-        type="text"
-        placeholder="חפש לפי שם או תעודת זהות..."
-        className="patients-search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      
+      <div className="search-container">
+        <PatientSearch 
+          onSelect={handlePatientSearch}
+          className="patients-search-component"
+        />
+      </div>
 
       <div className="patients-grid">
         {filteredPatients.map((patient) => (
@@ -55,7 +59,7 @@ const PatientsList = ({ onSelectPatient }) => {
             key={patient.id}
             style={{ backgroundColor: getStatusColor(patient.status) }}
           >
-            <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="card-header">
               {patient.status && (
                 <span className="inline-status">{patient.status}</span>
               )}
