@@ -163,62 +163,49 @@ const MedicationTracking = () => {
           <h3>תרופות עבור: {selectedPatientName}</h3>
 
           <div className="add-medication-form">
-            <input
-              type="text"
-              placeholder="שם התרופה"
-              value={newMedication.medication}
-              onChange={(e) => setNewMedication({ ...newMedication, medication: e.target.value })}
-            />
+            <button onClick={handleAddMedication}>הוסף תרופה</button>
             <input
               type="text"
               placeholder="מינון"
               value={newMedication.dose}
               onChange={(e) => setNewMedication({ ...newMedication, dose: e.target.value })}
             />
-            <button onClick={handleAddMedication}>הוסף תרופה</button>
+            <input
+              type="text"
+              placeholder="שם התרופה"
+              value={newMedication.medication}
+              onChange={(e) => setNewMedication({ ...newMedication, medication: e.target.value })}
+            />
           </div>
 
           <div className="filter-section">
             <label>
+              הצג רק תרופות שלא נלקחו
               <input
                 type="checkbox"
                 checked={filterUnTaken}
                 onChange={(e) => setFilterUnTaken(e.target.checked)}
               />
-              הצג רק תרופות שלא נלקחו
             </label>
           </div>
 
           <table className="med-table">
             <thead>
               <tr>
-                <th>שם התרופה</th>
-                <th>מינון</th>
-                <th>הערה</th>
-                <th>הערה רפואית</th>
-                <th>תאריך אחרון</th>
-                <th>סטטוס</th>
                 <th>מחיקה</th>
+                <th>סטטוס</th>
+                <th>תאריך אחרון</th>
+                <th>הערה רפואית</th>
+                <th>הערה</th>
+                <th>מינון</th>
+                <th>שם התרופה</th>
               </tr>
             </thead>
             <tbody>
               {filteredMeds.map((item, index) => (
                 <tr key={item.id}>
-                  <td>{item.medication}</td>
-                  <td>{item.dose}</td>
                   <td>
-                    <input
-                      className="note-input"
-                      value={item.note || ''}
-                      onChange={(e) => handleNoteChange(index, e.target.value)}
-                      placeholder="הערה"
-                    />
-                  </td>
-                  <td>{item.medicalComment || '-'}</td>
-                  <td>
-                    {item.lastTakenTime
-                      ? new Date(item.lastTakenTime.seconds * 1000).toLocaleString()
-                      : '---'}
+                    <button className="delete-btn" onClick={() => handleDelete(item.id)}>🗑️</button>
                   </td>
                   <td>
                     <button
@@ -229,8 +216,21 @@ const MedicationTracking = () => {
                     </button>
                   </td>
                   <td>
-                    <button className="delete-btn" onClick={() => handleDelete(item.id)}>🗑️</button>
+                    {item.lastTakenTime
+                      ? new Date(item.lastTakenTime.seconds * 1000).toLocaleString()
+                      : '---'}
                   </td>
+                  <td>{item.medicalComment || '-'}</td>
+                  <td>
+                    <input
+                      className="note-input"
+                      value={item.note || ''}
+                      onChange={(e) => handleNoteChange(index, e.target.value)}
+                      placeholder="הערה"
+                    />
+                  </td>
+                  <td>{item.dose}</td>
+                  <td>{item.medication}</td>
                 </tr>
               ))}
             </tbody>
