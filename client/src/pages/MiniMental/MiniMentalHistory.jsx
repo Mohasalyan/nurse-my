@@ -7,7 +7,6 @@ import homeIcon from "../../assets/Home.png";
 import { Link } from "react-router-dom";
 import "./MiniMentalHistory.css";
 
-
 const MiniMentalHistory = () => {
   const [results, setResults] = useState([]);
   const [selectedTest, setSelectedTest] = useState(null);
@@ -48,41 +47,41 @@ const MiniMentalHistory = () => {
 
   return (
     <div className="history-page">
-      
-
       <h1 className="history-title">📋 תוצאות מבחני מיני מנטל</h1>
 
       {results.length === 0 ? (
         <p className="no-results">אין תוצאות זמינות</p>
       ) : (
-        results.map((patient) => (
-          <div key={patient.patientId} className="patient-card">
-            <h2 className="patient-name">{patient.patientName}</h2>
+        <div className="patients-grid">
+          {results.map((patient) => (
+            <div key={patient.patientId} className="patient-card">
+              <h2 className="patient-name">{patient.patientName}</h2>
 
-            <div className="tests-list">
-              {patient.tests.map((test, index) => (
-                <div
-                  key={index}
-                  className="test-item"
-                  onClick={() =>
-                    setSelectedTest({ ...test, patientName: patient.patientName })
-                  }
-                >
-                  <div className="test-date">
-                    📅 {new Date(test.createdAt?.toDate()).toLocaleDateString("he-IL")} •{" "}
-                    {new Date(test.createdAt?.toDate()).toLocaleTimeString("he-IL", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+              <div className="tests-list">
+                {patient.tests.map((test, index) => (
+                  <div
+                    key={index}
+                    className="test-item"
+                    onClick={() =>
+                      setSelectedTest({ ...test, patientName: patient.patientName })
+                    }
+                  >
+                    <div className="test-score">
+                      ניקוד: <span>{test.score}</span> / {test.maxScore}
+                    </div>
+                    <div className="test-date">
+                      📅 {new Date(test.createdAt?.toDate()).toLocaleDateString("he-IL")} •{" "}
+                      {new Date(test.createdAt?.toDate()).toLocaleTimeString("he-IL", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
                   </div>
-                  <div className="test-score">
-                    ניקוד: <span>{test.score}</span> / {test.maxScore}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
 
       {selectedTest && (
