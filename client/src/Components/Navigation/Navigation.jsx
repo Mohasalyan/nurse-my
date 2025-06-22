@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Exit from '../Exit/Exit';
 import AmbulanceButton from '../AmbulanceButton/AmbulanceButton';
@@ -14,6 +14,30 @@ import brainIcon from '../../assets/brainPic.png';
 const Navigation = () => {
   const [showPatientSearch, setShowPatientSearch] = useState(false);
   const location = useLocation();
+  const searchRef = useRef(null);
+  const ambulanceButtonRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showPatientSearch &&
+          searchRef.current &&
+          ambulanceButtonRef.current &&
+          !searchRef.current.contains(event.target) &&
+          !ambulanceButtonRef.current.contains(event.target)) {
+        setShowPatientSearch(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showPatientSearch]);
+
+  // Close search when location changes
+  useEffect(() => {
+    setShowPatientSearch(false);
+  }, [location]);
 
   const handleAmbulanceClick = () => {
     setShowPatientSearch(!showPatientSearch);
@@ -54,7 +78,11 @@ const Navigation = () => {
               </div>
             </Link>
           ))}
-          <div className="nav-button" onClick={handleAmbulanceClick}>
+          <div 
+            className="nav-button" 
+            onClick={handleAmbulanceClick}
+            ref={ambulanceButtonRef}
+          >
             <div className="nav-button-content">
               <AmbulanceButton />
               <span className="nav-button-text">חירום</span>
@@ -64,7 +92,7 @@ const Navigation = () => {
       </nav>
 
       {showPatientSearch && (
-        <div className="patient-search-overlay">
+        <div className="patient-search-overlay" ref={searchRef}>
           <PatientSearch onClose={() => setShowPatientSearch(false)} />
         </div>
       )}
