@@ -86,12 +86,6 @@ const PatientsList = ({ onSelectPatient }) => {
           </div>
         ))}
       </div>
-
-      <div className="patients-back">
-        <button className="back-button" onClick={() => navigate("/home")}>
-          חזרה
-        </button>
-      </div>
     </div>
   );
 };

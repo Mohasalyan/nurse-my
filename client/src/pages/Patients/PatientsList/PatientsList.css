@@ -30,6 +30,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
+  direction: rtl;
 }
 
 .patient-card {
@@ -106,31 +107,13 @@
   background-color: #d0e9d3;
 }
 
-.patients-back {
-  margin-top: 32px;
-}
-
-.back-button {
-  background-color: #6c757d;
-  color: white;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.back-button:hover {
-  background-color: #5a6268;
-}
-
 .form-field select {
   padding: 10px;
   font-size: 15px;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
+
 .patients-back.top-left {
   text-align: left;
-  margin-bottom: 20px;
 }
