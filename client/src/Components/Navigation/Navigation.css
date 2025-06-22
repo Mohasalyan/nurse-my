@@ -48,13 +48,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
+  width: 50px;
+  height: auto;
+  min-height: 70px;
+  border-radius: 12px;
   background-color: transparent;
   transition: all 0.3s ease;
   padding: 8px;
   position: relative;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .nav-button:hover {
@@ -79,10 +82,36 @@
   background-color: #4a90e2;
 }
 
-.nav-button img {
-  width: 100%;
+.nav-button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   height: 100%;
+}
+
+.nav-button img,
+.nav-button button {
+  width: 35px;
+  height: 35px;
   object-fit: contain;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+}
+
+.nav-button-text {
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+  font-family: 'Alef', sans-serif;
+  direction: rtl;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  font-weight: 500;
 }
 
 .patient-search-overlay {

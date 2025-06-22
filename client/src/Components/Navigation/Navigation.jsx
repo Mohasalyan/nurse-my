@@ -20,11 +20,11 @@ const Navigation = () => {
   };
 
   const navButtons = [
-    { to: '/minimental', icon: brainIcon, title: 'Mini Mental' },
-    { to: '/Patients', icon: patientFolderIcon, title: 'Patients' },
-    { to: '/medication', icon: medicineIcon, title: 'Medications' },
-    { to: '/followup-list', icon: medicalReportIcon, title: 'Medical Info' },
-    { to: '/dailytest', icon: heartRateIcon, title: 'Daily Test' },
+    { to: '/minimental', icon: brainIcon, title: 'Mini Mental', hebrewTitle: 'מינימנטל' },
+    { to: '/Patients', icon: patientFolderIcon, title: 'Patients', hebrewTitle: 'מטופלים' },
+    { to: '/medication', icon: medicineIcon, title: 'Medications', hebrewTitle: 'תרופות' },
+    { to: '/followup-list', icon: medicalReportIcon, title: 'Medical Info', hebrewTitle: 'מעקב' },
+    { to: '/dailytest', icon: heartRateIcon, title: 'Daily Test', hebrewTitle: 'בדיקה' },
   ];
 
   return (
@@ -48,11 +48,17 @@ const Navigation = () => {
               className={`nav-button ${location.pathname === button.to ? 'active' : ''}`}
               title={button.title}
             >
-              <img src={button.icon} alt={button.title} />
+              <div className="nav-button-content">
+                <img src={button.icon} alt={button.title} />
+                <span className="nav-button-text">{button.hebrewTitle}</span>
+              </div>
             </Link>
           ))}
-          <div className="nav-button">
-            <AmbulanceButton onClick={handleAmbulanceClick} />
+          <div className="nav-button" onClick={handleAmbulanceClick}>
+            <div className="nav-button-content">
+              <AmbulanceButton />
+              <span className="nav-button-text">חירום</span>
+            </div>
           </div>
         </div>
       </nav>
