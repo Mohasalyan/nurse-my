@@ -163,19 +163,21 @@ const MedicationTracking = () => {
           <h3>תרופות עבור: {selectedPatientName}</h3>
 
           <div className="add-medication-form">
-            <button onClick={handleAddMedication}>הוסף תרופה</button>
+          <input
+              type="text"
+              placeholder="שם התרופה"
+              value={newMedication.medication}
+              onChange={(e) => setNewMedication({ ...newMedication, medication: e.target.value })}
+            />
             <input
               type="text"
               placeholder="מינון"
               value={newMedication.dose}
               onChange={(e) => setNewMedication({ ...newMedication, dose: e.target.value })}
             />
-            <input
-              type="text"
-              placeholder="שם התרופה"
-              value={newMedication.medication}
-              onChange={(e) => setNewMedication({ ...newMedication, medication: e.target.value })}
-            />
+            
+                        <button onClick={handleAddMedication}>הוסף תרופה</button>
+
           </div>
 
           <div className="filter-section">
@@ -192,35 +194,20 @@ const MedicationTracking = () => {
           <table className="med-table">
             <thead>
               <tr>
-                <th>מחיקה</th>
-                <th>סטטוס</th>
-                <th>תאריך אחרון</th>
-                <th>הערה רפואית</th>
-                <th>הערה</th>
-                <th>מינון</th>
                 <th>שם התרופה</th>
+                <th>מינון</th>
+                <th>הערה</th>
+                <th>הערה רפואית</th>
+                <th>תאריך אחרון</th>
+                <th>נלקח</th>
+                <th>מחיקה</th>
               </tr>
             </thead>
             <tbody>
               {filteredMeds.map((item, index) => (
                 <tr key={item.id}>
-                  <td>
-                    <button className="delete-btn" onClick={() => handleDelete(item.id)}>🗑️</button>
-                  </td>
-                  <td>
-                    <button
-                      className={`status-btn ${item.taken ? 'taken' : 'not-taken'}`}
-                      onClick={() => toggleTaken(index)}
-                    >
-                      {item.taken ? '✘' : '✔'}
-                    </button>
-                  </td>
-                  <td>
-                    {item.lastTakenTime
-                      ? new Date(item.lastTakenTime.seconds * 1000).toLocaleString()
-                      : '---'}
-                  </td>
-                  <td>{item.medicalComment || '-'}</td>
+                  <td>{item.medication}</td>
+                  <td>{item.dose}</td>
                   <td>
                     <input
                       className="note-input"
@@ -229,8 +216,23 @@ const MedicationTracking = () => {
                       placeholder="הערה"
                     />
                   </td>
-                  <td>{item.dose}</td>
-                  <td>{item.medication}</td>
+                  <td>{item.medicalComment || '-'}</td>
+                  <td>
+                    {item.lastTakenTime
+                      ? new Date(item.lastTakenTime.seconds * 1000).toLocaleString()
+                      : '---'}
+                  </td>
+                  <td className="medication-checkbox-container">
+                    <input
+                      type="checkbox"
+                      className="medication-checkbox"
+                      checked={item.taken}
+                      onChange={() => toggleTaken(index)}
+                    />
+                  </td>
+                  <td>
+                    <button className="delete-btn" onClick={() => handleDelete(item.id)}>🗑️</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
