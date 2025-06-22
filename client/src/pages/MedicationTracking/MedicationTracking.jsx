@@ -163,7 +163,7 @@ const MedicationTracking = () => {
           <h3>תרופות עבור: {selectedPatientName}</h3>
 
           <div className="add-medication-form">
-            <input
+          <input
               type="text"
               placeholder="שם התרופה"
               value={newMedication.medication}
@@ -175,17 +175,19 @@ const MedicationTracking = () => {
               value={newMedication.dose}
               onChange={(e) => setNewMedication({ ...newMedication, dose: e.target.value })}
             />
-            <button onClick={handleAddMedication}>הוסף תרופה</button>
+            
+                        <button onClick={handleAddMedication}>הוסף תרופה</button>
+
           </div>
 
           <div className="filter-section">
             <label>
+              הצג רק תרופות שלא נלקחו
               <input
                 type="checkbox"
                 checked={filterUnTaken}
                 onChange={(e) => setFilterUnTaken(e.target.checked)}
               />
-              הצג רק תרופות שלא נלקחו
             </label>
           </div>
 
@@ -197,7 +199,7 @@ const MedicationTracking = () => {
                 <th>הערה</th>
                 <th>הערה רפואית</th>
                 <th>תאריך אחרון</th>
-                <th>סטטוס</th>
+                <th>נלקח</th>
                 <th>מחיקה</th>
               </tr>
             </thead>
@@ -220,13 +222,13 @@ const MedicationTracking = () => {
                       ? new Date(item.lastTakenTime.seconds * 1000).toLocaleString()
                       : '---'}
                   </td>
-                  <td>
-                    <button
-                      className={`status-btn ${item.taken ? 'taken' : 'not-taken'}`}
-                      onClick={() => toggleTaken(index)}
-                    >
-                      {item.taken ? '✘' : '✔'}
-                    </button>
+                  <td className="medication-checkbox-container">
+                    <input
+                      type="checkbox"
+                      className="medication-checkbox"
+                      checked={item.taken}
+                      onChange={() => toggleTaken(index)}
+                    />
                   </td>
                   <td>
                     <button className="delete-btn" onClick={() => handleDelete(item.id)}>🗑️</button>
