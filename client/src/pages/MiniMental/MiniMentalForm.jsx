@@ -21,6 +21,7 @@ import Exit from "../../Components/Exit/Exit";
 import HomeB from "../../Components/HomeB/HomeB";
 import homeIcon from "../../assets/Home.png";
 import "./MiniMental.css";
+import PatientSearch from '../../Components/PatientSearch/PatientSearch';
 
 const MiniMentalForm = () => {
   const navigate = useNavigate();
@@ -96,6 +97,14 @@ const MiniMentalForm = () => {
     }
   };
 
+  const handlePatientSelect = (patient) => {
+    setSelectedPatientName(
+      patient.name ||
+      `${patient.firstName || ""} ${patient.lastName || ""}`.trim()
+    );
+    navigate(`/folder/${patient.id}/mini-mental`);
+  };
+
   return (
     <div className="mm-container">
       
@@ -128,37 +137,10 @@ const MiniMentalForm = () => {
 
       <div className="mm-patient-select">
         <label>חיפוש מטופל:</label>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="חפש לפי שם או ת.ז"
+        <PatientSearch 
+          onSelect={handlePatientSelect}
+          className="mm-patient-search"
         />
-        <select
-          onChange={(e) => {
-            const patientId = e.target.value;
-            const patient = patients.find((p) => p.id === patientId);
-            if (patient) {
-              setSelectedPatientName(
-                patient.name ||
-                  `${patient.firstName || ""} ${patient.lastName || ""}`.trim()
-              );
-              navigate(`/folder/${patientId}/mini-mental`);
-            }
-          }}
-          defaultValue=""
-        >
-          <option value="" disabled>
-            בחר מטופל
-          </option>
-          {patients
-            .filter((p) => p.name?.includes(searchTerm) || p.id?.includes(searchTerm))
-            .map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.id} – {p.name}
-              </option>
-            ))}
-        </select>
       </div>
 
       <div className="mm-score-banner">

@@ -25,6 +25,17 @@ h2 {
 
 .patient-section {
   margin-top: 30px;
+  text-align: right;
+}
+
+.patient-section h3 {
+  margin-bottom: 15px;
+}
+
+.search-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 20px;
 }
 
 .patients-list {
@@ -116,9 +127,7 @@ h2 {
   width: 100%;
   padding: 5px;
 }
-"""
 
-patient_search_css = """
 .patient-search-container {
   margin-bottom: 20px;
 }
@@ -164,4 +173,4 @@ patient_search_css = """
 .no-results {
   color: #999;
   font-style: italic;
-  }
+}
