@@ -201,6 +201,7 @@ const fields = [
 
   return (
     <div className="dailytest">
+      <h2 className="nurse-diary-header">יומן אחות</h2>
       <div className="header-row">
         <div className="search-box">
           <PatientSearch onSelect={(patient) => setInputs(prev => ({
