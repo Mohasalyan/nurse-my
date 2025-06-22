@@ -2,12 +2,13 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 32px;
+  direction: rtl;
 }
 
 .patients-header {
   font-size: 28px;
   margin-bottom: 20px;
-  color: #000000;
+  color: #333;
   text-align: center;
   display: block;
   margin-left: auto;
@@ -15,41 +16,32 @@
 }
 
 .search-container {
+  margin-bottom: 20px;
   display: flex;
   justify-content: center;
-  margin-bottom: 30px;
 }
 
 .patients-search-component {
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 600px;
 }
 
 .patients-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   direction: rtl;
 }
 
 .patient-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 16px;
-  text-align: right;
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.patient-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
@@ -59,15 +51,15 @@
   margin: 0;
   font-size: 20px;
   font-weight: bold;
+  text-align: right;
 }
 
 .inline-status {
-  font-size: 14px;
-  font-weight: bold;
-  color: #333;
-  background-color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9em;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  text-align: left;
 }
 
 .patient-card p {
@@ -78,40 +70,78 @@
 
 .card-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-.button {
-  background-color: #78b98b;
-  color: white;
+.card-buttons button {
+  flex: 1;
+  padding: 8px;
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s;
 }
 
-.button:hover {
-  background-color: #5fa273;
+.card-buttons .button {
+  background-color: #4CAF50;
+  color: white;
 }
 
-.button.secondary {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #c8e6c9;
+.card-buttons .secondary {
+  background-color: #2196F3;
+  color: white;
 }
 
-.button.secondary:hover {
-  background-color: #d0e9d3;
+/* New styles for status sections */
+.status-section {
+  margin-bottom: 30px;
 }
 
-.form-field select {
-  padding: 10px;
-  font-size: 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.status-section-header {
+  background-color: white;
+  padding: 12px 20px;
+  margin: 20px 0 15px 0;
+  border-radius: 8px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.status-section-header.active {
+  border-right: 5px solid #4CAF50;
+  background-color: #DFF5E1;
+}
+
+.status-section-header.left {
+  border-right: 5px solid #D4BC6C;
+  background-color: #FAF3D3;
+}
+
+.status-section-header.deceased {
+  border-right: 5px solid #9BA3AF;
+  background-color: #E5E7EB;
+}
+
+.status-count {
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.empty-section-message {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  font-style: italic;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
 }
 
 .patients-back.top-left {

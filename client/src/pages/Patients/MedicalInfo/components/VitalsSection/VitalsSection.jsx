@@ -3,84 +3,100 @@ import { toast } from "react-toastify";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import "./VitalsSection.css";
-import { Edit, Save } from "lucide-react";
 
 const VitalsSection = ({ initialVitals, patientId, onVitalsUpdated }) => {
-  const [editMode, setEditMode] = useState(false);
   const [vitals, setVitals] = useState(initialVitals);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = async () => {
-    if (editMode) {
-      // عند الحفظ
-      try {
-        if (!patientId) {
-          toast.error("שגיאה: מזהה המטופל לא נמצא.");
-          return;
-        }
-
-        const patientRef = doc(db, "patients", patientId);
-        await updateDoc(patientRef, {
-          "medical.vitalSigns": vitals,
-        });
-
-        toast.success("הנתונים נשמרו בהצלחה");
-        if (typeof onVitalsUpdated === "function") {
-          onVitalsUpdated(vitals);
-        }
-      } catch (error) {
-        console.error("Error updating vitals:", error);
-        toast.error("שגיאה בשמירת הנתונים");
-      }
+  const handleSave = async () => {
+    try {
+      const docRef = doc(db, "patients", patientId);
+      await updateDoc(docRef, {
+        "medical.vitalSigns": vitals
+      });
+      setIsEditing(false);
+      onVitalsUpdated(vitals);
+      toast.success("✅ סימנים חיוניים עודכנו בהצלחה");
+    } catch (error) {
+      toast.error("❌ שגיאה בעדכון סימנים חיוניים: " + error.message);
     }
-    setEditMode(!editMode);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setVitals((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div className="section-card">
+    <div className="section">
       <div className="section-header">
-        <h3>סימנים חיוניים</h3>
-        <button className="icon-button" onClick={toggleEdit}>
-          {editMode ? <Save size={18} /> : <Edit size={18} />}
+        <h3 className="section-title">סימנים חיוניים</h3>
+        <button 
+          className="action-button"
+          onClick={() => isEditing ? handleSave() : setIsEditing(true)}
+        >
+          {isEditing ? "💾 שמור" : "✏️ ערוך"}
         </button>
       </div>
-
-      <div className="vitals-grid">
-        <div>
-          <span>לחץ דם:</span>
-          {editMode ? (
-            <input name="bloodPressure" value={vitals.bloodPressure} onChange={handleChange} />
-          ) : (
-            <strong>{vitals.bloodPressure || "-"}</strong>
-          )}
-        </div>
-        <div>
-          <span>משקל:</span>
-          {editMode ? (
-            <input name="weight" value={vitals.weight} onChange={handleChange} />
-          ) : (
-            <strong>{vitals.weight || "-"} ק"ג</strong>
-          )}
-        </div>
-        <div>
-          <span>סוכר:</span>
-          {editMode ? (
-            <input name="sugar" value={vitals.sugar} onChange={handleChange} />
-          ) : (
-            <strong>{vitals.sugar || "-"}</strong>
-          )}
-        </div>
-        <div>
-          <span>דופק:</span>
-          {editMode ? (
-            <input name="pulse" value={vitals.pulse} onChange={handleChange} />
-          ) : (
-            <strong>{vitals.pulse || "-"}</strong>
-          )}
+      <div className="section-content">
+        <div className="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>לחץ דם</th>
+                <th>משקל</th>
+                <th>דופק</th>
+                <th>סוכר</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={vitals.bloodPressure || ''}
+                      onChange={(e) => setVitals({ ...vitals, bloodPressure: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    vitals.bloodPressure || '-'
+                  )}
+                </td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={vitals.weight || ''}
+                      onChange={(e) => setVitals({ ...vitals, weight: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    vitals.weight || '-'
+                  )}
+                </td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={vitals.pulse || ''}
+                      onChange={(e) => setVitals({ ...vitals, pulse: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    vitals.pulse || '-'
+                  )}
+                </td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={vitals.sugar || ''}
+                      onChange={(e) => setVitals({ ...vitals, sugar: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    vitals.sugar || '-'
+                  )}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

@@ -44,38 +44,55 @@ const MedicalHistorySection = ({ history, patientId, onHistoryUpdated }) => {
   };
 
   return (
-    <div className="section-card">
+    <div className="section">
       <div className="section-header">
-        היסטוריה רפואית
-        <button className="icon-button" title="ערוך" onClick={toggleEdit}>
-          {editMode ? <Save size={18} /> : <Edit2 size={18} />}
+        <h3 className="section-title">היסטוריה רפואית</h3>
+        <button className="action-button" onClick={toggleEdit}>
+          {editMode ? "💾 שמור" : "✏️ ערוך"}
         </button>
       </div>
 
-      <div className="history-details">
-        <div className="history-item">
-          <span>מחלות כרוניות:</span>
-          {editMode ? (
-            <textarea name="diseases" value={form.diseases} onChange={handleChange} />
-          ) : (
-            <p>{form.diseases || "לא צוין"}</p>
-          )}
-        </div>
-        <div className="history-item">
-          <span>אלרגיות:</span>
-          {editMode ? (
-            <textarea name="allergies" value={form.allergies} onChange={handleChange} />
-          ) : (
-            <p>{form.allergies || "לא צוין"}</p>
-          )}
-        </div>
-        <div className="history-item">
-          <span>תרופות נוכחיות:</span>
-          {editMode ? (
-            <textarea name="medications" value={form.medications} onChange={handleChange} />
-          ) : (
-            <p>{form.medications || "לא צוין"}</p>
-          )}
+      <div className="section-content">
+        <div className="history-grid">
+          <div className="history-item">
+            <label>מחלות כרוניות:</label>
+            {editMode ? (
+              <textarea 
+                className="form-control"
+                name="diseases" 
+                value={form.diseases} 
+                onChange={handleChange}
+              />
+            ) : (
+              <p>{form.diseases || "לא צוין"}</p>
+            )}
+          </div>
+          <div className="history-item">
+            <label>אלרגיות:</label>
+            {editMode ? (
+              <textarea 
+                className="form-control"
+                name="allergies" 
+                value={form.allergies} 
+                onChange={handleChange}
+              />
+            ) : (
+              <p>{form.allergies || "לא צוין"}</p>
+            )}
+          </div>
+          <div className="history-item">
+            <label>תרופות נוכחיות:</label>
+            {editMode ? (
+              <textarea 
+                className="form-control"
+                name="medications" 
+                value={form.medications} 
+                onChange={handleChange}
+              />
+            ) : (
+              <p>{form.medications || "לא צוין"}</p>
+            )}
+          </div>
         </div>
       </div>
     </div>

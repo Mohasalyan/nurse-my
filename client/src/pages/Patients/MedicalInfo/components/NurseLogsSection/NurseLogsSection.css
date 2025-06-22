@@ -1,17 +1,111 @@
-.section-card {
-  background-color: #fefefe;
-  border: 1px solid #dedede;
-  border-radius: 10px;
-  padding: 16px;
+.section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   margin-bottom: 24px;
 }
 
 .section-header {
-  background-color: #f3f4f6;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: bold;
-  margin-bottom: 12px;
+  background: #2b4e77;
+  padding: 8px 16px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title {
+  margin: 0;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.section-content {
+  padding: 16px;
+  background: white;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
+.table-responsive table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.table-responsive th,
+.table-responsive td {
+  padding: 12px;
+  text-align: right;
+  border-bottom: 1px solid #dee2e6;
+  white-space: normal;
+  word-wrap: break-word;
+  color: #333;
+}
+
+.table-responsive th {
+  background-color: #eef2f7;
+  font-weight: 600;
+  color: #2b4e77;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 1rem;
+  text-align: right;
+  background: white;
+}
+
+.form-control:focus {
+  border-color: #2b4e77;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(43, 78, 119, 0.25);
+}
+
+.action-button {
+  background-color: #2b4e77;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: #1d3557;
+}
+
+.action-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.add-form {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.add-form input,
+.add-form textarea {
+  flex: 1;
+  background: white;
+  color: #333;
 }
 
 .note-entry {

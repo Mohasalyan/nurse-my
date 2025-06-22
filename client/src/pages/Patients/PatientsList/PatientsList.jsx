@@ -7,11 +7,17 @@ import "./PatientsList.css";
 
 const getStatusColor = (status) => {
   switch (status) {
-    case "פעיל": return "#c8e6c9";
-    case "נפטר": return "#ffcdd2";
-    case "עזב": return "#fff9c4";
+    case "פעיל": return "#DFF5E1";  // Light Green - active
+    case "עזב": return "#FAF3D3";   // Pale Yellow - left
+    case "נפטר": return "#E5E7EB";  // Light Gray with blue tint - deceased
     default: return "#eeeeee";
   }
+};
+
+const statusLabels = {
+  "פעיל": { text: "✅ מטופלים פעילים", className: "active" },
+  "עזב": { text: "👋 מטופלים שעזבו", className: "left" },
+  "נפטר": { text: "🕊️ מטופלים שנפטרו", className: "deceased" }
 };
 
 const PatientsList = ({ onSelectPatient }) => {
@@ -41,6 +47,62 @@ const PatientsList = ({ onSelectPatient }) => {
     }
   };
 
+  const renderPatientCard = (patient) => (
+    <div
+      className="patient-card"
+      key={patient.id}
+      style={{ backgroundColor: getStatusColor(patient.status) }}
+    >
+      <div className="card-header">
+        {patient.status && (
+          <span className="inline-status">{patient.status}</span>
+        )}
+        <h3>{patient.name}</h3>
+      </div>
+      <p>ת.ז: {patient.id}</p>
+      <p>טלפון: {patient.phone || "לא זמין"}</p>
+      <p>תאריך לידה: {patient.birthDate || "לא זמין"}</p>
+      <p>כתובת: {patient.address || "לא זמין"}</p>
+      <div className="card-buttons">
+        <button
+          className="button secondary"
+          onClick={() => onSelectPatient(patient.id, "personal")}
+        >
+          מידע אישי
+        </button>
+        <button
+          className="button"
+          onClick={() => onSelectPatient(patient.id, "medical")}
+        >
+          מידע רפואי
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderStatusSection = (status) => {
+    const statusPatients = filteredPatients.filter(p => p.status === status);
+    if (statusPatients.length === 0 && filteredPatients.length === patients.length) {
+      return null; // Don't show empty sections when no search is active
+    }
+
+    return (
+      <div key={status} className="status-section">
+        <div className={`status-section-header ${statusLabels[status].className}`}>
+          {statusLabels[status].text}
+          <span className="status-count">{statusPatients.length}</span>
+        </div>
+        {statusPatients.length > 0 ? (
+          <div className="patients-grid">
+            {statusPatients.map(renderPatientCard)}
+          </div>
+        ) : (
+          <div className="empty-section-message">אין מטופלים בקטגוריה זו</div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="patients-wrapper">
       <h2 className="patients-header">ניהול מטופלים</h2>
@@ -52,40 +114,9 @@ const PatientsList = ({ onSelectPatient }) => {
         />
       </div>
 
-      <div className="patients-grid">
-        {filteredPatients.map((patient) => (
-          <div
-            className="patient-card"
-            key={patient.id}
-            style={{ backgroundColor: getStatusColor(patient.status) }}
-          >
-            <div className="card-header">
-              {patient.status && (
-                <span className="inline-status">{patient.status}</span>
-              )}
-              <h3>{patient.name}</h3>
-            </div>
-            <p>ת.ז: {patient.id}</p>
-            <p>טלפון: {patient.phone || "לא זמין"}</p>
-            <p>תאריך לידה: {patient.birthDate || "לא זמין"}</p>
-            <p>כתובת: {patient.address || "לא זמין"}</p>
-            <div className="card-buttons">
-              <button
-                className="button secondary"
-                onClick={() => onSelectPatient(patient.id, "personal")}
-              >
-                מידע אישי
-              </button>
-              <button
-                className="button"
-                onClick={() => onSelectPatient(patient.id, "medical")}
-              >
-                מידע רפואי
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+      {renderStatusSection("פעיל")}
+      {renderStatusSection("עזב")}
+      {renderStatusSection("נפטר")}
     </div>
   );
 };
