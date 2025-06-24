@@ -65,7 +65,6 @@
 
   * Authentication
   * Firestore Database
-  * (Optional) Cloud Functions
 
 ### 🔹 Additional Libraries
 
@@ -96,7 +95,7 @@ client/
 ### ✅ Prerequisites
 
 * Node.js (Latest LTS version recommended)
-* npm or yarn
+* npm
 
 ### 📦 Installation
 
