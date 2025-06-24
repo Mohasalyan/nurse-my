@@ -70,17 +70,15 @@
 
 ## 📁 Project Structure
 
-client/
-├── src/
-│ ├── Components/ # Reusable UI components
-│ ├── pages/ # Main application pages
-│ ├── firebase/ # Firebase configuration
-│ ├── store/ # Zustand state management
-│ ├── utils/ # Utility functions
-│ └── assets/ # Static resources (images, icons)  
+client
+├── src
+├── Components # Reusable UI components
+├── pages # Main application pages
+├── firebase # Firebase configuration
+├── store # Zustand state management
+├── utils # Utility functions
+└── assets # Static resources (images, icons)  
 ---
-
-## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js (Latest LTS version recommended)  
