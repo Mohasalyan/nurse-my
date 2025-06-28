@@ -1,6 +1,6 @@
 // src/pages/FollowUpList/FollowUpList.jsx
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 import './FollowUpList.css';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -86,21 +86,57 @@ const FollowUpList = () => {
     );
   };
 
-  
- const handleRemove = async () => {
-  if (selectedPatientId) {
-    try {
-      await deleteDoc(doc(db, 'patients', selectedPatientId)); 
+  const handleRemove = async () => {
+    if (selectedPatientId) {
+      try {
+        const patientRef = doc(db, 'patients', selectedPatientId);
+        const patientDoc = await getDoc(patientRef);
+        
+        if (!patientDoc.exists()) {
+          console.error("Patient document not found");
+          return;
+        }
 
-      fetchFollowUps();
-      setSelectedPatientId(null);
-      setShowModal(false);
-    } catch (error) {
-      console.error("Error deleting patient: ", error);
+        const patientData = patientDoc.data();
+        const patient = followUps.find(p => p.id === selectedPatientId);
+        
+        if (!patient) {
+          console.error("Patient not found in follow ups list");
+          return;
+        }
+
+        // Get the current vital signs
+        const currentVitalSigns = patientData.medical?.vitalSigns || {};
+        
+        // Only update the specific vital signs that caused the patient to be in follow-up
+        const updatedVitalSigns = {
+          ...currentVitalSigns
+        };
+
+        // Only update the values that caused the patient to be in follow-up
+        if (patient.reasons.includes('לחץ דם לא תקין')) {
+          updatedVitalSigns.bloodPressure = '120/80';
+        }
+        if (patient.reasons.includes('סוכר לא תקין')) {
+          updatedVitalSigns.sugar = '100';
+        }
+        if (patient.reasons.includes('BMI גבוה')) {
+          updatedVitalSigns.bmi = '25';
+        }
+
+        // Update only the vitalSigns object, preserving all other medical data
+        await updateDoc(patientRef, {
+          'medical.vitalSigns': updatedVitalSigns
+        });
+
+        await fetchFollowUps(); // Refresh the list
+        setSelectedPatientId(null);
+        setShowModal(false);
+      } catch (error) {
+        console.error("Error updating patient vital signs: ", error);
+      }
     }
-  }
-};
-
+  };
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(followUps);

@@ -27,6 +27,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
     hmoBranch: "",
     wearsGlasses: false,
     sex: "",
+    allergies: "",
 
     // Contact People (Array to support multiple contacts)
     contacts: [{
@@ -145,6 +146,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
             },
             wearsGlasses: data.wearsGlasses || false,
             sex: data.sex || "",
+            allergies: data.allergies || "",
           }));
           setStatus(data.status === "עזב" ? "לא פעיל" : (data.status || ""));
         }
@@ -369,6 +371,16 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
                 />
                 משתמש/ת במשקפיים
               </label>
+            </div>
+            <div className="form-field full-width">
+              <label>רגישות ואלרגיות</label>
+              <textarea
+                name="allergies"
+                value={formData.allergies}
+                onChange={handleChange}
+                rows={2}
+                placeholder="פרט/י רגישויות ואלרגיות"
+              />
             </div>
           </div>
         </div>
