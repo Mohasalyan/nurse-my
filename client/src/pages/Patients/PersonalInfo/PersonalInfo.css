@@ -78,8 +78,9 @@
 
 .form-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 20px;
+  gap: 12px;
 }
 
 .save-button {
@@ -145,4 +146,19 @@
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: flex-end;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
 }
