@@ -46,10 +46,16 @@
   margin-bottom: 16px;
 }
 
-.card-header h3 {
+.status-container {
+  flex: 0 0 auto;
+  margin-right: auto;
+}
+
+.patient-name {
   margin: 0;
   font-size: 1.2em;
   color: #333;
+  text-align: right;
 }
 
 .inline-status {

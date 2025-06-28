@@ -43,7 +43,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
             clinic: data.clinic || "",
             notes: data.notes || "",
           });
-          setStatus(data.status || "");
+          setStatus(data.status === "עזב" ? "לא פעיל" : (data.status || ""));
         }
       } catch (err) {
         console.error("שגיאה בטעינת נתונים:", err);
@@ -62,7 +62,8 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
   const handleSave = async () => {
     try {
       const docRef = doc(db, "patients", patientId);
-      await updateDoc(docRef, { ...formData, status: status });
+      const updatedStatus = status === "עזב" ? "לא פעיל" : status;
+      await updateDoc(docRef, { ...formData, status: updatedStatus });
       toast.success("✅ השינויים נשמרו בהצלחה!");
     } catch (err) {
       console.error("שגיאה בשמירה:", err);
@@ -73,6 +74,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case "פעיל": return "#DFF5E1";
+      case "לא פעיל":
       case "עזב": return "#FAF3D3";
       case "נפטר": return "#E5E7EB";
       default: return "#eeeeee";
@@ -168,7 +170,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
                 <option value="">בחר סטטוס</option>
                 <option value="פעיל">פעיל</option>
                 <option value="נפטר">נפטר</option>
-                <option value="עזב">עזב</option>
+                <option value="לא פעיל">לא פעיל</option>
               </select>
             </div>
           </div>

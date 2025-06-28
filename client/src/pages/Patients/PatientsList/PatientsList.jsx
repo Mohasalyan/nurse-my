@@ -9,7 +9,8 @@ import "./PatientsList.css";
 const getStatusColor = (status) => {
   switch (status) {
     case "פעיל": return "#DFF5E1";  // Light Green - active
-    case "עזב": return "#FAF3D3";   // Pale Yellow - left
+    case "לא פעיל":
+    case "עזב": return "#FAF3D3";   // Pale Yellow - inactive/left
     case "נפטר": return "#E5E7EB";  // Light Gray with blue tint - deceased
     default: return "#eeeeee";
   }
@@ -17,7 +18,7 @@ const getStatusColor = (status) => {
 
 const statusLabels = {
   "פעיל": { text: "✅ מטופלים פעילים", className: "active" },
-  "עזב": { text: "👋 מטופלים לא פעילים", className: "left" },
+  "לא פעיל": { text: "👋 מטופלים לא פעילים", className: "left" },
   "נפטר": { text: "🕊️ מטופלים שנפטרו", className: "deceased" }
 };
 
@@ -29,10 +30,17 @@ const PatientsList = ({ onSelectPatient }) => {
 
   const fetchPatients = async () => {
     const querySnapshot = await getDocs(collection(db, "patients"));
-    const data = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const data = querySnapshot.docs.map(doc => {
+      const patientData = doc.data();
+      // Convert old status to new status
+      if (patientData.status === "עזב") {
+        patientData.status = "לא פעיל";
+      }
+      return {
+        id: doc.id,
+        ...patientData,
+      };
+    });
     setPatients(data);
     setFilteredPatients(data);
   };
@@ -62,10 +70,12 @@ const PatientsList = ({ onSelectPatient }) => {
       style={{ backgroundColor: getStatusColor(patient.status) }}
     >
       <div className="card-header">
-        {patient.status && (
-          <span className="inline-status">{patient.status}</span>
-        )}
-        <h3>{patient.name}</h3>
+        <h3 className="patient-name">{patient.name}</h3>
+        <div className="status-container">
+          {patient.status && (
+            <span className="inline-status">{patient.status}</span>
+          )}
+        </div>
       </div>
       <p>ת.ז: {patient.id}</p>
       <p>טלפון: {patient.phone || "לא זמין"}</p>
@@ -135,7 +145,7 @@ const PatientsList = ({ onSelectPatient }) => {
       </div>
 
       {renderStatusSection("פעיל")}
-      {renderStatusSection("עזב")}
+      {renderStatusSection("לא פעיל")}
       {renderStatusSection("נפטר")}
     </div>
   );
