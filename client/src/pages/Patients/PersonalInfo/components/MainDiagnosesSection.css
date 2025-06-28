@@ -1,0 +1,44 @@
+.diagnoses-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.diagnosis-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.diagnosis-item label {
+  min-width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #7bb08e;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.diagnosis-item input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.diagnosis-item input:focus {
+  outline: none;
+  border-color: #7bb08e;
+  box-shadow: 0 0 0 2px rgba(123, 176, 142, 0.1);
+}
+
+.diagnosis-item input::placeholder {
+  color: #9ca3af;
+} 

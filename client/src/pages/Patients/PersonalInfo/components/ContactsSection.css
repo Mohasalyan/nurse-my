@@ -1,0 +1,58 @@
+.contacts-container {
+  padding: 16px;
+}
+
+.contact-item {
+  position: relative;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #f9fafb;
+}
+
+.contact-item:last-child {
+  margin-bottom: 8px;
+}
+
+.remove-contact-button {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 6px 12px;
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.remove-contact-button:hover {
+  background-color: #fecaca;
+}
+
+.add-contact-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #7bb08e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.add-contact-button:hover {
+  background-color: #69987a;
+}
+
+/* Inherit form grid styles from parent */
+.contact-item .form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+} 

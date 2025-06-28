@@ -1,0 +1,90 @@
+.functional-assessment-container {
+  padding: 16px;
+}
+
+.assessment-group {
+  margin-bottom: 24px;
+}
+
+.assessment-group h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+  text-align: right;
+}
+
+.assessment-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.assessment-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.assessment-item label {
+  font-size: 0.875rem;
+  color: #4b5563;
+  text-align: right;
+}
+
+.assessment-item select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 0.875rem;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.assessment-item select:focus {
+  outline: none;
+  border-color: #7bb08e;
+  box-shadow: 0 0 0 2px rgba(123, 176, 142, 0.1);
+}
+
+.assessment-item select option {
+  padding: 8px;
+}
+
+.assessment-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.assessment-group textarea:focus {
+  outline: none;
+  border-color: #7bb08e;
+  box-shadow: 0 0 0 2px rgba(123, 176, 142, 0.1);
+}
+
+.assessment-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* RTL Support */
+.functional-assessment-container {
+  direction: rtl;
+}
+
+.assessment-item select {
+  text-align: right;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .assessment-items {
+    grid-template-columns: 1fr;
+  }
+} 
