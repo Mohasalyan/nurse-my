@@ -20,8 +20,27 @@ const CreatePatient = ({ onPatientCreated }) => {
     status: "פעיל", // Default status for new patients
   });
 
+  const [idError, setIdError] = useState("");
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    if (name === 'id') {
+      // Only allow digits
+      const numbersOnly = value.replace(/[^\d]/g, '');
+      
+      // Update error message
+      if (numbersOnly.length > 0 && numbersOnly.length !== 9) {
+        setIdError("מספר תעודת זהות חייב להיות 9 ספרות");
+      } else {
+        setIdError("");
+      }
+      
+      // Update form with numbers only
+      setFormData({ ...formData, [name]: numbersOnly });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -29,6 +48,11 @@ const CreatePatient = ({ onPatientCreated }) => {
     
     if (!formData.id || !formData.firstName || !formData.lastName) {
       toast.error("נא למלא שדות חובה: ת.ז, שם פרטי ושם משפחה");
+      return;
+    }
+
+    if (formData.id.length !== 9) {
+      toast.error("מספר תעודת זהות חייב להיות 9 ספרות");
       return;
     }
 
@@ -70,8 +94,10 @@ const CreatePatient = ({ onPatientCreated }) => {
               name="id"
               value={formData.id}
               onChange={handleChange}
+              maxLength={9}
               required
             />
+            {idError && <span className="error-message">{idError}</span>}
           </div>
           <div className="form-group">
             <label>שם פרטי *</label>

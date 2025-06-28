@@ -9,6 +9,7 @@
   --border: #dee2e6;
   --text-dark: #333;
   --text-light: #666;
+  --error: #dc3545;
 }
 
 .personal-page {
@@ -161,4 +162,11 @@
 
 .delete-button:hover {
   background-color: #c82333;
+}
+
+.error-message {
+  color: var(--error);
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
 }

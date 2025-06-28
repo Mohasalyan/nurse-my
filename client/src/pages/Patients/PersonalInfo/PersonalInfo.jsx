@@ -23,6 +23,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [idError, setIdError] = useState("");
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -58,10 +59,32 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
   }, [patientId]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    if (name === 'id') {
+      // Only allow digits
+      const numbersOnly = value.replace(/[^\d]/g, '');
+      
+      // Update error message
+      if (numbersOnly.length > 0 && numbersOnly.length !== 9) {
+        setIdError("מספר תעודת זהות חייב להיות 9 ספרות");
+      } else {
+        setIdError("");
+      }
+      
+      // Update form with numbers only
+      setFormData({ ...formData, [name]: numbersOnly });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSave = async () => {
+    if (formData.id.length !== 9) {
+      toast.error("מספר תעודת זהות חייב להיות 9 ספרות");
+      return;
+    }
+
     try {
       const docRef = doc(db, "patients", patientId);
       const updatedStatus = status === "עזב" ? "לא פעיל" : status;
@@ -151,7 +174,13 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
             </div>
             <div className="form-field">
               <label>תעודת זהות</label>
-              <input name="id" value={formData.id} onChange={handleChange} />
+              <input 
+                name="id" 
+                value={formData.id} 
+                onChange={handleChange}
+                maxLength={9}
+              />
+              {idError && <span className="error-message">{idError}</span>}
             </div>
             <div className="form-field">
               <label>תאריך לידה</label>
