@@ -307,11 +307,6 @@ const CreatePatient = ({ onPatientCreated }) => {
           onChange={(newDiagnoses) => setFormData(prev => ({ ...prev, mainDiagnoses: newDiagnoses }))}
         />
 
-        <MedicationsSection 
-          medications={formData.medications} 
-          onChange={(medications) => setFormData({ ...formData, medications })}
-        />
-
         <VaccinationsSection 
           vaccinations={formData.vaccinations} 
           onChange={(vaccinations) => setFormData({ ...formData, vaccinations })}

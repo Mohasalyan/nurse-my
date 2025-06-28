@@ -380,10 +380,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
           onChange={(newDiagnoses) => setFormData(prev => ({ ...prev, mainDiagnoses: newDiagnoses }))}
         />
 
-        <MedicationsSection 
-          medications={formData.medications} 
-          onChange={(medications) => setFormData({ ...formData, medications })}
-        />
+        <MedicationsSection patientId={patientId} />
 
         <VaccinationsSection 
           vaccinations={formData.vaccinations} 
