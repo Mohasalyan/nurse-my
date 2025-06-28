@@ -4,7 +4,7 @@ import { db } from "@/firebase/firebaseConfig";
 import { toast } from "react-toastify";
 import "./PersonalInfo.css";
 
-const PersonalInfo = ({ patientId }) => {
+const PersonalInfo = ({ patientId, onNavigateToList }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -83,6 +83,10 @@ const PersonalInfo = ({ patientId }) => {
 
   return (
     <div className="personal-page">
+      <div className="page-header">
+        <button className="return-button" onClick={onNavigateToList}>↩️ חזור לרשימה</button>
+      </div>
+
       <div style={{
         backgroundColor: getStatusColor(status),
         padding: "10px",

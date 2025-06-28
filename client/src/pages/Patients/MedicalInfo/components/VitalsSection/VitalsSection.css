@@ -7,7 +7,7 @@
 }
 
 .section-header {
-  background: #2b4e77;
+  background: #7bb08e;
   padding: 8px 16px;
   border-bottom: 1px solid #eee;
   display: flex;
@@ -50,9 +50,9 @@
 }
 
 .table-responsive th {
-  background-color: #eef2f7;
+  background-color: #e8f3eb;
   font-weight: 600;
-  color: #2b4e77;
+  color: #7bb08e;
 }
 
 .form-control {
@@ -66,28 +66,38 @@
 }
 
 .form-control:focus {
-  border-color: #2b4e77;
+  border-color: #7bb08e;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(43, 78, 119, 0.25);
+  box-shadow: 0 0 0 2px rgba(123, 176, 142, 0.25);
 }
 
 .action-button {
-  background-color: #2b4e77;
+  background-color: #6a9c7c;
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
 }
 
 .action-button:hover {
-  background-color: #1d3557;
+  background-color: #5d8b6e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .action-button:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .icon-button {
@@ -123,7 +133,7 @@
 
 .vitals-grid span {
   font-weight: bold;
-  color: #2b4e77;
+  color: #7bb08e;
 }
 
 input {

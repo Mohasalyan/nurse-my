@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import PatientSearch from "../../Components/PatientSearch/PatientSearch";
 import "./DailyTest.css";
 import { db } from '../../firebase/firebaseConfig';
-import { collection, addDoc, Timestamp, getDocs, setDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, Timestamp, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
@@ -114,38 +114,35 @@ const DailyTest = () => {
   const patientName = inputs.name?.trim() || `${firstName} ${lastName}`.trim();
 
   try {
-    // ✅ تحديث البيانات الحيوية في ملف المريض
-    if (inputs.id) {
-      await setDoc(doc(db, "patients", inputs.id), {
-        medical: {
-          vitalSigns: {
-            bloodPressure: inputs.bloodPressure || '',
-            sugar: inputs.sugar || '',
-            pulse: inputs.pulse || '',
-            bmi: inputs.bmi || '',
-            weight: inputs.weight || '',
-          }
+    // First check if patient exists
+    const patientRef = doc(db, "patients", inputs.id);
+    const patientDoc = await getDoc(patientRef);
+
+    // Create or update patient record
+    await setDoc(patientRef, {
+      id: inputs.id,
+      name: patientName,
+      firstName,
+      lastName,
+      age: inputs.age,
+      address: inputs.address,
+      createdAt: patientDoc.exists() ? undefined : Timestamp.now(), // Only set creation time for new patients
+      medical: {
+        vitalSigns: {
+          bloodPressure: inputs.bloodPressure || '',
+          sugar: inputs.sugar || '',
+          pulse: inputs.pulse || '',
+          bmi: inputs.bmi || '',
+          weight: inputs.weight || '',
         }
-      }, { merge: true });
-    }
+      }
+    }, { merge: true });
 
     // ✅ إضافة الفحص لجدول الفحوصات اليومية
     await addDoc(collection(db, 'daily_tests'), {
       ...inputs,
       createdAt: Timestamp.now(),
     });
-
-    // ✅ تحديث بيانات المريض الأساسية
-    if (inputs.id && patientName) {
-      await setDoc(doc(db, "patients", inputs.id), {
-        id: inputs.id,
-        name: patientName,
-        firstName,
-        lastName,
-        age: inputs.age,
-        address: inputs.address
-      }, { merge: true });
-    }
 
     // ✅ إضافة تلقائية إلى רשימת מעקב إذا في مؤشرات غير طبيعية
     if (reasons.length > 0) {

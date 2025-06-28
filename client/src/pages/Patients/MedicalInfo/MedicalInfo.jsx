@@ -19,7 +19,7 @@ import MedicationsSection from "./components/MedicationsSection/MedicationsSecti
 import { toast } from "react-toastify";
 import "./MedicalInfo.css";
 
-const MedicalInfo = ({ patientId }) => {
+const MedicalInfo = ({ patientId, onNavigateToList }) => {
   const [medicalData, setMedicalData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [fromDaily, setFromDaily] = useState(false);
@@ -112,6 +112,10 @@ const MedicalInfo = ({ patientId }) => {
 
   return (
     <div className="medical-page">
+      <div className="page-header">
+        <button className="return-button" onClick={onNavigateToList}>↩️ חזור לרשימה</button>
+      </div>
+
       {fromDaily && (
         <div className="warning-msg">
           מוצג מתוך בדיקות יומיות (לא קיימת רשומה מלאה).

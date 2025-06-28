@@ -7,7 +7,7 @@
 }
 
 .section-header {
-  background-color: #2b4e77;
+  background-color: #7bb08e;
   color: white;
   padding: 12px 16px;
   border-radius: 8px 8px 0 0;
@@ -40,7 +40,7 @@
 .appointments-table th {
   background-color: #f8f9fa;
   font-weight: 600;
-  color: #2b4e77;
+  color: #7bb08e;
 }
 
 .appointments-table tr:nth-child(even) {
@@ -54,17 +54,31 @@
   padding: 24px;
 }
 
-.add-row-btn {
-  background-color: #1d3557;
+.add-appointment-button {
+  background-color: #6a9c7c;
   color: white;
-  padding: 8px 16px;
   border: none;
+  padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
 }
 
-.add-row-btn:hover {
-  background-color: #152843;
+.add-appointment-button:hover {
+  background-color: #5d8b6e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.add-appointment-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-appointment-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  box-shadow: none;
 }

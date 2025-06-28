@@ -42,7 +42,7 @@
 
 .med-form button {
   padding: 8px 16px;
-  background-color: #2ecc71;
+  background-color: #7bb08e;
   color: white;
   border: none;
   border-radius: 6px;
@@ -51,7 +51,7 @@
 }
 
 .med-form button:hover {
-  background-color: #27ae60;
+  background-color: #69987a;
 }
 
 .filters {
@@ -97,11 +97,11 @@ li {
 }
 
 .edit-btn {
-  background-color: #3498db;
+  background-color: #7bb08e;
 }
 
 .edit-btn:hover {
-  background-color: #2980b9;
+  background-color: #69987a;
 }
 
 .delete-btn {
@@ -119,4 +119,33 @@ li input {
 }
 .medication-page {
   padding: 20px;
+}
+
+.add-medication-button {
+  background-color: #6a9c7c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+}
+
+.add-medication-button:hover {
+  background-color: #5d8b6e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.add-medication-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-medication-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  box-shadow: none;
 }

@@ -73,22 +73,32 @@
 }
 
 .action-button {
-  background-color: #2b4e77;
+  background-color: #6a9c7c;
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
 }
 
 .action-button:hover {
-  background-color: #1d3557;
+  background-color: #5d8b6e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .action-button:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .add-form {

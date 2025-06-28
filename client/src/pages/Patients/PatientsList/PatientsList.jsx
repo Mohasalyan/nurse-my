@@ -3,6 +3,7 @@ import { db } from "@/firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import PatientSearch from "../../../Components/PatientSearch/PatientSearch";
+import CreatePatient from "../PersonalInfo/CreatePatient";
 import "./PatientsList.css";
 
 const getStatusColor = (status) => {
@@ -16,26 +17,27 @@ const getStatusColor = (status) => {
 
 const statusLabels = {
   "פעיל": { text: "✅ מטופלים פעילים", className: "active" },
-  "עזב": { text: "👋 מטופלים שעזבו", className: "left" },
+  "עזב": { text: "👋 מטופלים לא פעילים", className: "left" },
   "נפטר": { text: "🕊️ מטופלים שנפטרו", className: "deceased" }
 };
 
 const PatientsList = ({ onSelectPatient }) => {
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPatients = async () => {
-      const querySnapshot = await getDocs(collection(db, "patients"));
-      const data = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setPatients(data);
-      setFilteredPatients(data);
-    };
+  const fetchPatients = async () => {
+    const querySnapshot = await getDocs(collection(db, "patients"));
+    const data = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setPatients(data);
+    setFilteredPatients(data);
+  };
 
+  useEffect(() => {
     fetchPatients();
   }, []);
 
@@ -45,6 +47,12 @@ const PatientsList = ({ onSelectPatient }) => {
     } else {
       setFilteredPatients(patients);
     }
+  };
+
+  const handlePatientCreated = async (patientId) => {
+    await fetchPatients();
+    setShowCreateForm(false);
+    onSelectPatient(patientId, "personal");
   };
 
   const renderPatientCard = (patient) => (
@@ -103,9 +111,21 @@ const PatientsList = ({ onSelectPatient }) => {
     );
   };
 
+  if (showCreateForm) {
+    return <CreatePatient onPatientCreated={handlePatientCreated} />;
+  }
+
   return (
     <div className="patients-wrapper">
-      <h2 className="patients-header">ניהול מטופלים</h2>
+      <div className="patients-header-container">
+        <h2 className="patients-header">ניהול מטופלים</h2>
+        <button 
+          className="create-patient-button"
+          onClick={() => setShowCreateForm(true)}
+        >
+          ➕ הוספת מטופל חדש
+        </button>
+      </div>
       
       <div className="search-container">
         <PatientSearch 

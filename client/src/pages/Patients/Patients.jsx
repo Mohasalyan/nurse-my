@@ -28,10 +28,14 @@ const Patients = () => {
   const handlePatientSelect = (patientId, nextStep) => {
     setSelectedPatientId(patientId);
     setStep(nextStep);
+    setActiveTab(nextStep);
   };
 
   // Handle navigation back to list
   const handleNavigateToList = () => {
+    setStep("list");
+    setSelectedPatientId(null);
+    setActiveTab('personal');
     navigate('/Patients', { replace: true });
   };
 
