@@ -1,0 +1,267 @@
+.emergency-info-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.emergency-info-modal {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  direction: rtl;
+}
+
+.emergency-info-header {
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.emergency-info-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1f2937;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.print-button {
+  background-color: #7bb08e;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.print-button:hover {
+  background-color: #69987a;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+.emergency-info-content {
+  padding: 20px;
+}
+
+.print-header {
+  display: none;
+}
+
+.info-section {
+  margin-bottom: 24px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.info-section h3 {
+  margin: 0 0 16px 0;
+  color: #374151;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #7bb08e;
+  padding-bottom: 8px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.info-item label {
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.info-item span {
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  background-color: white;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.contact-header {
+  margin-bottom: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.contact-header strong {
+  color: #1f2937;
+}
+
+.contact-header span {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.contact-details {
+  display: flex;
+  gap: 16px;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+/* Print styles */
+@media print {
+  @page {
+    size: A4;
+    margin: 2cm;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .print-content,
+  .print-content * {
+    visibility: visible;
+  }
+
+  .emergency-info-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    background: none;
+    display: block;
+  }
+
+  .emergency-info-modal {
+    box-shadow: none;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    overflow: visible;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .emergency-info-header {
+    display: none;
+  }
+
+  .print-header {
+    display: block;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #7bb08e;
+  }
+
+  .print-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 24pt;
+    color: #1f2937;
+  }
+
+  .print-date {
+    font-size: 10pt;
+    color: #6b7280;
+  }
+
+  .info-section {
+    break-inside: avoid;
+    background: none;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 20px;
+  }
+
+  .info-section h3 {
+    font-size: 14pt;
+  }
+
+  .info-item label {
+    font-size: 10pt;
+  }
+
+  .info-item span {
+    font-size: 12pt;
+  }
+
+  .contact-item {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+  }
+
+  .contact-header strong {
+    font-size: 12pt;
+  }
+
+  .contact-header span,
+  .contact-details {
+    font-size: 10pt;
+  }
+} 
