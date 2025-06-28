@@ -132,9 +132,8 @@ const CreatePatient = ({ onPatientCreated }) => {
     }
 
     try {
-      const docRef = await setDoc(doc(db, "patients", formData.id), {
+      await setDoc(doc(db, "patients", formData.id), {
         ...formData,
-        name: `${formData.firstName} ${formData.lastName}`.trim(),
         createdAt: Timestamp.now(),
         medical: {
           vitalSigns: {

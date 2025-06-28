@@ -70,7 +70,7 @@ const PatientsList = ({ onSelectPatient }) => {
       style={{ backgroundColor: getStatusColor(patient.status) }}
     >
       <div className="card-header">
-        <h3 className="patient-name">{patient.name}</h3>
+        <h3 className="patient-name">{`${patient.firstName || ''} ${patient.lastName || ''}`.trim()}</h3>
         <div className="status-container">
           {patient.status && (
             <span className="inline-status">{patient.status}</span>

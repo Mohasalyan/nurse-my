@@ -110,7 +110,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
           setFormData(prev => ({
             ...prev,
             ...data,
-            firstName: data.name || "",
+            firstName: data.firstName || "",
             lastName: data.lastName || "",
             id: data.id || "",
             birthDate: data.birthDate || "",
@@ -198,7 +198,15 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
     try {
       const docRef = doc(db, "patients", patientId);
       const updatedStatus = status === "עזב" ? "לא פעיל" : status;
-      await updateDoc(docRef, { ...formData, status: updatedStatus });
+      
+      // Create updated data object without the name field
+      const { name, ...dataWithoutName } = formData;
+      const updatedData = {
+        ...dataWithoutName,
+        status: updatedStatus,
+      };
+
+      await updateDoc(docRef, updatedData);
       toast.success("✅ השינויים נשמרו בהצלחה!");
     } catch (err) {
       console.error("שגיאה בשמירה:", err);
