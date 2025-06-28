@@ -15,6 +15,21 @@ const getCurrentDateTimeLocal = () => {
   return localTime.toISOString().slice(0, 16);
 };
 
+const calculateAge = (birthDate) => {
+  if (!birthDate) return '';
+  const today = new Date();
+  const birth = new Date(birthDate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+  
+  // Adjust age if birthday hasn't occurred this year
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  
+  return age.toString();
+};
+
 const DailyTest = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
@@ -69,7 +84,7 @@ const DailyTest = () => {
           setInputs(prev => ({
             ...prev,
             name: match.name || `${match.firstName || ''} ${match.lastName || ''}`,
-            age: match.age,
+            age: calculateAge(match.birthDate),
             address: match.address,
             firstName: match.firstName,
             lastName: match.lastName
@@ -201,7 +216,7 @@ const DailyTest = () => {
     { label: "תעודת זהות", name: "id", maxLength: 9, error: idError },
     { label: "שם פרטי", name: "firstName" },
     { label: "שם משפחה", name: "lastName" },
-    { label: "גיל", name: "age" },
+    { label: "גיל", name: "age", readOnly: true },
     { label: "יישוב", name: "address" },
     { label: "רגישות ואלרגיות", name: "allergies" },
     { label: "תרופות", name: "meds" },
