@@ -53,9 +53,9 @@
 }
 
 .toggle-button.active {
-  background-color: #2b4e77;
+  background-color: #7bb08e;
   color: white;
-  box-shadow: 0 2px 4px rgba(43, 78, 119, 0.2);
+  box-shadow: 0 2px 4px rgba(123, 176, 142, 0.2);
 }
 
 .toggle-button.active::after {
@@ -66,14 +66,14 @@
   transform: translateX(-50%);
   width: 40px;
   height: 3px;
-  background-color: #2b4e77;
+  background-color: #7bb08e;
   border-radius: 2px;
 }
 
 .toggle-button:hover:not(.active) {
   background-color: #f8f9fa;
-  border-color: #2b4e77;
-  color: #2b4e77;
+  border-color: #7bb08e;
+  color: #7bb08e;
 }
 
 /* Table styles to prevent overflow */

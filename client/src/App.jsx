@@ -21,7 +21,6 @@ import Register from './pages/Auth/Register/Register';
 // صفحات محمية
 import HomePage from './pages/HomePage/HomePage';
 import DailyTest from './pages/DailyTest/DailyTest';
-import PastPatientsPage from './pages/PastPatientsPage/PastPatientsPage';
 import TestList from './pages/TestList/TestList';
 import MiniMentalForm from './pages/MiniMental/MiniMentalForm';
 import MiniMentalHistory from './pages/MiniMental/MiniMentalHistory';

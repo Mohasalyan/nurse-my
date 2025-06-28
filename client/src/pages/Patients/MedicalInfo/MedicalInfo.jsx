@@ -15,11 +15,10 @@ import NurseLogsSection from "./components/NurseLogsSection/NurseLogsSection";
 import BloodTrackingSection from "./components/BloodTrackingSection/BloodTrackingSection";
 import SugarTrackingSection from "./components/SugarTrackingSection/SugarTrackingSection";
 import AppointmentsSection from "./components/AppointmentsSection/AppointmentsSection";
-import MedicationsSection from "./components/MedicationsSection/MedicationsSection";
 import { toast } from "react-toastify";
 import "./MedicalInfo.css";
 
-const MedicalInfo = ({ patientId }) => {
+const MedicalInfo = ({ patientId, onNavigateToList }) => {
   const [medicalData, setMedicalData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [fromDaily, setFromDaily] = useState(false);
@@ -32,12 +31,11 @@ const MedicalInfo = ({ patientId }) => {
         const patient = docSnap.exists() ? docSnap.data() : null;
 
         if (patient?.medical) {
-          const [bloodSnap, sugarSnap, nurseSnap, appointSnap, medsSnap] = await Promise.all([
+          const [bloodSnap, sugarSnap, nurseSnap, appointSnap] = await Promise.all([
             getDocs(collection(db, "patients", patientId, "bloodTracking")),
             getDocs(collection(db, "patients", patientId, "sugarTracking")),
             getDocs(collection(db, "patients", patientId, "nurseLogs")),
             getDocs(collection(db, "patients", patientId, "appointments")),
-            getDocs(collection(db, "patients", patientId, "medications")),
           ]);
 
           setMedicalData({
@@ -46,7 +44,6 @@ const MedicalInfo = ({ patientId }) => {
             sugarTracking: sugarSnap.docs.map((doc) => doc.data()),
             nurseNotes: nurseSnap.docs.map((doc) => doc.data()),
             appointments: appointSnap.docs.map((doc) => doc.data()),
-            medications: medsSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
           });
         } else {
           const q = query(
@@ -87,7 +84,6 @@ const MedicalInfo = ({ patientId }) => {
               ],
               sugarTracking: [],
               appointments: [],
-              medications: [],
             };
 
             setMedicalData(fallbackData);
@@ -112,6 +108,10 @@ const MedicalInfo = ({ patientId }) => {
 
   return (
     <div className="medical-page">
+      <div className="page-header">
+        <button className="return-button" onClick={onNavigateToList}>↩️ חזור לרשימה</button>
+      </div>
+
       {fromDaily && (
         <div className="warning-msg">
           מוצג מתוך בדיקות יומיות (לא קיימת רשומה מלאה).
@@ -190,16 +190,6 @@ const MedicalInfo = ({ patientId }) => {
             setMedicalData((prev) => ({
               ...prev,
               appointments: [...(prev?.appointments || []), newRow],
-            }))
-          }
-        />
-        <MedicationsSection
-          medications={medicalData.medications || []}
-          patientId={patientId}
-          onMedicationsUpdated={(updatedMeds) =>
-            setMedicalData((prev) => ({
-              ...prev,
-              medications: updatedMeds,
             }))
           }
         />

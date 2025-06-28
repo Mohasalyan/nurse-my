@@ -151,3 +151,12 @@ body, html, #root {
 .view-tests-button:hover {
   background-color: #0d47a1;
 }
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
+  text-align: right;
+  width: 100%;
+}

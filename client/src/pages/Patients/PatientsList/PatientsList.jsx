@@ -3,12 +3,14 @@ import { db } from "@/firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import PatientSearch from "../../../Components/PatientSearch/PatientSearch";
+import CreatePatient from "../PersonalInfo/CreatePatient";
 import "./PatientsList.css";
 
 const getStatusColor = (status) => {
   switch (status) {
     case "פעיל": return "#DFF5E1";  // Light Green - active
-    case "עזב": return "#FAF3D3";   // Pale Yellow - left
+    case "לא פעיל":
+    case "עזב": return "#FAF3D3";   // Pale Yellow - inactive/left
     case "נפטר": return "#E5E7EB";  // Light Gray with blue tint - deceased
     default: return "#eeeeee";
   }
@@ -16,26 +18,34 @@ const getStatusColor = (status) => {
 
 const statusLabels = {
   "פעיל": { text: "✅ מטופלים פעילים", className: "active" },
-  "עזב": { text: "👋 מטופלים שעזבו", className: "left" },
+  "לא פעיל": { text: "👋 מטופלים לא פעילים", className: "left" },
   "נפטר": { text: "🕊️ מטופלים שנפטרו", className: "deceased" }
 };
 
 const PatientsList = ({ onSelectPatient }) => {
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPatients = async () => {
-      const querySnapshot = await getDocs(collection(db, "patients"));
-      const data = querySnapshot.docs.map(doc => ({
+  const fetchPatients = async () => {
+    const querySnapshot = await getDocs(collection(db, "patients"));
+    const data = querySnapshot.docs.map(doc => {
+      const patientData = doc.data();
+      // Convert old status to new status
+      if (patientData.status === "עזב") {
+        patientData.status = "לא פעיל";
+      }
+      return {
         id: doc.id,
-        ...doc.data(),
-      }));
-      setPatients(data);
-      setFilteredPatients(data);
-    };
+        ...patientData,
+      };
+    });
+    setPatients(data);
+    setFilteredPatients(data);
+  };
 
+  useEffect(() => {
     fetchPatients();
   }, []);
 
@@ -47,6 +57,12 @@ const PatientsList = ({ onSelectPatient }) => {
     }
   };
 
+  const handlePatientCreated = async (patientId) => {
+    await fetchPatients();
+    setShowCreateForm(false);
+    onSelectPatient(patientId, "personal");
+  };
+
   const renderPatientCard = (patient) => (
     <div
       className="patient-card"
@@ -54,10 +70,12 @@ const PatientsList = ({ onSelectPatient }) => {
       style={{ backgroundColor: getStatusColor(patient.status) }}
     >
       <div className="card-header">
-        {patient.status && (
-          <span className="inline-status">{patient.status}</span>
-        )}
-        <h3>{patient.name}</h3>
+        <h3 className="patient-name">{patient.name}</h3>
+        <div className="status-container">
+          {patient.status && (
+            <span className="inline-status">{patient.status}</span>
+          )}
+        </div>
       </div>
       <p>ת.ז: {patient.id}</p>
       <p>טלפון: {patient.phone || "לא זמין"}</p>
@@ -103,9 +121,21 @@ const PatientsList = ({ onSelectPatient }) => {
     );
   };
 
+  if (showCreateForm) {
+    return <CreatePatient onPatientCreated={handlePatientCreated} />;
+  }
+
   return (
     <div className="patients-wrapper">
-      <h2 className="patients-header">ניהול מטופלים</h2>
+      <div className="patients-header-container">
+        <h2 className="patients-header">ניהול מטופלים</h2>
+        <button 
+          className="create-patient-button"
+          onClick={() => setShowCreateForm(true)}
+        >
+          ➕ הוספת מטופל חדש
+        </button>
+      </div>
       
       <div className="search-container">
         <PatientSearch 
@@ -115,7 +145,7 @@ const PatientsList = ({ onSelectPatient }) => {
       </div>
 
       {renderStatusSection("פעיל")}
-      {renderStatusSection("עזב")}
+      {renderStatusSection("לא פעיל")}
       {renderStatusSection("נפטר")}
     </div>
   );

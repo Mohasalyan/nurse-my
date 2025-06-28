@@ -1,0 +1,25 @@
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-field label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Override grid layout for checkboxes */
+.checkbox-field.form-field {
+  flex-direction: row;
+  justify-content: flex-start;
+} 

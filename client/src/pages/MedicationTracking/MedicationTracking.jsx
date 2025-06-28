@@ -10,6 +10,7 @@ import {
   getDoc
 } from 'firebase/firestore';
 import { db } from '@/firebase/firebaseConfig';
+import { toast } from 'react-toastify';
 
 import './MedicationTracking.css';
 import PatientSearch from '../../Components/PatientSearch/PatientSearch';
@@ -23,8 +24,8 @@ const MedicationTracking = () => {
   const [filterUnTaken, setFilterUnTaken] = useState(true);
   const [newMedication, setNewMedication] = useState({ medication: '', dose: '' });
 
-  useEffect(() => {
-    const fetchPatients = async () => {
+  const fetchPatients = async () => {
+    try {
       const snapshot = await getDocs(collection(db, 'patients'));
       const data = snapshot.docs.map(doc => {
         const d = doc.data();
@@ -34,29 +35,38 @@ const MedicationTracking = () => {
         };
       });
 
-      const filtered = [];
+      // Filter patients to only include those with medications
+      const patientsWithMeds = [];
       for (const patient of data) {
         const medsSnap = await getDocs(collection(db, 'patients', patient.id, 'medications'));
-        const meds = medsSnap.docs.map(doc => doc.data());
-        if (meds.some(m => !m.taken)) {
-          filtered.push(patient);
+        if (!medsSnap.empty) {
+          patientsWithMeds.push(patient);
         }
       }
 
-      setPatients(filtered);
-      setFilteredPatients(filtered);
-    };
+      setPatients(patientsWithMeds);
+      setFilteredPatients(patientsWithMeds);
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+      toast.error("שגיאה בטעינת רשימת המטופלים");
+    }
+  };
 
+  useEffect(() => {
     fetchPatients();
   }, []);
 
   const fetchMedications = async (patientId) => {
     const medsRef = collection(db, 'patients', patientId, 'medications');
     const medsSnap = await getDocs(medsRef);
-    const meds = medsSnap.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+    const meds = medsSnap.docs.map(doc => {
+      const data = doc.data();
+      console.log('Medication data:', data); // Debug log
+      return {
+        id: doc.id,
+        ...data
+      };
+    });
 
     const patientRef = doc(db, 'patients', patientId);
     const patientSnap = await getDoc(patientRef);
@@ -71,7 +81,8 @@ const MedicationTracking = () => {
         }
       });
     }
-
+    
+    console.log('Final medications array:', meds); // Debug log
     setMedications(meds);
   };
 
@@ -92,26 +103,47 @@ const MedicationTracking = () => {
     if (!newMedication.medication || !newMedication.dose) return;
 
     const newMed = {
-      medication: newMedication.medication,
+      name: newMedication.medication,
       dose: newMedication.dose,
       taken: false,
       lastTakenTime: null,
       note: '',
     };
 
-    const medsRef = collection(db, 'patients', selectedPatientId, 'medications');
-    const docRef = await addDoc(medsRef, newMed);
-    setMedications([...medications, { id: docRef.id, ...newMed }]);
-    setNewMedication({ medication: '', dose: '' });
+    try {
+      const medsRef = collection(db, 'patients', selectedPatientId, 'medications');
+      const docRef = await addDoc(medsRef, newMed);
+      setMedications([...medications, { id: docRef.id, ...newMed }]);
+      setNewMedication({ medication: '', dose: '' });
+      toast.success("התרופה נוספה בהצלחה");
+      
+      // Refresh both medications list and patients list
+      await fetchMedications(selectedPatientId);
+      await fetchPatients();
+    } catch (error) {
+      console.error("Error adding medication:", error);
+      toast.error("שגיאה בהוספת התרופה");
+    }
   };
 
   const handleDelete = async (id) => {
     const confirm = window.confirm("האם אתה בטוח שברצונך למחוק את התרופה?");
     if (!confirm) return;
 
-    await deleteDoc(doc(db, 'patients', selectedPatientId, 'medications', id));
-    setMedications(prev => prev.filter(med => med.id !== id));
-    toast.success("התרופה נמחקה בהצלחה");
+    try {
+      await deleteDoc(doc(db, 'patients', selectedPatientId, 'medications', id));
+      setMedications(prev => prev.filter(med => med.id !== id));
+      toast.success("התרופה נמחקה בהצלחה");
+
+      // Check if this was the last medication and refresh the patients list if needed
+      const medsSnap = await getDocs(collection(db, 'patients', selectedPatientId, 'medications'));
+      if (medsSnap.empty) {
+        await fetchPatients();
+      }
+    } catch (error) {
+      console.error("Error deleting medication:", error);
+      toast.error("שגיאה במחיקת התרופה");
+    }
   };
 
   const handleNoteChange = async (index, newNote) => {
@@ -206,7 +238,7 @@ const MedicationTracking = () => {
             <tbody>
               {filteredMeds.map((item, index) => (
                 <tr key={item.id}>
-                  <td>{item.medication}</td>
+                  <td style={{ color: '#333333' }}>{item.name || 'N/A'}</td>
                   <td>{item.dose}</td>
                   <td>
                     <input

@@ -75,7 +75,6 @@ const MedicationsSection = ({ patientId }) => {
   const filterMedications = () => {
     let filtered = [...medications];
 
-    // فلترة حسب تاريخ اليوم
     if (showTodayOnly) {
       const today = new Date().toDateString();
       filtered = filtered.filter((med) => {
@@ -84,7 +83,6 @@ const MedicationsSection = ({ patientId }) => {
       });
     }
 
-    // فلترة حسب التكرار أو الجرعة
     if (filterType === 'danger') {
       filtered = filtered.filter((med) => {
         const match = med.dose?.match(/\d+/);
@@ -99,81 +97,82 @@ const MedicationsSection = ({ patientId }) => {
   };
 
   return (
-    <div className="medications-section">
-      <h3>תרופות יומיות</h3>
+    <div className="section-box">
+      <div className="section-title">תרופות יומיות</div>
+      <div className="medications-section">
+        {toastMessage && <div className="toast">{toastMessage}</div>}
 
-      {toastMessage && <div className="toast">{toastMessage}</div>}
-
-      <form onSubmit={handleSubmit} className="med-form">
-        <input
-          type="text"
-          name="name"
-          placeholder="שם התרופה"
-          value={newMed.name}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="dose"
-          placeholder="מינון"
-          value={newMed.dose}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="frequency"
-          placeholder="תדירות"
-          value={newMed.frequency}
-          onChange={handleChange}
-        />
-        <button type="submit">הוסף</button>
-      </form>
-
-      <div className="filters">
-        <label>
+        <form onSubmit={handleSubmit} className="med-form">
           <input
-            type="checkbox"
-            checked={showTodayOnly}
-            onChange={() => setShowTodayOnly(!showTodayOnly)}
+            type="text"
+            name="name"
+            placeholder="שם התרופה"
+            value={newMed.name}
+            onChange={handleChange}
           />
-          הצג תרופות של היום בלבד
-        </label>
+          <input
+            type="text"
+            name="dose"
+            placeholder="מינון"
+            value={newMed.dose}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="frequency"
+            placeholder="תדירות"
+            value={newMed.frequency}
+            onChange={handleChange}
+          />
+          <button type="submit">הוסף</button>
+        </form>
 
-        <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
-          <option value="all">כל התדירויות</option>
-          <option value="פעם ביום">פעם ביום</option>
-          <option value="פעמיים ביום">פעמיים ביום</option>
-          <option value="3 פעמים ביום">3 פעמים ביום</option>
-          <option value="danger">מינון מסוכן (1000mg+)</option>
-        </select>
+        <div className="filters">
+          <label>
+            <input
+              type="checkbox"
+              checked={showTodayOnly}
+              onChange={() => setShowTodayOnly(!showTodayOnly)}
+            />
+            הצג תרופות של היום בלבד
+          </label>
+
+          <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+            <option value="all">כל התדירויות</option>
+            <option value="פעם ביום">פעם ביום</option>
+            <option value="פעמיים ביום">פעמיים ביום</option>
+            <option value="3 פעמים ביום">3 פעמים ביום</option>
+            <option value="danger">מינון מסוכן (1000mg+)</option>
+          </select>
+        </div>
+
+        {filterMedications().length === 0 ? (
+          <p>לא קיימות תרופות</p>
+        ) : (
+          <ul>
+            {filterMedications().map((med) => (
+              <li key={med.id}>
+                {editingId === med.id ? (
+                  <>
+                    <input name="name" value={editedMed.name} onChange={handleEditChange} />
+                    <input name="dose" value={editedMed.dose} onChange={handleEditChange} />
+                    <input name="frequency" value={editedMed.frequency} onChange={handleEditChange} />
+                    <button onClick={saveEdit}>שמור</button>
+                  </>
+                ) : (
+                  <>
+                    <strong>{med.name}</strong> - {med.dose} - {med.frequency}
+                    <button className="edit-btn" onClick={() => handleEdit(med)}>ערוך</button>
+                    <button className="delete-btn" onClick={() => handleDelete(med.id)}>מחק</button>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-
-      {filterMedications().length === 0 ? (
-        <p>לא קיימות תרופות</p>
-      ) : (
-        <ul>
-          {filterMedications().map((med) => (
-            <li key={med.id}>
-              {editingId === med.id ? (
-                <>
-                  <input name="name" value={editedMed.name} onChange={handleEditChange} />
-                  <input name="dose" value={editedMed.dose} onChange={handleEditChange} />
-                  <input name="frequency" value={editedMed.frequency} onChange={handleEditChange} />
-                  <button onClick={saveEdit}>שמור</button>
-                </>
-              ) : (
-                <>
-                  <strong>{med.name}</strong> - {med.dose} - {med.frequency}
-                  <button className="edit-btn" onClick={() => handleEdit(med)}>ערוך</button>
-                  <button className="delete-btn" onClick={() => handleDelete(med.id)}>מחק</button>
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 };
 
-export default MedicationsSection;
+export default MedicationsSection; 

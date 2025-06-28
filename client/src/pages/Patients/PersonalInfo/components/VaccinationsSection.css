@@ -1,0 +1,87 @@
+.vaccinations-container {
+  padding: 16px;
+}
+
+.vaccinations-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 50px;
+  gap: 16px;
+  padding: 8px 16px;
+  background-color: #f3f4f6;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.header-item {
+  text-align: right;
+}
+
+.header-item.actions {
+  width: 50px;
+}
+
+.vaccination-item {
+  display: grid;
+  grid-template-columns: 1fr 2fr 50px;
+  gap: 16px;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background-color: #f9fafb;
+  align-items: center;
+}
+
+.vaccination-field input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.vaccination-field input:focus {
+  outline: none;
+  border-color: #7bb08e;
+  box-shadow: 0 0 0 2px rgba(123, 176, 142, 0.1);
+}
+
+.vaccination-field.actions {
+  display: flex;
+  justify-content: center;
+}
+
+.remove-vaccination-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.remove-vaccination-button:hover {
+  background-color: #fee2e2;
+}
+
+.add-vaccination-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 16px;
+  background-color: #7bb08e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.add-vaccination-button:hover {
+  background-color: #69987a;
+}
+
+.vaccination-field input::placeholder {
+  color: #9ca3af;
+} 

@@ -1,14 +1,15 @@
 /* Color Variables */
 :root {
-  --primary: #2b4e77;
-  --primary-light: #eef2f7;
-  --primary-hover: #1d3557;
+  --primary: #7bb08e;
+  --primary-light: #e8f3eb;
+  --primary-hover: #69987a;
   --success: #DFF5E1;
   --warning: #FAF3D3;
   --neutral: #E5E7EB;
   --border: #dee2e6;
   --text-dark: #333;
   --text-light: #666;
+  --error: #dc3545;
 }
 
 .personal-page {
@@ -77,9 +78,10 @@
 }
 
 .form-actions {
-  margin-bottom: 24px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 12px;
 }
 
 .save-button {
@@ -97,6 +99,32 @@
   background-color: var(--primary-hover);
 }
 
+.return-button {
+  background-color: #6a9c7c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.return-button:hover {
+  background-color: #5d8b6e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.return-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .personal-loading {
   text-align: center;
   padding: 40px;
@@ -108,3 +136,85 @@
 .status-active { background-color: var(--success); }
 .status-left { background-color: var(--warning); }
 .status-deceased { background-color: var(--neutral); }
+
+.page-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: white;
+  padding: 16px;
+  margin: -16px -16px 16px -16px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.error-message {
+  color: var(--error);
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-field label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #7bb08e;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-options {
+  display: flex;
+  gap: 24px;
+  padding: 8px 0;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.radio-label input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #7bb08e;
+}

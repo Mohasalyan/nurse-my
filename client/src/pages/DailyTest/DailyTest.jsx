@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import PatientSearch from "../../Components/PatientSearch/PatientSearch";
 import "./DailyTest.css";
 import { db } from '../../firebase/firebaseConfig';
-import { collection, addDoc, Timestamp, getDocs, setDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, Timestamp, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
@@ -20,6 +20,7 @@ const DailyTest = () => {
   const [inputs, setInputs] = useState({
     dateAndTime: getCurrentDateTimeLocal()
   });
+  const [idError, setIdError] = useState("");
 
   useEffect(() => {
     const weight = parseFloat(inputs.weight);
@@ -80,43 +81,73 @@ const DailyTest = () => {
   }, [inputs.id]);
 
   const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
+    const { name, value } = event.target;
+    
+    if (name === 'id') {
+      // Only allow digits
+      const numbersOnly = value.replace(/[^\d]/g, '');
+      
+      // Update error message
+      if (numbersOnly.length > 0 && numbersOnly.length !== 9) {
+        setIdError("מספר תעודת זהות חייב להיות 9 ספרות");
+      } else {
+        setIdError("");
+      }
+      
+      // Update form with numbers only
+      setInputs(values => ({ ...values, [name]: numbersOnly }));
+    } else {
+      setInputs(values => ({ ...values, [name]: value }));
+    }
   };
 
   const handleSubmit = async (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  const reasons = [];
+    if (!inputs.id || inputs.id.length !== 9) {
+      toast.error("מספר תעודת זהות חייב להיות 9 ספרות");
+      return;
+    }
 
-  const [sys, dia] = (inputs.bloodPressure || '').split('/').map(Number);
-  const sugar = Number(inputs.sugar?.toString().trim());
-  const pulse = Number(inputs.pulse?.toString().trim());
-  const bmi = Number(inputs.bmi?.toString().trim());
+    const reasons = [];
 
-  if (sys && dia && (sys > 140 || sys < 90 || dia > 90 || dia < 60)) {
-    reasons.push("לחץ דם לא תקין");
-  }
-  if (sugar && (sugar > 180 || sugar < 70)) {
-    reasons.push("סוכר לא תקין");
-  }
-  if (pulse && (pulse < 60 || pulse > 100)) {
-    reasons.push("דופק לא תקין");
-  }
-  if (bmi && bmi >= 30) {
-    reasons.push("BMI גבוה");
-  }
+    const [sys, dia] = (inputs.bloodPressure || '').split('/').map(Number);
+    const sugar = Number(inputs.sugar?.toString().trim());
+    const pulse = Number(inputs.pulse?.toString().trim());
+    const bmi = Number(inputs.bmi?.toString().trim());
 
-  // تأكيد الاسم الكامل
-  const firstName = inputs.firstName || '';
-  const lastName = inputs.lastName || '';
-  const patientName = inputs.name?.trim() || `${firstName} ${lastName}`.trim();
+    if (sys && dia && (sys > 140 || sys < 90 || dia > 90 || dia < 60)) {
+      reasons.push("לחץ דם לא תקין");
+    }
+    if (sugar && (sugar > 180 || sugar < 70)) {
+      reasons.push("סוכר לא תקין");
+    }
+    if (pulse && (pulse < 60 || pulse > 100)) {
+      reasons.push("דופק לא תקין");
+    }
+    if (bmi && bmi >= 30) {
+      reasons.push("BMI גבוה");
+    }
 
-  try {
-    // ✅ تحديث البيانات الحيوية في ملف المريض
-    if (inputs.id) {
-      await setDoc(doc(db, "patients", inputs.id), {
+    // تأكيد الاسم الكامل
+    const firstName = inputs.firstName || '';
+    const lastName = inputs.lastName || '';
+    const patientName = inputs.name?.trim() || `${firstName} ${lastName}`.trim();
+
+    try {
+      // First check if patient exists
+      const patientRef = doc(db, "patients", inputs.id);
+      const patientDoc = await getDoc(patientRef);
+
+      // Create or update patient record
+      await setDoc(patientRef, {
+        id: inputs.id,
+        name: patientName,
+        firstName,
+        lastName,
+        age: inputs.age,
+        address: inputs.address,
+        createdAt: patientDoc.exists() ? undefined : Timestamp.now(), // Only set creation time for new patients
         medical: {
           vitalSigns: {
             bloodPressure: inputs.bloodPressure || '',
@@ -127,92 +158,86 @@ const DailyTest = () => {
           }
         }
       }, { merge: true });
-    }
 
-    // ✅ إضافة الفحص لجدول الفحوصات اليومية
-    await addDoc(collection(db, 'daily_tests'), {
-      ...inputs,
-      createdAt: Timestamp.now(),
-    });
-
-    // ✅ تحديث بيانات المريض الأساسية
-    if (inputs.id && patientName) {
-      await setDoc(doc(db, "patients", inputs.id), {
-        id: inputs.id,
-        name: patientName,
-        firstName,
-        lastName,
-        age: inputs.age,
-        address: inputs.address
-      }, { merge: true });
-    }
-
-    // ✅ إضافة تلقائية إلى רשימת מעקב إذا في مؤشرات غير طبيعية
-    if (reasons.length > 0) {
-      await addDoc(collection(db, 'follow_up_list'), {
-        patientId: inputs.id,
-        patientName,
-        firstName,
-        lastName,
-        reason: reasons.join(', '),
-        addedBy: "מערכת אוטומטית",
-        createdAt: Timestamp.now()
+      // ✅ إضافة الفحص لجدول الفحوصات اليومية
+      await addDoc(collection(db, 'daily_tests'), {
+        ...inputs,
+        createdAt: Timestamp.now(),
       });
 
-      toast.info("המטופל נוסף לרשימת מעקב אוטומטית ✅", {
-        position: "top-center"
+      // ✅ إضافة تلقائية إلى רשימת מעקב إذا في مؤشرات غير طبيعية
+      if (reasons.length > 0) {
+        await addDoc(collection(db, 'follow_up_list'), {
+          patientId: inputs.id,
+          patientName,
+          firstName,
+          lastName,
+          reason: reasons.join(', '),
+          addedBy: "מערכת אוטומטית",
+          createdAt: Timestamp.now()
+        });
+
+        toast.info("המטופל נוסף לרשימת מעקב אוטומטית ✅", {
+          position: "top-center"
+        });
+      }
+
+      toast.success("הבדיקה נשמרה בהצלחה!", {
+        position: "top-center",
+        autoClose: 2000,
+        onClose: () => navigate("/testlist"),
+      });
+
+      setInputs({ dateAndTime: getCurrentDateTimeLocal() });
+
+    } catch (error) {
+      console.error("שגיאה בשמירה:", error);
+      toast.error("שגיאה בשמירת הבדיקה!", {
+        position: "top-center",
       });
     }
+  };
 
-    toast.success("הבדיקה נשמרה בהצלחה!", {
-      position: "top-center",
-      autoClose: 2000,
-      onClose: () => navigate("/testlist"),
-    });
-
-    setInputs({ dateAndTime: getCurrentDateTimeLocal() });
-
-  } catch (error) {
-    console.error("שגיאה בשמירה:", error);
-    toast.error("שגיאה בשמירת הבדיקה!", {
-      position: "top-center",
-    });
-  }
-};
-
-const fields = [
-  { label: "תאריך ושעה", name: "dateAndTime", type: "datetime-local" },
-  { label: "תעודת זהות", name: "id" },
-  { label: "שם פרטי", name: "firstName" },
-  { label: "שם משפחה", name: "lastName" },
-  { label: "גיל", name: "age" },
-  { label: "יישוב", name: "address" },
-  { label: "רגישות ואלרגיות", name: "allergies" },
-  { label: "תרופות", name: "meds" },
-  { label: "צום כן/לא", name: "fasting" },
-  { label: "משקל", name: "weight" },
-  { label: "גובה", name: "height" },
-  { label: "B.M.I", name: "bmi" },
-  { label: "בדיקה נוספת", name: "extraTest" },
-  { label: "לחץ דם", name: "bloodPressure" },
-  { label: "דופק", name: "pulse" },
-  { label: "סוכר", name: "sugar" }
-];
+  const fields = [
+    { label: "תאריך ושעה", name: "dateAndTime", type: "datetime-local" },
+    { label: "תעודת זהות", name: "id", maxLength: 9, error: idError },
+    { label: "שם פרטי", name: "firstName" },
+    { label: "שם משפחה", name: "lastName" },
+    { label: "גיל", name: "age" },
+    { label: "יישוב", name: "address" },
+    { label: "רגישות ואלרגיות", name: "allergies" },
+    { label: "תרופות", name: "meds" },
+    { label: "צום כן/לא", name: "fasting" },
+    { label: "משקל", name: "weight" },
+    { label: "גובה", name: "height" },
+    { label: "B.M.I", name: "bmi" },
+    { label: "בדיקה נוספת", name: "extraTest" },
+    { label: "לחץ דם", name: "bloodPressure" },
+    { label: "דופק", name: "pulse" },
+    { label: "סוכר", name: "sugar" }
+  ];
 
   return (
     <div className="dailytest">
       <h2 className="nurse-diary-header">יומן אחות</h2>
       <div className="header-row">
         <div className="search-box">
-          <PatientSearch onSelect={(patient) => setInputs(prev => ({
-            ...prev,
-            id: patient.id,
-            name: patient.name,
-            age: patient.age,
-            address: patient.address,
-            firstName: patient.firstName,
-            lastName: patient.lastName
-          }))} />
+          <PatientSearch onSelect={(patient) => {
+            if (patient.id && patient.id.length === 9) {
+              setInputs(prev => ({
+                ...prev,
+                id: patient.id,
+                name: patient.name,
+                age: patient.age,
+                address: patient.address,
+                firstName: patient.firstName,
+                lastName: patient.lastName
+              }));
+              setIdError("");
+            } else {
+              setIdError("מספר תעודת זהות חייב להיות 9 ספרות");
+            }
+          }} />
         </div>
       </div>
 
@@ -228,7 +253,9 @@ const fields = [
                 value={inputs[field.name] || ""}
                 onChange={handleChange}
                 readOnly={["bmi"].includes(field.name)}
+                maxLength={field.maxLength}
               />
+              {field.error && <span className="error-message">{field.error}</span>}
             </div>
           ))}
 
