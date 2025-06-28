@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import PatientSearch from "../../Components/PatientSearch/PatientSearch";
 import "./DailyTest.css";
 import { db } from '../../firebase/firebaseConfig';
-import { collection, addDoc, Timestamp, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, Timestamp, getDocs, setDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
@@ -129,25 +129,22 @@ const DailyTest = () => {
       reasons.push("BMI גבוה");
     }
 
-    // تأكيد الاسم الكامل
-    const firstName = inputs.firstName || '';
-    const lastName = inputs.lastName || '';
-    const patientName = inputs.name?.trim() || `${firstName} ${lastName}`.trim();
-
     try {
-      // First check if patient exists
+      // Check if patient exists
       const patientRef = doc(db, "patients", inputs.id);
       const patientDoc = await getDoc(patientRef);
 
-      // Create or update patient record
-      await setDoc(patientRef, {
-        id: inputs.id,
-        name: patientName,
-        firstName,
-        lastName,
-        age: inputs.age,
-        address: inputs.address,
-        createdAt: patientDoc.exists() ? undefined : Timestamp.now(), // Only set creation time for new patients
+      // If patient doesn't exist, show error and return
+      if (!patientDoc.exists()) {
+        toast.error("מטופל לא קיים במערכת. יש להוסיף את המטופל דרך רשימת המטופלים תחילה.");
+        return;
+      }
+
+      const patientData = patientDoc.data();
+      const patientName = patientData.name || `${patientData.firstName || ''} ${patientData.lastName || ''}`.trim();
+
+      // Update vital signs in patient record
+      await updateDoc(patientRef, {
         medical: {
           vitalSigns: {
             bloodPressure: inputs.bloodPressure || '',
@@ -157,21 +154,22 @@ const DailyTest = () => {
             weight: inputs.weight || '',
           }
         }
-      }, { merge: true });
+      });
 
-      // ✅ إضافة الفحص لجدول الفحوصات اليومية
+      // Add to daily tests
       await addDoc(collection(db, 'daily_tests'), {
         ...inputs,
+        patientName,
         createdAt: Timestamp.now(),
       });
 
-      // ✅ إضافة تلقائية إلى רשימת מעקב إذا في مؤشرات غير طبيعية
+      // Add to follow-up list if needed
       if (reasons.length > 0) {
         await addDoc(collection(db, 'follow_up_list'), {
           patientId: inputs.id,
           patientName,
-          firstName,
-          lastName,
+          firstName: patientData.firstName || '',
+          lastName: patientData.lastName || '',
           reason: reasons.join(', '),
           addedBy: "מערכת אוטומטית",
           createdAt: Timestamp.now()
