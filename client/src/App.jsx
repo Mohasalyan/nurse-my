@@ -29,6 +29,8 @@ import MedicationTracking from './pages/MedicationTracking/MedicationTracking';
 import ForgotPassword from './pages/Auth/ForgotPassword/ForgotPassword';
 import FollowUpList from './pages/FollowUpTests/FollowUpList';
 import Patients from './pages/Patients/Patients';
+import Dashboard from './pages/Dashboard/Dashboard';
+
 
 function ProtectedLayout({ children }) {
   return (
@@ -153,6 +155,14 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route
+  path="/dashboard"
+  element={
+    <RequireAuth>
+      <Dashboard />
+    </RequireAuth>
+  }
+/>
 
         {/* صفحة غير موجودة */}
         <Route

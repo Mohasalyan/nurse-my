@@ -1,0 +1,102 @@
+/* =========== عام =========== */
+.dashboard {
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  direction: rtl;
+}
+
+/* =========== العنوان =========== */
+.dashboard-header {
+  background-color: #f9fafb;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: right;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 4px;
+}
+
+.dashboard-header h4 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.dashboard-header .subtitle {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* =========== Summary Cards =========== */
+.summary-cards .card {
+  padding: 20px;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 4px;
+  transition: box-shadow 0.2s ease;
+}
+
+.summary-cards .card:hover {
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 3px 8px;
+}
+
+.summary-cards .card .label {
+  font-size: 1rem;
+  color: #777;
+}
+
+.summary-cards .card .value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #3f51b5;
+}
+
+/* =========== Patients List =========== */
+.patients-list {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #fafafa;
+  text-align: right;
+}
+
+.patients-list h6 {
+  font-size: 1.25rem;
+}
+
+.patients-list .no-data {
+  font-size: 1rem;
+  color: #555;
+}
+
+.patients-list li {
+  padding: 10px;
+}
+
+.patients-list li:hover {
+  background-color: #f3f3f3;
+}
+
+/* =========== Charts Section =========== */
+.charts-section {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #fafafa;
+}
+
+.charts-section h6 {
+  font-size: 1.25rem;
+}
+
+/* =========== Additional Stats Section =========== */
+.additional-stats {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #ffffff;
+}
+
+.additional-stats h6 {
+  font-size: 1.25rem;
+}
+
+.additional-stats .stat-item {
+  font-size: 1rem;
+  color: #333;
+}
