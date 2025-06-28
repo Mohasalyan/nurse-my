@@ -27,6 +27,7 @@ const CreatePatient = ({ onPatientCreated }) => {
     wearsGlasses: false,
     sex: "",
     status: "פעיל",
+    allergies: "",
 
     // Contact People
     contacts: [{
@@ -287,6 +288,16 @@ const CreatePatient = ({ onPatientCreated }) => {
                 />
                 משתמש/ת במשקפיים
               </label>
+            </div>
+            <div className="form-field full-width">
+              <label>רגישות ואלרגיות</label>
+              <textarea
+                name="allergies"
+                value={formData.allergies}
+                onChange={handleChange}
+                rows={2}
+                placeholder="פרט/י רגישויות ואלרגיות"
+              />
             </div>
           </div>
         </div>

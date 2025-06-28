@@ -77,18 +77,32 @@ const DailyTest = () => {
   useEffect(() => {
     const fetchPatient = async () => {
       if (inputs.id) {
-        const snapshot = await getDocs(collection(db, "patients"));
-        const allPatients = snapshot.docs.map(doc => doc.data());
-        const match = allPatients.find(p => p.id === inputs.id);
-        if (match) {
-          setInputs(prev => ({
-            ...prev,
-            name: match.name || `${match.firstName || ''} ${match.lastName || ''}`,
-            age: calculateAge(match.birthDate),
-            address: match.address,
-            firstName: match.firstName,
-            lastName: match.lastName
-          }));
+        try {
+          // Get patient document
+          const patientRef = doc(db, "patients", inputs.id);
+          const patientDoc = await getDoc(patientRef);
+          
+          if (patientDoc.exists()) {
+            const patientData = patientDoc.data();
+            
+            // Get medications from subcollection
+            const medicationsSnapshot = await getDocs(collection(db, `patients/${inputs.id}/medications`));
+            const medications = medicationsSnapshot.docs.map(doc => doc.data().name).join(', ');
+            
+            setInputs(prev => ({
+              ...prev,
+              name: patientData.name || `${patientData.firstName || ''} ${patientData.lastName || ''}`,
+              age: calculateAge(patientData.birthDate),
+              address: patientData.address,
+              firstName: patientData.firstName,
+              lastName: patientData.lastName,
+              meds: medications,
+              allergies: patientData.allergies || ''
+            }));
+          }
+        } catch (error) {
+          console.error("Error fetching patient data:", error);
+          toast.error("שגיאה בטעינת נתוני המטופל");
         }
       }
     };
@@ -218,8 +232,8 @@ const DailyTest = () => {
     { label: "שם משפחה", name: "lastName" },
     { label: "גיל", name: "age", readOnly: true },
     { label: "יישוב", name: "address" },
-    { label: "רגישות ואלרגיות", name: "allergies" },
-    { label: "תרופות", name: "meds" },
+    { label: "רגישות ואלרגיות", name: "allergies", readOnly: true },
+    { label: "תרופות", name: "meds", readOnly: true },
     { label: "צום כן/לא", name: "fasting" },
     { label: "משקל", name: "weight" },
     { label: "גובה", name: "height" },
