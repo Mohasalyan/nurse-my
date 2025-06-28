@@ -8,7 +8,7 @@ const EmergencyServiceSection = ({ service, onChange }) => {
 
   return (
     <div className="section-box">
-      <div className="section-title">שרות מס"ב</div>
+      <div className="section-title">שרות מט"ב</div>
       <div className="form-grid">
         <div className="form-field">
           <label>שם חברה</label>
@@ -24,25 +24,12 @@ const EmergencyServiceSection = ({ service, onChange }) => {
             onChange={(e) => handleChange('hours', e.target.value)}
           />
         </div>
-        <div className="form-field checkbox-field">
-          <label>
-            <input
-              type="checkbox"
-              checked={service.networkReceiver}
-              onChange={(e) => handleChange('networkReceiver', e.target.checked)}
-            />
-            מקבל ברשת
-          </label>
-        </div>
-        <div className="form-field checkbox-field">
-          <label>
-            <input
-              type="checkbox"
-              checked={service.hasUsers}
-              onChange={(e) => handleChange('hasUsers', e.target.checked)}
-            />
-            משתמשים
-          </label>
+        <div className="form-field">
+          <label>מבקר בימים</label>
+          <input
+            value={service.visitingDays}
+            onChange={(e) => handleChange('visitingDays', e.target.value)}
+          />
         </div>
       </div>
     </div>

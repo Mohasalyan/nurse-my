@@ -41,8 +41,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
     emergencyService: {
       companyName: "",
       hours: "",
-      networkReceiver: false,
-      hasUsers: false,
+      visitingDays: "",
     },
 
     // Regular Diagnoses
@@ -134,8 +133,7 @@ const PersonalInfo = ({ patientId, onNavigateToList }) => {
             emergencyService: data.emergencyService || {
               companyName: "",
               hours: "",
-              networkReceiver: false,
-              hasUsers: false,
+              visitingDays: "",
             },
             mainDiagnoses: data.mainDiagnoses || ["", "", "", "", "", ""],
             medications: data.medications || [],
