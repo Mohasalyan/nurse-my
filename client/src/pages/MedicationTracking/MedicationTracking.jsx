@@ -86,17 +86,27 @@ const MedicationTracking = () => {
     setMedications(meds);
   };
 
-  const toggleTaken = async (index) => {
-    const updated = [...medications];
-    updated[index].taken = !updated[index].taken;
-    updated[index].lastTakenTime = updated[index].taken ? new Date() : null;
-    setMedications(updated);
+  const toggleTaken = async (medicationId) => {
+    try {
+      const medIndex = medications.findIndex(med => med.id === medicationId);
+      if (medIndex === -1) return;
 
-    const medDocRef = doc(db, 'patients', selectedPatientId, 'medications', updated[index].id);
-    await updateDoc(medDocRef, {
-      taken: updated[index].taken,
-      lastTakenTime: updated[index].lastTakenTime
-    });
+      const updated = [...medications];
+      updated[medIndex].taken = !updated[medIndex].taken;
+      updated[medIndex].lastTakenTime = updated[medIndex].taken ? new Date() : null;
+      setMedications(updated);
+
+      const medDocRef = doc(db, 'patients', selectedPatientId, 'medications', medicationId);
+      await updateDoc(medDocRef, {
+        taken: updated[medIndex].taken,
+        lastTakenTime: updated[medIndex].lastTakenTime
+      });
+    } catch (error) {
+      console.error("Error updating medication status:", error);
+      toast.error("שגיאה בעדכון סטטוס התרופה");
+      // Revert the local state if the update fails
+      await fetchMedications(selectedPatientId);
+    }
   };
 
   const handleAddMedication = async () => {
@@ -236,7 +246,7 @@ const MedicationTracking = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredMeds.map((item, index) => (
+              {filteredMeds.map((item) => (
                 <tr key={item.id}>
                   <td style={{ color: '#333333' }}>{item.name || 'N/A'}</td>
                   <td>{item.dose}</td>
@@ -244,7 +254,7 @@ const MedicationTracking = () => {
                     <input
                       className="note-input"
                       value={item.note || ''}
-                      onChange={(e) => handleNoteChange(index, e.target.value)}
+                      onChange={(e) => handleNoteChange(medications.findIndex(med => med.id === item.id), e.target.value)}
                       placeholder="הערה"
                     />
                   </td>
@@ -258,8 +268,8 @@ const MedicationTracking = () => {
                     <input
                       type="checkbox"
                       className="medication-checkbox"
-                      checked={item.taken}
-                      onChange={() => toggleTaken(index)}
+                      checked={item.taken || false}
+                      onChange={() => toggleTaken(item.id)}
                     />
                   </td>
                   <td>
