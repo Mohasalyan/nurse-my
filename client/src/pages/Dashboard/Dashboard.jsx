@@ -5,16 +5,20 @@ import {
   Grid,
   Card,
   CardContent,
-  List,
-  ListItem,
-  ListItemText,
   CircularProgress,
   Divider,
-  Stack,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import { db } from "@/firebase/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
-import { Line, Bar, Pie } from "react-chartjs-2";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  Timestamp,
+} from "firebase/firestore";
+import { Line, Pie, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   LineController,
@@ -22,25 +26,24 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  BarController,
-  BarElement,
   ArcElement,
+  BarElement,
+  BarController,
 } from "chart.js";
 
-import AppointmentTable from "../../Components/appointments/appointments";
+import AppointmentTable from "../../Components/AppointmentTable/AppointmentTable";
 import NurseNotes from "../../Components/NurseNotes/NurseNotes";
-// import AddPatient from "../../Components/AddPatient/AddPatient"; // Uncomment if you have this component 
+import "./Dashboard.css";
 
-// import VitalStats from "../../Components/VitalStats/VitalStats"; // Uncomment if you have this component
 ChartJS.register(
   LineController,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
-  BarController,
+  ArcElement,
   BarElement,
-  ArcElement
+  BarController
 );
 
 const Dashboard = () => {
@@ -51,13 +54,28 @@ const Dashboard = () => {
   const [sugarTracking, setSugarTracking] = useState([]);
   const [bloodTracking, setBloodTracking] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [tabIndex, setTabIndex] = useState(0);
+  const [newPatients, setNewPatients] = useState(0);
+
+  const now = new Date();
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - now.getDay());
 
   const fetchCollection = async (name, setter) => {
     const snapshot = await getDocs(collection(db, name));
     const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     setter(data);
   };
-  
+
+  const fetchNewPatientsThisWeek = async () => {
+    const q = query(
+      collection(db, "patients"),
+      where("createdAt", ">=", Timestamp.fromDate(startOfWeek))
+    );
+    const snapshot = await getDocs(q);
+    setNewPatients(snapshot.size);
+  };
+
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -68,6 +86,7 @@ const Dashboard = () => {
           fetchCollection("nurseLogs", setNurseLogs),
           fetchCollection("sugarTracking", setSugarTracking),
           fetchCollection("bloodTracking", setBloodTracking),
+          fetchNewPatientsThisWeek(),
         ]);
       } catch (error) {
         console.error(error);
@@ -78,33 +97,37 @@ const Dashboard = () => {
     fetchAll();
   }, []);
 
+  const getCriticalCount = () => {
+    return (
+      sugarTracking.filter((s) => s.level > 180 || s.level < 70).length +
+      bloodTracking.filter((b) => b.systolic > 160 || b.systolic < 90).length
+    );
+  };
+
+  const getMostCriticalPatient = () => {
+    const criticalPatients = [...sugarTracking, ...bloodTracking]
+      .map((entry) => ({ ...entry, danger: Math.abs((entry.level || entry.systolic) - 120) }))
+      .sort((a, b) => b.danger - a.danger);
+    return criticalPatients[0]?.name || "לא נמצא";
+  };
+
   const stats = [
-    { label: "כמות מטופלים נוכחיים", value: patients.length },
-    { label: "כמות פגישות קרובות", value: appointments.length },
-    { label: "כמות מנות תרופה פעילות", value: medications.length },
-    { label: "כמות רישומי אחיות", value: nurseLogs.length },
-    { label: "כמות מעקבי סוכר פעילים", value: sugarTracking.length },
-    { label: "כמות מעקבי לחץ דם פעילים", value: bloodTracking.length },
+    { label: "כמות מטופלים", value: patients.length },
+    { label: "מטופלים חדשים השבוע", value: newPatients },
+    { label: "פגישות קרובות", value: appointments.length },
+    { label: "מנות תרופה", value: medications.length },
+    { label: "רישומי אחיות", value: nurseLogs.length },
+    { label: "מעקבי סוכר חריגים", value: sugarTracking.filter((s) => s.level > 180 || s.level < 70).length },
+    { label: "לחץ דם חריג", value: bloodTracking.filter((b) => b.systolic > 160 || b.systolic < 90).length },
+    { label: "סה" + "כ רשומות", value: patients.length + appointments.length + medications.length + nurseLogs.length + sugarTracking.length + bloodTracking.length },
+    { label: "המטופל בסיכון הגבוה ביותר", value: getMostCriticalPatient() },
   ];
 
-  const lineChartData = {
-    labels: ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"],
-    datasets: [
-      {
-        label: "כמות בדיקות יומיות",
-        data: [5, 7, 3, 4, 6, 8, 5],
-        fill: false,
-        borderColor: "#3f51b5",
-        tension: 0.1,
-      },
-    ],
-  };
-  
   const barChartData = {
-    labels: ["מטופלים", "פגישות", "תרופות", "רישומים", "סוכר", "לחץ דם"],
+    labels: ["מטופלים", "פגישות", "תרופות", "אחיות", "סוכר", "לחץ דם"],
     datasets: [
       {
-        label: "כמות רישומים",
+        label: "כמות רשומות",
         data: [
           patients.length,
           appointments.length,
@@ -113,164 +136,123 @@ const Dashboard = () => {
           sugarTracking.length,
           bloodTracking.length,
         ],
-        backgroundColor: [
-          "#3f51b5",
-          "#2196f3",
-          "#4caf50",
-          "#ff9800",
-          "#f44336",
-          "#9c27b0",
-        ],
+        backgroundColor: "#42a5f5",
       },
     ],
   };
-  
-  const pieChartData = {
-    labels: ["מטופלים", "פגישות", "תרופות", "רישומים", "סוכר", "לחץ דם"],
+
+  const sugarTrendData = {
+    labels: sugarTracking.map((entry, i) => entry.date || `Day ${i + 1}`),
     datasets: [
       {
-        data: [
-          patients.length,
-          appointments.length,
-          medications.length,
-          nurseLogs.length,
-          sugarTracking.length,
-          bloodTracking.length,
-        ],
-        backgroundColor: [
-          "#3f51b5",
-          "#2196f3",
-          "#4caf50",
-          "#ff9800",
-          "#f44336",
-          "#9c27b0",
-        ],
+        label: "רמות סוכר",
+        data: sugarTracking.map((entry) => entry.level),
+        borderColor: "#ef5350",
+        fill: false,
       },
     ],
   };
-  
+
+  const pressureTrendData = {
+    labels: bloodTracking.map((entry, i) => entry.date || `Day ${i + 1}`),
+    datasets: [
+      {
+        label: "לחץ דם סיסטולי",
+        data: bloodTracking.map((entry) => entry.systolic),
+        borderColor: "#66bb6a",
+        fill: false,
+      },
+    ],
+  };
+
   return (
-    <Box p={3}>
-      {/* ⚡️ Header */}
-      <Box bgcolor="#f9fafb" p={3} borderRadius={3} textAlign="right" boxShadow={1}>
-        <Typography variant="h4" fontWeight="bold">לוח הבקרה</Typography>
-        <Typography variant="subtitle1" color="text.secondary">
-          סקירה מהירה של מצב מטופלים, משימות והתקדמות יומית
+    <Box className="dashboard-container">
+      {getCriticalCount() > 0 && (
+        <Box className="alert-box">
+          <Typography variant="h6" color="error">
+            {`🚨 ישנם ${getCriticalCount()} מעקבים עם ערכים חריגים!`}
+          </Typography>
+        </Box>
+      )}
+
+      <Box className="dashboard-header">
+        <Typography variant="h4">לוח בקרה</Typography>
+        <Typography variant="subtitle1">
+          תמונת מצב עדכנית של בדיקות, טיפולים, ורישומים
         </Typography>
       </Box>
 
-      {/* ⚡️ Stats Cards */}
-      <Grid container spacing={2} mt={3}>
+      <Grid container spacing={2} mt={2} justifyContent="center">
         {stats.map((stat, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card variant="outlined">
+          <Grid item xs={12} sm={6} md={3} key={index}>
+            <Card className="stat-card">
               <CardContent>
-                <Typography variant="subtitle1" color="text.secondary">
-                  {stat.label}
-                </Typography>
-                <Typography variant="h3" fontWeight="bold" color="primary">
-                  {stat.value}
-                </Typography>
+                <Typography variant="subtitle2">{stat.label}</Typography>
+                <Typography variant="h5">{stat.value}</Typography>
               </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
 
-      {/* ⚡️ Main Sections */}
-      <Grid container spacing={3} mt={3}>
+      <Grid container spacing={2} mt={2}>
         <Grid item xs={12} md={6}>
-          <Card variant="outlined">
+          <Card className="chart-card">
             <CardContent>
-              <Typography variant="h6">רשימת מטופלים</Typography>
-              <Divider />
-              {loading ? (
-                <CircularProgress />
-              ) : patients.length > 0 ? (
-                <List>
-                  {patients.map((patient) => (
-                    <ListItem key={patient.id}>
-                      <ListItemText
-                        primary={patient.name}
-                        secondary={`גיל: ${patient.age || "לא צוין"}`}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Typography>אין מטופלים כרגע</Typography>
-              )}
+              <Typography variant="h6">התפלגות נתונים (Pie)</Typography>
+              <Divider sx={{ my: 1 }} />
+              <Pie data={barChartData} />
             </CardContent>
           </Card>
         </Grid>
-
         <Grid item xs={12} md={6}>
-          <Card variant="outlined">
+          <Card className="chart-card">
             <CardContent>
-              <Typography variant="h6">סטטיסטיקות יומיות (קו)</Typography>
-              <Divider />
-              <Line data={lineChartData} />
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-
-      {/* ⚡️ Bar & Pie Charts */}
-      <Grid container spacing={3} mt={3}>
-        <Grid item xs={12} md={6}>
-          <Card variant="outlined">
-            <CardContent>
-              <Typography variant="h6">כמות רישומים חודשית (טבלה עמודות)</Typography>
-              <Divider />
+              <Typography variant="h6">השוואת רשומות (Bar)</Typography>
+              <Divider sx={{ my: 1 }} />
               <Bar data={barChartData} />
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card variant="outlined">
+          <Card className="chart-card">
             <CardContent>
-              <Typography variant="h6">כמות רישומים – התפלגות (פאי)</Typography>
-              <Divider />
-              <Pie data={pieChartData} />
+              <Typography variant="h6">מגמת רמות סוכר</Typography>
+              <Divider sx={{ my: 1 }} />
+              <Line data={sugarTrendData} />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card className="chart-card">
+            <CardContent>
+              <Typography variant="h6">מגמת לחץ דם סיסטולי</Typography>
+              <Divider sx={{ my: 1 }} />
+              <Line data={pressureTrendData} />
             </CardContent>
           </Card>
         </Grid>
       </Grid>
 
-      {/* ⚡️ Additional Stats Section */}
-      <Grid container spacing={2} mt={3}>
-        <Grid item xs={12}>
-          <Card variant="outlined">
-            <CardContent>
-              <Typography variant="h6">סיכום יום</Typography>
-              <Divider />
-              <Stack direction="row" justifyContent="space-around" flexWrap="wrap" spacing={2}>
-                <Typography variant="subtitle1">בדיקות שנעשו: 15</Typography>
-                <Typography variant="subtitle1">כמות תרופות שחולקו: 30</Typography>
-                <Typography variant="subtitle1">כמות פניות בטיפול: 2</Typography>
-                <Typography variant="subtitle1">כמות משמרות סיעוד: 3</Typography>
-              </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+      <Tabs
+        value={tabIndex}
+        onChange={(e, newValue) => setTabIndex(newValue)}
+        indicatorColor="primary"
+        textColor="primary"
+        centered
+        sx={{ mt: 4 }}
+      >
+        <Tab label="פגישות קרובות" />
+        <Tab label="רישומי אחיות" />
+      </Tabs>
 
-      {/* ⚡️ مكونات مخصصة */}
-      <Grid container spacing={3} mt={3}>
-        <Grid item xs={12}>
-          <AppointmentTable appointments={appointments} />
-        </Grid>
-        <Grid item xs={12}>
-          <NurseNotes nurseLogs={nurseLogs} />
-        </Grid>
-        <Grid item xs={12}>
-          {/* <AddPatient
-            patients={patients}
-            onPatientAdded={(newPatient) => setPatients((prev) => [...prev, newPatient])}
-            onPatientDeleted={(id) => setPatients((prev) => prev.filter((patient) => patient.id !== id))}
-          /> */}
-        </Grid>
-      </Grid>
+      <Box hidden={tabIndex !== 0} mt={2}>
+        {loading ? <CircularProgress /> : <AppointmentTable appointments={appointments} />}
+      </Box>
+
+      <Box hidden={tabIndex !== 1} mt={2}>
+        {loading ? <CircularProgress /> : <NurseNotes nurseLogs={nurseLogs} />}
+      </Box>
     </Box>
   );
 };
