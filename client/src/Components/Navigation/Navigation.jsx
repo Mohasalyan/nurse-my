@@ -11,6 +11,7 @@ import patientFolderIcon from '../../assets/PatientFolder.png';
 import medicineIcon from '../../assets/medicine.png';
 import heartRateIcon from '../../assets/HeartRate.png';
 import brainIcon from '../../assets/brainPic.png';
+import dasgboardIcon from '../../assets/dash.png';
 
 const Navigation = () => {
   const [showPatientSearch, setShowPatientSearch] = useState(false);
@@ -68,6 +69,7 @@ const Navigation = () => {
     { to: '/medication', icon: medicineIcon, title: 'Medications', hebrewTitle: 'תרופות' },
     { to: '/followup-list', icon: medicalReportIcon, title: 'Medical Info', hebrewTitle: 'מעקב' },
     { to: '/dailytest', icon: heartRateIcon, title: 'Daily Test', hebrewTitle: 'בדיקה' },
+    { to: '/dashboard', icon: dasgboardIcon, title: 'Dashboard', hebrewTitle: ' בקרה' },
   ];
 
   return (
