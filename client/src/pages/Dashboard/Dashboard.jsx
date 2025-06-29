@@ -46,6 +46,16 @@ ChartJS.register(
   BarController
 );
 
+// Define theme colors
+const themeColors = {
+  primary: "#7bb08e",
+  primaryHover: "#69987a",
+  success: "#DFF5E1",
+  warning: "#FAF3D3",
+  error: "#fee2e2",
+  border: "#dee2e6",
+};
+
 const Dashboard = () => {
   const [patients, setPatients] = useState([]);
   const [appointments, setAppointments] = useState([]);
@@ -136,7 +146,7 @@ const Dashboard = () => {
           sugarTracking.length,
           bloodTracking.length,
         ],
-        backgroundColor: "#42a5f5",
+        backgroundColor: themeColors.primary,
       },
     ],
   };
@@ -147,8 +157,9 @@ const Dashboard = () => {
       {
         label: "רמות סוכר",
         data: sugarTracking.map((entry) => entry.level),
-        borderColor: "#ef5350",
-        fill: false,
+        borderColor: themeColors.primary,
+        backgroundColor: themeColors.success,
+        fill: true,
       },
     ],
   };
@@ -159,8 +170,9 @@ const Dashboard = () => {
       {
         label: "לחץ דם סיסטולי",
         data: bloodTracking.map((entry) => entry.systolic),
-        borderColor: "#66bb6a",
-        fill: false,
+        borderColor: themeColors.primary,
+        backgroundColor: themeColors.success,
+        fill: true,
       },
     ],
   };
@@ -182,53 +194,73 @@ const Dashboard = () => {
         </Typography>
       </Box>
 
-      <Grid container spacing={2} mt={2} justifyContent="center">
+      <Grid container spacing={3} mt={2}>
         {stats.map((stat, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
             <Card className="stat-card">
               <CardContent>
-                <Typography variant="subtitle2">{stat.label}</Typography>
-                <Typography variant="h5">{stat.value}</Typography>
+                <Typography variant="subtitle2" gutterBottom>
+                  {stat.label}
+                </Typography>
+                <Typography variant="h5" sx={{ color: themeColors.primary }}>
+                  {stat.value}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
 
-      <Grid container spacing={2} mt={2}>
+      <Grid container spacing={3} mt={2}>
         <Grid item xs={12} md={6}>
           <Card className="chart-card">
             <CardContent>
-              <Typography variant="h6">התפלגות נתונים (Pie)</Typography>
-              <Divider sx={{ my: 1 }} />
-              <Pie data={barChartData} />
+              <Typography variant="h6" gutterBottom>
+                התפלגות נתונים
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Box sx={{ height: 300 }}>
+                <Pie data={barChartData} />
+              </Box>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className="chart-card">
             <CardContent>
-              <Typography variant="h6">השוואת רשומות (Bar)</Typography>
-              <Divider sx={{ my: 1 }} />
-              <Bar data={barChartData} />
+              <Typography variant="h6" gutterBottom>
+                השוואת רשומות
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Box sx={{ height: 300 }}>
+                <Bar data={barChartData} />
+              </Box>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className="chart-card">
             <CardContent>
-              <Typography variant="h6">מגמת רמות סוכר</Typography>
-              <Divider sx={{ my: 1 }} />
-              <Line data={sugarTrendData} />
+              <Typography variant="h6" gutterBottom>
+                מגמת רמות סוכר
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Box sx={{ height: 300 }}>
+                <Line data={sugarTrendData} />
+              </Box>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className="chart-card">
             <CardContent>
-              <Typography variant="h6">מגמת לחץ דם סיסטולי</Typography>
-              <Divider sx={{ my: 1 }} />
-              <Line data={pressureTrendData} />
+              <Typography variant="h6" gutterBottom>
+                מגמת לחץ דם סיסטולי
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Box sx={{ height: 300 }}>
+                <Line data={pressureTrendData} />
+              </Box>
             </CardContent>
           </Card>
         </Grid>
@@ -240,18 +272,23 @@ const Dashboard = () => {
         indicatorColor="primary"
         textColor="primary"
         centered
-        sx={{ mt: 4 }}
+        sx={{
+          mt: 4,
+          '& .MuiTab-root': { color: themeColors.primary },
+          '& .Mui-selected': { color: themeColors.primaryHover },
+          '& .MuiTabs-indicator': { backgroundColor: themeColors.primary },
+        }}
       >
         <Tab label="פגישות קרובות" />
         <Tab label="רישומי אחיות" />
       </Tabs>
 
       <Box hidden={tabIndex !== 0} mt={2}>
-        {loading ? <CircularProgress /> : <AppointmentTable appointments={appointments} />}
+        {loading ? <CircularProgress sx={{ color: themeColors.primary }} /> : <AppointmentTable appointments={appointments} />}
       </Box>
 
       <Box hidden={tabIndex !== 1} mt={2}>
-        {loading ? <CircularProgress /> : <NurseNotes nurseLogs={nurseLogs} />}
+        {loading ? <CircularProgress sx={{ color: themeColors.primary }} /> : <NurseNotes nurseLogs={nurseLogs} />}
       </Box>
     </Box>
   );

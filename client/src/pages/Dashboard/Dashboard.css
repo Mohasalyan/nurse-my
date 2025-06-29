@@ -2,46 +2,58 @@
 
 .dashboard-container {
   padding: 24px;
-  background-color: #f9fafb;
+  direction: rtl;
+  background-color: #e8f3eb;  /* Light green background matching the system theme */
   min-height: 100vh;
 }
 
 .dashboard-header {
-  background-color: #e3f2fd;
-  padding: 20px;
-  border-radius: 12px;
   text-align: right;
-  margin-bottom: 20px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+  background-color: #7bb08e;  /* Primary green color */
+  padding: 20px;
+  border-radius: 8px;
+  color: white;
 }
 
 .stat-card {
-  background-color: #ffffff;
+  background: white;
+  border: 1px solid #dee2e6;
+  transition: transform 0.2s ease;
   border-radius: 12px;
   text-align: center;
   padding: 16px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
 }
 
 .stat-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-2px);
+}
+
+.stat-card .MuiCardContent-root {
+  text-align: right;
 }
 
 .chart-card {
-  background-color: #ffffff;
+  background: white;
+  border: 1px solid #dee2e6;
+  height: 100%;
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
+.chart-card .MuiCardContent-root {
+  text-align: right;
+}
+
 .alert-box {
-  background-color: #fff3e0;
-  border: 1px solid #ff9800;
-  padding: 16px;
+  background-color: #fee2e2;
+  border: 1px solid #ef4444;
   border-radius: 8px;
-  margin-bottom: 20px;
-  text-align: center;
+  padding: 16px;
+  margin-bottom: 24px;
+  text-align: right;
   font-weight: bold;
 }
 
@@ -54,9 +66,11 @@
 .MuiTabs-root {
   background-color: #e8f5e9;
   border-radius: 12px;
+  margin-top: 32px;
 }
 
 .MuiTab-root {
+  font-family: inherit;
   font-weight: bold;
   font-size: 16px;
 }
@@ -66,4 +80,14 @@
   .dashboard-header {
     text-align: center;
   }
+}
+
+/* Ensure tables are RTL */
+table {
+  direction: rtl;
+  text-align: right;
+}
+
+th, td {
+  text-align: right;
 }
