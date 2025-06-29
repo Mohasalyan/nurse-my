@@ -1,7 +1,7 @@
 .followup-container {
   direction: rtl;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: 'Alef', sans-serif;
   background-color: #f9f9f9;
   min-height: 100vh;
   display: flex;
@@ -48,6 +48,11 @@ h2 {
   margin: 20px 0;
 }
 
+.followup-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .followup-table-wrapper table {
   width: 100%;
   border-collapse: collapse;
@@ -60,7 +65,7 @@ h2 {
 .followup-table-wrapper th,
 .followup-table-wrapper td {
   padding: 12px 16px;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
   text-align: center;
 }
 
@@ -192,6 +197,116 @@ h2 {
   src: url('/fonts/Alef-Regular.ttf') format('truetype');
 }
 
-.followup-container {
-  font-family: 'Alef', sans-serif;
+/* Print styles */
+@media print {
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+
+  /* Reset all print hiding */
+  * {
+    visibility: visible !important;
+  }
+
+  /* Hide specific screen elements */
+  .screen-only,
+  .export-button,
+  .search-box,
+  .modal-overlay,
+  .mark-handled-button {
+    display: none !important;
+  }
+
+  /* Show print elements */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Container styles */
+  .followup-container {
+    padding: 0;
+    margin: 0;
+    background: none;
+    width: 100%;
+    min-height: auto;
+  }
+
+  /* Print header styles */
+  .print-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #7bb08e;
+    display: block !important;
+  }
+
+  .print-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 24pt;
+    color: #000;
+  }
+
+  .print-date,
+  .print-nurse {
+    font-size: 10pt;
+    color: #333;
+    margin: 5px 0;
+  }
+
+  /* Table styles for print */
+  .followup-table-wrapper {
+    width: 100% !important;
+    margin: 0 !important;
+    page-break-inside: auto;
+  }
+
+  .followup-table-wrapper table {
+    width: 100% !important;
+    border-collapse: collapse;
+    margin: 0;
+    box-shadow: none;
+    page-break-inside: auto;
+  }
+
+  .followup-table-wrapper th {
+    background-color: #f3f4f6 !important;
+    color: #000 !important;
+    border: 1px solid #000;
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 8px;
+  }
+
+  .followup-table-wrapper td {
+    border: 1px solid #000;
+    padding: 8px;
+    font-size: 10pt;
+    color: #000;
+  }
+
+  .followup-table-wrapper tr {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure text is black for better printing */
+  body {
+    background: white;
+    color: black;
+  }
+
+  /* Force background colors to print */
+  .followup-table-wrapper th {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .navigation-bar {
+    display: none !important;
+  }
+}
+
+/* Hide print-only elements on screen */
+.print-only {
+  display: none;
 }

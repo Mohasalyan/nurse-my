@@ -114,11 +114,16 @@
   font-weight: 500;
 }
 
+/* Add specific style for emergency text */
+.nav-button:last-child .nav-button-text {
+  color: red;
+}
+
 .patient-search-overlay {
   position: absolute;
   top: 80px;
   right: 20px;
-  background-color: white;
+  background-color: red;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1001;

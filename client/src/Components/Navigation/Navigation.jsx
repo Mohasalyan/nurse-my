@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Exit from '../Exit/Exit';
 import AmbulanceButton from '../AmbulanceButton/AmbulanceButton';
 import PatientSearch from '../PatientSearch/PatientSearch';
+import EmergencyInfo from '../EmergencyInfo/EmergencyInfo';
 import './Navigation.css';
 import homeIcon from '../../assets/Home.png';
 import medicalReportIcon from '../../assets/medicalReport.png';
@@ -13,6 +14,7 @@ import brainIcon from '../../assets/brainPic.png';
 
 const Navigation = () => {
   const [showPatientSearch, setShowPatientSearch] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const searchRef = useRef(null);
@@ -38,10 +40,21 @@ const Navigation = () => {
   // Close search when location changes
   useEffect(() => {
     setShowPatientSearch(false);
+    setSelectedPatient(null);
   }, [location]);
 
   const handleAmbulanceClick = () => {
     setShowPatientSearch(!showPatientSearch);
+    setSelectedPatient(null);
+  };
+
+  const handlePatientSelect = (patient) => {
+    setSelectedPatient(patient);
+    setShowPatientSearch(false);
+  };
+
+  const handleCloseEmergencyInfo = () => {
+    setSelectedPatient(null);
   };
 
   const handleNavClick = (path, e) => {
@@ -100,8 +113,15 @@ const Navigation = () => {
 
       {showPatientSearch && (
         <div className="patient-search-overlay" ref={searchRef}>
-          <PatientSearch onClose={() => setShowPatientSearch(false)} />
+          <PatientSearch onSelect={handlePatientSelect} />
         </div>
+      )}
+
+      {selectedPatient && (
+        <EmergencyInfo 
+          patient={selectedPatient} 
+          onClose={handleCloseEmergencyInfo} 
+        />
       )}
     </>
   );

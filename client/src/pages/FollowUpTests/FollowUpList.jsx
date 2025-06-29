@@ -7,9 +7,6 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import PatientSearch from '../../Components/PatientSearch/PatientSearch';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import * as XLSX from 'xlsx';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import '../../utils/AlefFont'; // تأكد من المسار
 
 const FollowUpList = () => {
   const [followUps, setFollowUps] = useState([]);
@@ -105,15 +102,11 @@ const FollowUpList = () => {
           return;
         }
 
-        // Get the current vital signs
         const currentVitalSigns = patientData.medical?.vitalSigns || {};
-        
-        // Only update the specific vital signs that caused the patient to be in follow-up
         const updatedVitalSigns = {
           ...currentVitalSigns
         };
 
-        // Only update the values that caused the patient to be in follow-up
         if (patient.reasons.includes('לחץ דם לא תקין')) {
           updatedVitalSigns.bloodPressure = '120/80';
         }
@@ -124,12 +117,11 @@ const FollowUpList = () => {
           updatedVitalSigns.bmi = '25';
         }
 
-        // Update only the vitalSigns object, preserving all other medical data
         await updateDoc(patientRef, {
           'medical.vitalSigns': updatedVitalSigns
         });
 
-        await fetchFollowUps(); // Refresh the list
+        await fetchFollowUps();
         setSelectedPatientId(null);
         setShowModal(false);
       } catch (error) {
@@ -145,100 +137,93 @@ const FollowUpList = () => {
     XLSX.writeFile(workbook, "follow_up_list.xlsx");
   };
 
-  const exportToPDF = () => {
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'A4' });
-
-    const tableColumn = ["שם מטופל", "ת.ז", "לחץ דם", "סוכר", "BMI", "דופק", "סיבת מעקב"];
-    const tableRows = followUps.map(p => [
-      p.name,
-      p.id,
-      p.bloodPressure,
-      p.sugar,
-      p.bmi,
-      p.pulse,
-      p.reasons
-    ]);
-
-    autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      styles: { font: 'helvetica', fontSize: 10 }, // ← تأكد من استخدام خط مدعوم
-      headStyles: { fillColor: [123, 176, 142], textColor: 255 },
-      margin: { top: 40 }
-    });
-
-    doc.save("follow_up_list.pdf");
+  const handlePrint = () => {
+    window.print();
   };
+
+  const renderTable = () => (
+    <div className="followup-table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>שם מטופל</th>
+            <th>ת.ז</th>
+            <th>לחץ דם</th>
+            <th>סוכר</th>
+            <th>BMI</th>
+            <th>דופק</th>
+            <th>סיבת מעקב</th>
+            <th className="screen-only">טופל</th>
+          </tr>
+        </thead>
+        <tbody>
+          {followUps.map((p, i) => (
+            <tr key={i}>
+              <td>{p.name}</td>
+              <td>{p.id}</td>
+              <td>{p.bloodPressure}</td>
+              <td>{p.sugar}</td>
+              <td>{p.bmi}</td>
+              <td>{p.pulse}</td>
+              <td>{p.reasons}</td>
+              <td className="screen-only">
+                <button
+                  className="mark-handled-button"
+                  onClick={() => {
+                    setSelectedPatientId(p.id);
+                    setShowModal(true);
+                  }}
+                >
+                  טופל + הסרה
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 
   return (
     <div className="followup-container">
-      <h2>רשימת מעקב - מדדים חריגים</h2>
+      <div className="screen-only">
+        <h2>רשימת מעקב - מדדים חריגים</h2>
 
-      {followUps.length > 0 && (
-        <div className="followup-alert">
-          <FaExclamationTriangle style={{ marginInlineEnd: '6px' }} />
-          נמצאו {followUps.length} מטופלים במעקב שלא נבדקו
+        {followUps.length > 0 && (
+          <div className="followup-alert">
+            <FaExclamationTriangle style={{ marginInlineEnd: '6px' }} />
+            נמצאו {followUps.length} מטופלים במעקב שלא נבדקו
+          </div>
+        )}
+
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '10px' }}>
+          <button className="export-button" onClick={exportToExcel}>📤 יצא ל-Excel</button>
+          <button className="export-button" onClick={handlePrint}>🖨️ הדפסה</button>
         </div>
-      )}
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '10px' }}>
-        <button className="export-button" onClick={exportToExcel}>📤 יצא ל-Excel</button>
-        <button className="export-button" onClick={exportToPDF}>📄 יצא ל-PDF</button>
-      </div>
-
-      <div className="search-box" style={{ maxWidth: "500px", margin: "0 auto" }}>
-        <PatientSearch onSelect={handleSearchSelect} />
+        <div className="search-box" style={{ maxWidth: "500px", margin: "0 auto" }}>
+          <PatientSearch onSelect={handleSearchSelect} />
+        </div>
       </div>
 
       {loading ? (
-        <p className="loading-text">טוען נתונים...</p>
+        <p className="loading-text screen-only">טוען נתונים...</p>
       ) : followUps.length === 0 ? (
-        <p className="empty-state">אין מטופלים במעקב כרגע 👌</p>
+        <p className="empty-state screen-only">אין מטופלים במעקב כרגע 👌</p>
       ) : (
-        <div className="followup-table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>שם מטופל</th>
-                <th>ת.ז</th>
-                <th>לחץ דם</th>
-                <th>סוכר</th>
-                <th>BMI</th>
-                <th>דופק</th>
-                <th>סיבת מעקב</th>
-                <th>טופל</th>
-              </tr>
-            </thead>
-            <tbody>
-              {followUps.map((p, i) => (
-                <tr key={i}>
-                  <td>{p.name}</td>
-                  <td>{p.id}</td>
-                  <td>{p.bloodPressure}</td>
-                  <td>{p.sugar}</td>
-                  <td>{p.bmi}</td>
-                  <td>{p.pulse}</td>
-                  <td>{p.reasons}</td>
-                  <td>
-                    <button
-                      className="mark-handled-button"
-                      onClick={() => {
-                        setSelectedPatientId(p.id);
-                        setShowModal(true);
-                      }}
-                    >
-                      טופל + הסרה
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <>
+          <div className="print-header print-only">
+            <h1>רשימת מעקב - מדדים חריגים</h1>
+            <div className="print-date">תאריך הדפסה: {new Date().toLocaleDateString('he-IL')}</div>
+            <div className="print-nurse">אחות אחראית: {nurseName}</div>
+          </div>
+
+          {renderTable()}
+        </>
       )}
 
       {showModal && (
-        <div className="modal-overlay">
+        <div className="modal-overlay screen-only">
           <div className="modal-content">
             <h3>האם אתה בטוח שברצונך להסיר את המטופל מרשימת המעקב?</h3>
             <div className="modal-buttons">

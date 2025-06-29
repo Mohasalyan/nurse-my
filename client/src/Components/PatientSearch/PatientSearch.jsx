@@ -1,6 +1,6 @@
 // src/Components/PatientSearch/PatientSearch.jsx
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 import './PatientSearch.css';
 import { FaSearch } from 'react-icons/fa'; // أيقونة البحث
@@ -44,8 +44,25 @@ const PatientSearch = ({ onSelect, className = '', placeholder = 'חיפוש ל�
     );
   }, [query, patients]);
 
-  const handleSelect = (patient) => {
-    onSelect(patient);
+  const handleSelect = async (patient) => {
+    try {
+      // Fetch complete patient data
+      const docRef = doc(db, 'patients', patient.id);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        const completeData = docSnap.data();
+        onSelect({
+          ...completeData,
+          id: docSnap.id,
+          name: `${completeData.firstName || ''} ${completeData.lastName || ''}`.trim()
+        });
+      } else {
+        console.error('No patient found with ID:', patient.id);
+      }
+    } catch (error) {
+      console.error('Error fetching complete patient data:', error);
+    }
     setQuery('');
   };
 
