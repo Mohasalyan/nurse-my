@@ -11,6 +11,26 @@ const MiniMentalHistory = () => {
   const [results, setResults] = useState([]);
   const [selectedTest, setSelectedTest] = useState(null);
 
+  const getScoreStatus = (score) => {
+    if (score >= 24) {
+      return 'status-good';
+    } else if (score >= 18) {
+      return 'status-warning';
+    } else {
+      return 'status-severe';
+    }
+  };
+
+  const getStatusText = (score) => {
+    if (score >= 24) {
+      return 'מצב מנטלי תקין';
+    } else if (score >= 18) {
+      return 'סימנים של דמנציה או אלצהיימר';
+    } else {
+      return 'דיספונקציונליות מוחית חמורה';
+    }
+  };
+
   useEffect(() => {
     const fetchResults = async () => {
       const patientsSnapshot = await getDocs(collection(db, "patients"));
@@ -61,13 +81,16 @@ const MiniMentalHistory = () => {
                 {patient.tests.map((test, index) => (
                   <div
                     key={index}
-                    className="test-item"
+                    className={`test-item ${getScoreStatus(test.score)}`}
                     onClick={() =>
                       setSelectedTest({ ...test, patientName: patient.patientName })
                     }
                   >
                     <div className="test-score">
                       ניקוד: <span>{test.score}</span> / {test.maxScore}
+                    </div>
+                    <div className="status-text">
+                      {getStatusText(test.score)}
                     </div>
                     <div className="test-date">
                       📅 {new Date(test.createdAt?.toDate()).toLocaleDateString("he-IL")} •{" "}

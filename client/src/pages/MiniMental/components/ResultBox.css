@@ -1,8 +1,43 @@
 .result-box {
-    background: #f0fdf4;
-    padding: 1rem;
-    border-radius: 4px;
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
     margin-bottom: 1rem;
     text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
   }
+  
+.result-box h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.mental-state {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.state-text {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.status-good {
+  border-color: #22c55e;
+  background-color: #f0fdf4;
+}
+
+.status-warning {
+  border-color: #f97316;
+  background-color: #fff7ed;
+}
+
+.status-severe {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
   
