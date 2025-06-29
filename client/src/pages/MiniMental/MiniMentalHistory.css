@@ -57,28 +57,74 @@
 .test-item {
   display: flex;
   flex-direction: column;
-  background-color: #f5f9ff;
   padding: 14px 16px;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
 }
 
-.test-item:hover {
-  background-color: #e9f3ff;
+.test-item.status-good {
+  background-color: #f0fdf4;
+  border: 1px solid #22c55e;
+}
+
+.test-item.status-good:hover {
+  background-color: #dcfce7;
+}
+
+.test-item.status-warning {
+  background-color: #fff7ed;
+  border: 1px solid #f97316;
+}
+
+.test-item.status-warning:hover {
+  background-color: #ffedd5;
+}
+
+.test-item.status-severe {
+  background-color: #fef2f2;
+  border: 1px solid #ef4444;
+}
+
+.test-item.status-severe:hover {
+  background-color: #fee2e2;
 }
 
 .test-score {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #2b4e77;
   margin-bottom: 6px;
 }
 
-.test-score span {
-  color: #ff6600;
-  font-weight: bold;
+.status-good .test-score {
+  color: #15803d;
+}
+
+.status-warning .test-score {
+  color: #c2410c;
+}
+
+.status-severe .test-score {
+  color: #b91c1c;
+}
+
+.status-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.status-good .status-text {
+  color: #15803d;
+}
+
+.status-warning .status-text {
+  color: #c2410c;
+}
+
+.status-severe .status-text {
+  color: #b91c1c;
 }
 
 .test-date {
