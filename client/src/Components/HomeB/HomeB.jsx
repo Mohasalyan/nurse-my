@@ -12,7 +12,7 @@ const HomeB = ({
   if (plain) {
     return (
       <div className="home-plain-wrapper">
-        <img src={image} alt={title} className="home-image" style={style} />
+        <img src={image} alt={title} className="home-image" style={style}ظ />
       </div>
     );
   }
