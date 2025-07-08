@@ -263,7 +263,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 By using this system, the user acknowledges understanding its limitations and agrees to these terms.
 
-### Support Contact
-For support and inquiries, contact:
-- Name: Mohammad Elayyan
-- Phone: 0546103029
+
