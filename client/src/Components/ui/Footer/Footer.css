@@ -1,9 +1,12 @@
 .footer {
-  position: fixed;
+  position: relative;
   bottom: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
+  background-color: #f8f9fa;
+  padding: 1rem 0;
+  margin-top: 2rem;
 }
 
 .scroll-progress-container {
@@ -61,4 +64,23 @@
   padding: 20px 0;
   color: #666;
   font-size: 14px;
+  direction: rtl;
+}
+
+.disclaimer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.disclaimer {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 4px;
+  color: #856404;
+  text-align: right;
 } 
