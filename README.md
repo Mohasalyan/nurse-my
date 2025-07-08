@@ -2,7 +2,17 @@
 
 ## 📋 Overview
 
-**Nurse-My** is a comprehensive healthcare management system designed to assist nurses and healthcare professionals in managing patient care efficiently. Built with React and Firebase, it provides a modern, secure, and user-friendly interface for healthcare management tasks including patient monitoring, medical testing, medication tracking, and emergency response protocols.
+**Nurse-My** is a comprehensive healthcare management system specifically developed for the Matte Yehuda Veterans Association to digitally manage daily health checks, medications, patient files, and mental health monitoring in a convenient, secure, and accessible way. The system is designed for exclusive use by two authorized nurses working at the veterans' association.
+
+### 🎯 Target Users
+- Two authorized nurses at the Matte Yehuda Veterans Association
+- Restricted access system with secure authentication
+
+### 💻 System Requirements
+- Desktop or laptop computer
+- Internet connection
+- Modern web browser (Google Chrome or Mozilla Firefox recommended)
+- No local installation required - web-based application
 
 ---
 
@@ -10,7 +20,10 @@
 
 ### 🧑‍⚕️ Patient Management
 
-* Complete patient records management
+* Complete patient records management with categorization:
+  * Active patients
+  * Inactive patients
+  * Deceased patients
 * Detailed medical information tracking:
   * Personal information and demographics
   * Emergency contacts
@@ -25,24 +38,29 @@
   * Medication records
   * Nurse logs and observations
   * Sugar level tracking
-  * Vital signs monitoring
+  * Vital signs monitoring (blood pressure, sugar, pulse, weight, height)
 
 ### 🧪 Medical Testing
 
 * **Mini Mental State Examination (MMSE)**
   * Digital form implementation
   * Patient-specific history tracking
-  * Comprehensive result analysis
+  * Comprehensive result analysis with color-coded results:
+    * Green - Normal
+    * Orange - Unstable
+    * Red - Concerning state
   * PDF report generation
-* Daily test management
+* Daily test management with automatic follow-up flagging
 * Follow-up test tracking system
 * Test results history and analytics
+* Export capabilities to PDF and Excel
 
 ### 💊 Medication Tracking
 
 * Comprehensive medication management
 * Schedule and dosage tracking
 * Medication history documentation
+* Active medications list by patient
 * Alerts and reminders system
 
 ### 📊 Dashboard & Analytics
@@ -51,12 +69,17 @@
 * Test result analytics
 * Healthcare trends visualization
 * Performance monitoring
+* Quick access to critical information
 
 ### 🚨 Emergency Features
 
-* One-click ambulance dispatch button
-* Emergency contact information
-* Quick access to critical patient data
+* One-click ambulance dispatch button always accessible in the top bar
+* Quick patient search in emergency situations
+* Critical patient information display:
+  * Age
+  * Current medications
+  * Allergies
+  * Emergency contact information
 * Rapid response system integration
 
 ### 🔐 Security & Authentication
@@ -66,6 +89,7 @@
 * Password recovery system
 * Session management
 * Data encryption
+* Automatic logout for security
 
 ---
 
@@ -73,23 +97,23 @@
 
 ### 🔹 Frontend
 
-* **Core Framework**: React 19 with Vite
-* **State Management**: Zustand 5.0
-* **Routing**: React Router DOM 7.5
+* **Core Framework**: React with Vite
+* **State Management**: Zustand
+* **Routing**: React Router DOM
 * **UI Components**: 
-  * Material-UI (MUI) 7.1
+  * Material-UI (MUI)
   * Custom components
-  * React Icons 5.5
-  * Lucide React 0.510
+  * React Icons
+  * Lucide React
 * **Data Visualization**: 
-  * Chart.js 4.5
-  * React-ChartJS-2 5.3
-* **Date Handling**: date-fns 4.1
-* **Notifications**: React-Toastify 11.0
+  * Chart.js
+  * React-ChartJS-2
+* **Date Handling**: date-fns
+* **Notifications**: React-Toastify
 
 ### 🔹 Backend & Database
 
-* **Firebase 11.6**
+* **Firebase**
   * Authentication
   * Firestore Database
   * Real-time data sync
@@ -97,9 +121,9 @@
 
 ### 🔹 Document Generation & File Handling
 
-* **PDF Generation**: jsPDF 3.0 with autotable 5.0
-* **Excel Handling**: SheetJS (XLSX) 0.18
-* **File Management**: File-Saver 2.0
+* **PDF Generation**: jsPDF with autotable
+* **Excel Handling**: SheetJS (XLSX)
+* **File Management**: File-Saver
 
 ---
 
@@ -109,25 +133,37 @@
 client/
 ├── src/
 │   ├── Components/           # Reusable UI components
-│   │   ├── ui/              # Base UI components
+│   │   ├── ui/              # Base UI components (Accordion, Button, Footer)
 │   │   ├── AddToFollowUpButton/
 │   │   ├── AmbulanceButton/
 │   │   ├── AppointmentTable/
+│   │   ├── Card/
+│   │   ├── ConfirmLogoutModal/
+│   │   ├── ConfirmModal/
+│   │   ├── DisclaimerModal/
 │   │   ├── EmergencyInfo/
+│   │   ├── Exit/
+│   │   ├── HomeB/
 │   │   ├── Navigation/
 │   │   ├── NurseNotes/
 │   │   ├── PatientSearch/
+│   │   ├── Return/
+│   │   ├── Search/
 │   │   └── VitalStats/
 │   ├── pages/               # Main application pages
-│   │   ├── Auth/           # Authentication pages
+│   │   ├── Auth/           # Authentication pages (Login, Register, ForgotPassword)
+│   │   ├── DailyTest/      # Daily test management
 │   │   ├── Dashboard/      # Analytics dashboard
+│   │   ├── FollowUpTests/  # Follow-up test management
+│   │   ├── HomePage/       # Landing page
+│   │   ├── MedicationTracking/ # Medication management
 │   │   ├── MiniMental/     # MMSE implementation
 │   │   ├── Patients/       # Patient management
 │   │   └── TestList/       # Test management
 │   ├── firebase/           # Firebase configuration
 │   ├── store/              # Zustand state management
 │   ├── utils/              # Utility functions
-│   └── assets/             # Static resources
+│   └── assets/             # Static resources (images, fonts)
 ```
 
 ---
@@ -214,3 +250,20 @@ Contributions are welcome! Please read our contributing guidelines and code of c
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🔒 Important Notes
+
+### Data Persistence
+* All changes must be explicitly saved using the "Save" button
+* Unsaved changes will be lost if the page is closed or the session times out
+* The system automatically flags abnormal test results for follow-up
+
+### Disclaimer
+⚠️ This system was developed as a student project. The responsibility for its use and the data entered into the system lies solely with the user. The developers, course staff, and academic institution are not responsible for malfunctions, data loss, or medical results arising from the use of the system.
+
+By using this system, the user acknowledges understanding its limitations and agrees to these terms.
+
+### Support Contact
+For support and inquiries, contact:
+- Name: Mohammad Elayyan
+- Phone: 0546103029
