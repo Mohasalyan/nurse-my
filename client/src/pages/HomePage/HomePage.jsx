@@ -4,7 +4,7 @@ import medicationImg from "../../assets/medicine.png";
 import trackingImg from "../../assets/medicalReport.png";
 import brainImg from "../../assets/brainPic.png";
 import patientsImg from "../../assets/PatientFolder.png";
-import heartMonitorImg from "../../assets/HeartRate.png";
+import doctorImg from "../../assets/doctor.png";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
@@ -69,7 +69,7 @@ const HomePage = () => {
 
         <div className="big-card">
           <Card
-            image={heartMonitorImg}
+            image={doctorImg}
             title="בדיקה חדשה"
             to="/dailytest"
             style={{ width: "440px", height: "430px" }}
