@@ -22,11 +22,16 @@ const Footer = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return isAtBottom ? (
-    <div className="end-indicator">
-      End of page
-    </div>
-  ) : null;
+  return (
+    <footer className="footer">
+      {isAtBottom && <div className="end-indicator">סוף העמוד</div>}
+      <div className="disclaimer-container">
+        <div className="disclaimer hebrew" dir="rtl">
+          ⚠️ מערכת זו פותחה לצרכים לימודיים בלבד. המפתחים, צוות הקורס והמוסד האקדמי אינם נושאים באחריות לכל שימוש לא תקין, דליפת מידע או החלטה רפואית שגויה.
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer; 
