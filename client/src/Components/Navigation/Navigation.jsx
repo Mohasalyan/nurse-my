@@ -11,6 +11,8 @@ import patientFolderIcon from '../../assets/PatientFolder.png';
 import medicineIcon from '../../assets/medicine.png';
 import doctorIcon from '../../assets/doctor.png';
 import dasgboardIcon from '../../assets/dash.png';
+import useUserRole from '../../hooks/useUserRole';
+
 
 const Navigation = () => {
   const [showPatientSearch, setShowPatientSearch] = useState(false);
@@ -61,15 +63,20 @@ const Navigation = () => {
     e.preventDefault();
     navigate(path, { replace: true });
   };
+const { role } = useUserRole();
 
-  const navButtons = [
-    { to: '/minimental', icon: doctorIcon, title: 'Mini Mental', hebrewTitle: 'מינימנטל' },
-    { to: '/Patients', icon: patientFolderIcon, title: 'Patients', hebrewTitle: 'מטופלים' },
-    { to: '/medication', icon: medicineIcon, title: 'Medications', hebrewTitle: 'תרופות' },
-    { to: '/followup-list', icon: medicalReportIcon, title: 'Medical Info', hebrewTitle: 'מעקב' },
-    { to: '/dailytest', icon: doctorIcon, title: 'Daily Test', hebrewTitle: 'בדיקה' },
-    { to: '/dashboard', icon: dasgboardIcon, title: 'Dashboard', hebrewTitle: ' בקרה' },
-  ];
+const navButtons = [
+  { to: '/minimental', icon: doctorIcon, title: 'Mini Mental', hebrewTitle: 'מינימנטל' },
+  { to: '/Patients', icon: patientFolderIcon, title: 'Patients', hebrewTitle: 'מטופלים' },
+  { to: '/medication', icon: medicineIcon, title: 'Medications', hebrewTitle: 'תרופות' },
+  { to: '/followup-list', icon: medicalReportIcon, title: 'Medical Info', hebrewTitle: 'מעקב' },
+  { to: '/dailytest', icon: doctorIcon, title: 'Daily Test', hebrewTitle: 'בדיקה' },
+  ...(role === 'admin' ? [
+    { to: '/dashboard', icon: dasgboardIcon, title: 'Dashboard', hebrewTitle: 'בקרה' },
+    { to: '/admin-dashboard', icon: dasgboardIcon, title: 'Admin', hebrewTitle: 'ניהול' }
+
+  ] : [])
+];
 
   return (
     <>

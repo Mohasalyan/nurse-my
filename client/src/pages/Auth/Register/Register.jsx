@@ -1,17 +1,26 @@
-// ✅ Register.jsx
+// 🔒 تعديل كامل لملف Register.jsx يشمل:
+// - التحقق من الإيميل
+// - إضافة المستخدم لـ users_pending
+// - انتظار الموافقة من الأدمن
+
 import React, { useState, useEffect } from 'react';
 import './../AuthForm.css';
 import loginImage from '../../../assets/login-illustration.png';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
-import { auth } from '../../../firebase/firebaseConfig';
+import { auth, db } from '../../../firebase/firebaseConfig';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   onAuthStateChanged,
-  updateProfile,
+  updateProfile
 } from 'firebase/auth';
+import {
+  doc,
+  setDoc,
+  getDoc
+} from 'firebase/firestore';
 
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../../../store/userStore';
@@ -50,7 +59,15 @@ const Register = () => {
       await sendEmailVerification(userCredential.user);
       setUsernameGlobal(username);
 
-      toast.success('נשלח קישור לאימות הדוא"ל. אנא בדוק את תיבת הדואר שלך.');
+      // 🔸 إضافة المستخدم إلى قائمة الانتظار
+      await setDoc(doc(db, "users_pending", userCredential.user.uid), {
+        name: username,
+        email: email,
+        role: "nurse",
+        createdAt: new Date(),
+      });
+
+      toast.success('✔️ נשלח קישור לאימות הדוא"ל. בדוק את תיבת הדואר שלך.');
       setNeedsVerification(true);
     } catch (err) {
       console.error(err);
@@ -62,7 +79,7 @@ const Register = () => {
     if (auth.currentUser && !auth.currentUser.emailVerified) {
       try {
         await sendEmailVerification(auth.currentUser);
-        toast.success('קישור האימות נשלח מחדש');
+        toast.success('🔁 קישור האימות נשלח מחדש');
       } catch (error) {
         toast.error('שגיאה בשליחה מחדש: ' + error.message);
       }
@@ -70,9 +87,18 @@ const Register = () => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user && !user.emailVerified) {
         setNeedsVerification(true);
+      } else if (user && user.emailVerified) {
+        // ✅ تحقق من إذا تم الموافقة من الأدمن
+        const approvedDoc = await getDoc(doc(db, "users", user.uid));
+        if (approvedDoc.exists()) {
+          toast.success("🚀 החשבון אושר על ידי האדמין. כניסה מוצלחת");
+          navigate("/home");
+        } else {
+          toast.info("⌛ החשבון ממתין לאישור האדמין.");
+        }
       }
     });
     return () => unsubscribe();
