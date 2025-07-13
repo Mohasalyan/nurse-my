@@ -8,7 +8,7 @@ export const sendStatusEmail = async ({ to_name, to_email, message, includeLogin
 
     // لو فيه زر تسجيل دخول، بنضيفه على الرسالة
     const fullMessage = includeLoginButton
-      ? `${message}<br /><br /><a href="https://your-app-url.com/auth/login" style="display:inline-block;background-color:#00695c;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">כניסה למערכת</a>`
+      ? `${message}<br /><br /><a href="https://nurse-app-b247e.web.app" style="display:inline-block;background-color:#00695c;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">כניסה למערכת</a>`
       : message;
 
     const templateParams = {
