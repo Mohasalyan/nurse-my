@@ -6,6 +6,8 @@ import {
 } from "firebase/auth";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminSetup = () => {
   const [email, setEmail] = useState("");
@@ -16,9 +18,8 @@ const AdminSetup = () => {
   const handleCreateAdmin = async (e) => {
     e.preventDefault();
 
-    // فقط إذا الإيميل والباسورد مطابقين
     if (email !== "admin@nurse-my.com" || password !== "admin123") {
-      alert("🚫 غير مسموح - بيانات غير صحيحة لإنشاء الأدمن");
+      toast.error("🚫 לא מורשה - פרטי התחברות שגויים");
       return;
     }
 
@@ -36,20 +37,20 @@ const AdminSetup = () => {
         approvedAt: serverTimestamp()
       });
 
-      alert("✅ تم إنشاء حساب الأدمن بنجاح!");
-      navigate("/admin-dashboard");
+      toast.success("✅ החשבון של האדמין נוצר בהצלחה!");
+      setTimeout(() => navigate("/admin-dashboard"), 2000); // تأخير بسيط ليشوف التوست
     } catch (error) {
-      alert("❌ فشل في إنشاء الأدمن: " + error.message);
+      toast.error("❌ יצירת החשבון נכשלה: " + error.message);
     }
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "400px", margin: "auto" }}>
-      <h2>⚙️ إعداد حساب الأدمن</h2>
+    <div style={{ padding: "2rem", maxWidth: "400px", margin: "auto", direction: "rtl" }}>
+      <h2>⚙️ יצירת חשבון אדמין</h2>
       <form onSubmit={handleCreateAdmin}>
         <input
           type="text"
-          placeholder="الاسم الكامل"
+          placeholder="שם מלא"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -71,8 +72,8 @@ const AdminSetup = () => {
           required
           style={{ width: "100%", marginBottom: "1rem", padding: "8px" }}
         />
-        <button type="submit" style={{ width: "100%", padding: "10px" }}>
-          إنشاء الأدمن
+        <button type="submit" style={{ width: "100%", padding: "10px", backgroundColor: "#1976d2", color: "#fff", border: "none", borderRadius: "4px" }}>
+          צור אדמין
         </button>
       </form>
     </div>

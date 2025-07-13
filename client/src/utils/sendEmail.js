@@ -6,15 +6,16 @@ export const sendStatusEmail = async ({ to_name, to_email, message, includeLogin
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    // لو فيه زر تسجيل دخول، بنضيفه على الرسالة
-    const fullMessage = includeLoginButton
-      ? `${message}<br /><br /><a href="https://nurse-app-b247e.web.app" style="display:inline-block;background-color:#00695c;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">כניסה למערכת</a>`
-      : message;
+    // زر تسجيل الدخول منفصل
+    const login_button = includeLoginButton
+      ? `<a href="https://nurse-app-b247e.web.app" style="display:inline-block;background-color:#00695c;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">כניסה למערכת</a>`
+      : '';
 
     const templateParams = {
       to_name: to_name,
       to_email: to_email,
-      message: fullMessage, // ✅ هذا كان ناقص
+      message: message,
+      login_button: login_button,
     };
 
     const result = await emailjs.send(serviceId, templateId, templateParams, publicKey);
