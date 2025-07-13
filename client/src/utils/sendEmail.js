@@ -12,7 +12,7 @@ export const sendStatusEmail = async ({ to_name, to_email, message, includeLogin
 const login_button = includeLoginButton
   ? `<a href="${appUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;background-color:#00695c;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">כניסה למערכת</a>`
   : '';
-  
+
     const templateParams = {
       to_name: to_name,
       to_email: to_email,
