@@ -1,4 +1,4 @@
-// ✅ PendingUsersPanel.jsx
+// PendingUsersPanel.jsx
 import React, { useEffect, useState } from "react";
 import {
   collection,
@@ -12,12 +12,15 @@ import { db } from "@/firebase/firebaseConfig";
 import { Button, Card, CardContent, Typography, Stack } from "@mui/material";
 import { toast } from "react-toastify";
 import { sendStatusEmail } from "../../utils/sendEmail";
+import "./PendingUsersPanel.css";
 
 const PendingUsersPanel = () => {
   const [pendingUsers, setPendingUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchPending = async () => {
     try {
+      setLoading(true);
       const snapshot = await getDocs(collection(db, "users_pending"));
       const users = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -27,6 +30,8 @@ const PendingUsersPanel = () => {
       
     } catch (err) {
       toast.error("שגיאה בשליפת הנתונים");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,6 +44,7 @@ const approveUser = (user) => {
           <Button
             variant="contained"
             size="small"
+            color="success"
             onClick={async () => {
               closeToast();
 
@@ -47,6 +53,7 @@ const approveUser = (user) => {
                   name: user.name,
                   email: user.email,
                   role: user.role || "nurse",
+                  createdAt: user.createdAt,
                   approvedAt: serverTimestamp(),
                 });
                 await deleteDoc(doc(db, "users_pending", user.id));
@@ -98,15 +105,14 @@ const rejectUser = (user) => {
 await sendStatusEmail({
   to_name: user.name || "האחות",
   to_email: user.email,
-  message: "לצערנו, בקשתך להירשם נדחתה ❌. ניתן ליצור קשר לפרטים נוספים.",
+  message: `מצטערים, החשבון שלך לא אושר על ידי מנהל המערכת. אנא פנה למנהל לקבלת פרטים נוספים.`,
   includeLoginButton: false,
 });
 
-
-                toast.info("🚫 המשתמש נדחה");
+                toast.success(`❌ המשתמש ${user.name} נדחה`);
                 fetchPending();
               } catch (err) {
-                toast.error("❌ שגיאה בעת הדחייה");
+                toast.error("❌ שגיאה בעת הדחיה");
               }
             }}
           >
@@ -127,26 +133,61 @@ await sendStatusEmail({
     fetchPending();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="pending-users-panel">
+        <div className="loading-users">טוען בקשות ממתינות...</div>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <Typography variant="h5" gutterBottom>בקשות ממתינות</Typography>
+    <div className="pending-users-panel">
+      <Typography className="pending-users-title" variant="h5" gutterBottom>
+        בקשות ממתינות לאישור
+      </Typography>
+      
       {pendingUsers.length === 0 ? (
-        <Typography>אין בקשות ממתינות</Typography>
+        <Typography className="no-pending-message">
+          אין בקשות ממתינות כרגע
+        </Typography>
       ) : (
         pendingUsers.map((user) => (
-          <Card key={user.id} style={{ marginBottom: "1rem" }}>
-            <CardContent>
-              <Typography><strong>שם:</strong> {user.name}</Typography>
-              <Typography><strong>אימייל:</strong> {user.email}</Typography>
-              <Typography><strong>סוג:</strong> {user.role || "nurse"}</Typography>
-              <Stack direction="row" spacing={2} marginTop={2}>
-                <Button variant="contained" color="success" onClick={() => approveUser(user)}>
-                  ✅ אשר
+          <Card key={user.id} className="pending-user-card">
+            <CardContent className="pending-user-content">
+              <div className="user-info-row">
+                <span className="user-info-label">שם:</span>
+                <span className="user-info-value">{user.name}</span>
+              </div>
+              
+              <div className="user-info-row">
+                <span className="user-info-label">אימייל:</span>
+                <span className="user-info-value">{user.email}</span>
+              </div>
+              
+              <div className="user-info-row">
+                <span className="user-info-label">תפקיד:</span>
+                <span className="user-role-badge">
+                  {user.role === "nurse" ? "אחות" : user.role || "אחות"}
+                </span>
+              </div>
+              
+              <div className="user-actions">
+                <Button 
+                  className="approve-button"
+                  variant="contained" 
+                  onClick={() => approveUser(user)}
+                >
+                  ✅ אשר משתמש
                 </Button>
-                <Button variant="outlined" color="error" onClick={() => rejectUser(user)}>
-                  ❌ דחה
+                <Button 
+                  className="reject-button"
+                  variant="outlined" 
+                  onClick={() => rejectUser(user)}
+                >
+                  ❌ דחה בקשה
                 </Button>
-              </Stack>
+              </div>
             </CardContent>
           </Card>
         ))

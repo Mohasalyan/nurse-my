@@ -1,0 +1,193 @@
+/* AdminDashboard.css */
+
+@font-face {
+  font-family: 'Alef';
+  src: url('/fonts/Alef-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+.admin-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  direction: rtl;
+  font-family: 'Alef', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+}
+
+.admin-dashboard-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(123, 176, 142, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(123, 176, 142, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.admin-dashboard-header {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(123, 176, 142, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.admin-dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  line-height: 1.2;
+}
+
+.admin-dashboard-title .icon {
+  font-size: 2.25rem;
+  color: #7bb08e;
+}
+
+.admin-dashboard-subtitle {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  text-align: center;
+  margin-top: 0.75rem;
+  font-weight: 400;
+}
+
+.admin-dashboard-content {
+  position: relative;
+  z-index: 1;
+}
+
+.loading-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  font-size: 1.5rem;
+  color: #7bb08e;
+  font-weight: 600;
+  direction: rtl;
+  font-family: 'Alef', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid rgba(123, 176, 142, 0.3);
+  border-radius: 50%;
+  border-top-color: #7bb08e;
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.access-denied {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  text-align: center;
+  direction: rtl;
+  font-family: 'Alef', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.access-denied-icon {
+  font-size: 4rem;
+  color: #e74c3c;
+  margin-bottom: 1rem;
+}
+
+.access-denied-message {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.access-denied-subtitle {
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-dashboard-container {
+    padding: 1rem;
+  }
+
+  .admin-dashboard-header {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-dashboard-title {
+    font-size: 2rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .admin-dashboard-title .icon {
+    font-size: 1.75rem;
+  }
+
+  .admin-dashboard-subtitle {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-dashboard-container {
+    padding: 0.75rem;
+  }
+
+  .admin-dashboard-header {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .admin-dashboard-title {
+    font-size: 1.75rem;
+  }
+
+  .admin-dashboard-title .icon {
+    font-size: 1.5rem;
+  }
+
+  .admin-dashboard-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .loading-message,
+  .access-denied-message {
+    font-size: 1.25rem;
+  }
+
+  .access-denied-icon {
+    font-size: 3rem;
+  }
+} 
