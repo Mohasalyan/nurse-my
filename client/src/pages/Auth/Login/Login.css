@@ -11,7 +11,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f5f5f5;
+
   padding: 40px;
 }
 
@@ -27,7 +27,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #f5f5f5, #e6f2e6);
+  background: #f1f3f5;
   padding: 40px;
 }
 

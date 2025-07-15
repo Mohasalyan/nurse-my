@@ -1,12 +1,8 @@
-// 🔒 تعديل كامل لملف Register.jsx يشمل:
-// - التحقق من الإيميل
-// - إضافة المستخدم لـ users_pending
-// - انتظار الموافقة من الأدمن
-
+// Register.jsx - Updated for RTL and clean design
 import React, { useState, useEffect } from 'react';
-import './../AuthForm.css';
+import './Register.css';
 import loginImage from '../../../assets/login-illustration.png';
-import { FaUser, FaLock } from 'react-icons/fa';
+import { FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 import { auth, db } from '../../../firebase/firebaseConfig';
@@ -34,6 +30,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [needsVerification, setNeedsVerification] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const setUsernameGlobal = useUserStore((state) => state.setUsername);
@@ -43,11 +40,19 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!username || !email || !password || !confirmPassword)
+    if (!username || !email || !password || !confirmPassword) {
       return toast.error('אנא מלא את כל השדות');
+    }
 
-    if (password !== confirmPassword)
+    if (password.length < 6) {
+      return toast.error('הסיסמה חייבת להכיל לפחות 6 תווים');
+    }
+
+    if (password !== confirmPassword) {
       return toast.error('הסיסמאות אינן תואמות');
+    }
+
+    setLoading(true);
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -59,7 +64,7 @@ const Register = () => {
       await sendEmailVerification(userCredential.user);
       setUsernameGlobal(username);
 
-      // 🔸 إضافة المستخدم إلى قائمة الانتظار
+      // הוספת המשתמש לרשימת ההמתנה
       await setDoc(doc(db, "users_pending", userCredential.user.uid), {
         name: username,
         email: email,
@@ -71,7 +76,17 @@ const Register = () => {
       setNeedsVerification(true);
     } catch (err) {
       console.error(err);
-      toast.error('שגיאה בהרשמה: ' + err.message);
+      if (err.code === 'auth/email-already-in-use') {
+        toast.error('כתובת האימייל כבר רשומה במערכת');
+      } else if (err.code === 'auth/weak-password') {
+        toast.error('הסיסמה חלשה מדי. אנא בחר סיסמה חזקה יותר');
+      } else if (err.code === 'auth/invalid-email') {
+        toast.error('כתובת אימייל לא תקינה');
+      } else {
+        toast.error('שגיאה בהרשמה: ' + err.message);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,7 +106,7 @@ const Register = () => {
       if (user && !user.emailVerified) {
         setNeedsVerification(true);
       } else if (user && user.emailVerified) {
-        // ✅ تحقق من إذا تم الموافقة من الأدمن
+        // בדיקה אם המשתמש אושר על ידי המנהל
         const approvedDoc = await getDoc(doc(db, "users", user.uid));
         if (approvedDoc.exists()) {
           toast.success("🚀 החשבון אושר על ידי האדמין. כניסה מוצלחת");
@@ -102,24 +117,21 @@ const Register = () => {
       }
     });
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="login-container">
-      <div className="login-image">
-        <img src={loginImage} alt="Register Illustration" />
-      </div>
-
       <div className="login-form">
         <h1>הרשמה למערכת</h1>
-        <p>!צור חשבון חדש כדי להתחיל</p>
+        <p>צור חשבון חדש כדי להתחיל!</p>
         <form onSubmit={handleRegister}>
           <div className="input-container">
             <input
               type="text"
-              placeholder="שם משתמש"
+              placeholder="שם מלא"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              autoComplete="name"
             />
             <FaUser className="input-icon" />
           </div>
@@ -127,19 +139,21 @@ const Register = () => {
           <div className="input-container">
             <input
               type="email"
-              placeholder="אימייל"
+              placeholder="כתובת אימייל"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
             />
-            <FaUser className="input-icon" />
+            <FaEnvelope className="input-icon" />
           </div>
 
           <div className="input-container">
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="סיסמה"
+              placeholder="סיסמה (לפחות 6 תווים)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
             />
             <FaLock className="input-icon" />
             <span className="toggle-password" onClick={togglePassword}>
@@ -153,26 +167,35 @@ const Register = () => {
               placeholder="אימות סיסמה"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete="new-password"
             />
             <FaLock className="input-icon" />
           </div>
 
-          <button type="submit">צור חשבון</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "יוצר חשבון..." : "צור חשבון חדש"}
+          </button>
         </form>
 
         {needsVerification && (
           <div className="resend-verification">
             <p>לא קיבלת את קישור האימות?</p>
-            <button onClick={resendVerification}>שלח שוב קישור אימות</button>
+            <button type="button" onClick={resendVerification}>
+              שלח שוב קישור אימות
+            </button>
           </div>
         )}
 
-        <p className="register-prompt">
+        <div className="register-prompt">
           כבר יש לך חשבון?
           <span className="register-link" onClick={() => navigate('/auth/login')}>
             התחבר עכשיו
           </span>
-        </p>
+        </div>
+      </div>
+
+      <div className="login-image">
+        <img src={loginImage} alt="איור הרשמה" />
       </div>
     </div>
   );

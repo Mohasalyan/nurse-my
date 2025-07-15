@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './../AuthForm.css';
+import './Login.css';
+
 import loginImage from '../../../assets/login-illustration.png';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineCloseCircle } from 'react-icons/ai';
@@ -118,20 +119,17 @@ const Login = () => {
   return (
     <>
       <div className="login-container">
-        <div className="login-image">
-          <img src={loginImage} alt="Login Illustration" />
-        </div>
-
         <div className="login-form">
           <h1>עמותת ותיקי מטה יהודה</h1>
-          <p>!הזדהות וכניסה למערכת</p>
+          <p>הזדהות וכניסה למערכת!</p>
           <form onSubmit={handleSubmit}>
             <div className="input-container">
               <input
                 type="email"
-                placeholder="אימייל"
+                placeholder="כתובת אימייל"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
               />
               <FaUser className="input-icon" />
               {email && (
@@ -147,6 +145,7 @@ const Login = () => {
                 placeholder="סיסמה"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
               />
               <FaLock className="input-icon" />
               <span className="toggle-password" onClick={togglePassword}>
@@ -155,22 +154,26 @@ const Login = () => {
             </div>
 
             <button type="submit" disabled={loading}>
-              {loading ? "מתחבר..." : "כניסה"}
+              {loading ? "מתחבר..." : "כניסה למערכת"}
             </button>
           </form>
 
-          <p className="register-prompt">
+          <div className="register-prompt">
             אין לך חשבון?
             <span className="register-link" onClick={() => navigate('/auth/register')}>
               הרשם עכשיו
             </span>
-          </p>
-          <p className="register-prompt">
+          </div>
+          <div className="register-prompt">
             שכחת סיסמה?
             <span className="register-link" onClick={() => navigate('/auth/forgot')}>
-              לחץ כאן
+              לחץ כאן לשחזור
             </span>
-          </p>
+          </div>
+        </div>
+
+        <div className="login-image">
+          <img src={loginImage} alt="איור התחברות" />
         </div>
       </div>
 
