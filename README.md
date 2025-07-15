@@ -445,14 +445,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 By using this system, the user acknowledges understanding its limitations and agrees to these terms.
 
----
 
-## 📞 Support & Contact
-
-For technical support and inquiries:
-- **Contact**: Mohammad Elayyan
-- **Phone**: 0546103029
-
-For system administration and user approval issues, please contact your local system administrator.
 
 
